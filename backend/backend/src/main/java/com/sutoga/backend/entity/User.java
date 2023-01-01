@@ -3,19 +3,21 @@ package com.sutoga.backend.entity;
 import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
+@Entity
+@Table(name="user")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Document(collection = "user")
+@Getter
+@Setter
 public class User {
-
+    @jakarta.persistence.Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
 
@@ -35,5 +37,7 @@ public class User {
 
     private LocalDate birthDate;
 
-    private List<User> friends;
+    @ElementCollection
+    private List<Long> friends;
+
 }
