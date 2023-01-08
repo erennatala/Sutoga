@@ -1,9 +1,14 @@
 package com.sutoga.backend.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
-
+@Entity
+@Table(name="game")
+@Data
+@Getter
+@Setter
 public class Game {
+
 }

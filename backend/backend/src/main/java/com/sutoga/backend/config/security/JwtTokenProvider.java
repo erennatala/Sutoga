@@ -1,4 +1,4 @@
-package com.sutoga.backend.security;
+package com.sutoga.backend.config.security;
 
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;

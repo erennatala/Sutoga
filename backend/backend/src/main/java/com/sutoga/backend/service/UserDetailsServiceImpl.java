@@ -2,7 +2,7 @@ package com.sutoga.backend.service;
 
 import com.sutoga.backend.entity.User;
 import com.sutoga.backend.repository.UserRepository;
-import com.sutoga.backend.security.JwtUserDetails;
+import com.sutoga.backend.config.security.JwtUserDetails;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

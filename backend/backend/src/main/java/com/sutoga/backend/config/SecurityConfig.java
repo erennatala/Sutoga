@@ -1,8 +1,8 @@
 package com.sutoga.backend.config;
 
 
-import com.sutoga.backend.security.JwtAuthenticationEntryPoint;
-import com.sutoga.backend.security.JwtAuthenticationFilter;
+import com.sutoga.backend.config.security.JwtAuthenticationEntryPoint;
+import com.sutoga.backend.config.security.JwtAuthenticationFilter;
 import com.sutoga.backend.service.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

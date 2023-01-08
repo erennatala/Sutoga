@@ -6,7 +6,7 @@ import com.sutoga.backend.entity.dto.AuthResponse;
 import com.sutoga.backend.entity.request.LoginRequest;
 import com.sutoga.backend.entity.request.RefreshRequest;
 import com.sutoga.backend.entity.request.RegisterRequest;
-import com.sutoga.backend.security.JwtTokenProvider;
+import com.sutoga.backend.config.security.JwtTokenProvider;
 import com.sutoga.backend.service.RefreshTokenService;
 import com.sutoga.backend.service.impl.UserServiceImpl;
 import org.springframework.http.HttpStatus;

@@ -1,4 +1,4 @@
-package com.sutoga.backend.security;
+package com.sutoga.backend.config.security;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

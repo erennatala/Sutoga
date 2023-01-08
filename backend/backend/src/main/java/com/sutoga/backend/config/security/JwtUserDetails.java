@@ -1,4 +1,4 @@
-package com.sutoga.backend.security;
+package com.sutoga.backend.config.security;
 
 import com.sutoga.backend.entity.User;
 import lombok.Getter;

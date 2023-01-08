@@ -1,32 +1,29 @@
 package com.sutoga.backend.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 
-import java.util.List;
-
 @Entity
-@Table(name="post")
+@Table(name="userGame")
 @Data
 @Getter
 @Setter
-public class Post {
-
+public class UserGame {
     @jakarta.persistence.Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
 
-    private String description;
-    
-
     @ManyToOne
-    @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany
-    private List<Comment> comments;
+    @ManyToOne
+    @JoinColumn(name = "game_ID")
+    private Game game;
 
+    private int playTime;
 
 }
