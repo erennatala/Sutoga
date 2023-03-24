@@ -2,24 +2,22 @@ package com.sutoga.backend.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.Id;
 
 import java.util.List;
 
 @Entity
 @Table(name="post")
-@Data
 @Getter
 @Setter
 public class Post {
 
-    @jakarta.persistence.Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "description")
     private String description;
-    
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -27,6 +25,5 @@ public class Post {
 
     @OneToMany
     private List<Comment> comments;
-
 
 }
