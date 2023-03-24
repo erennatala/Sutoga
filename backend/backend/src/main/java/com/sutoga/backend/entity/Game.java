@@ -1,14 +1,18 @@
 package com.sutoga.backend.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.mongodb.core.mapping.Document;
 @Entity
 @Table(name="game")
-@Data
 @Getter
 @Setter
 public class Game {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
 
+    private String name;
+    private String description;
+    private String genre;
 }

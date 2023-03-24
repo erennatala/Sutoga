@@ -6,19 +6,15 @@ import java.util.List;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
-
-import lombok.Data;
 
 @Entity
 @Table(name="user")
-@Data
 @Getter
 @Setter
 public class User {
-    @jakarta.persistence.Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Long id;
 
     private String firstName;
@@ -39,5 +35,6 @@ public class User {
 
     @ElementCollection
     private List<Long> friends;
+
 
 }

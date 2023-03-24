@@ -8,7 +8,6 @@ import org.springframework.data.annotation.Id;
 
 @Entity
 @Table(name="userGame")
-@Data
 @Getter
 @Setter
 public class UserGame {
