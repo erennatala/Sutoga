@@ -25,15 +25,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AuthController {
 	
-	private AuthenticationManager authenticationManager;
+	private final AuthenticationManager authenticationManager;
 	
-	private JwtTokenProvider jwtTokenProvider;
+	private final JwtTokenProvider jwtTokenProvider;
 	
-	private UserServiceImpl userService;
+	private final UserServiceImpl userService;
 	
-	private PasswordEncoder passwordEncoder;
+	private final PasswordEncoder passwordEncoder;
 
-	private RefreshTokenService refreshTokenService;
+	private final RefreshTokenService refreshTokenService;
 	
     public AuthController(AuthenticationManager authenticationManager, UserServiceImpl userService,
                           PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider, RefreshTokenService refreshTokenService) {
@@ -75,7 +75,7 @@ public class AuthController {
 		user.setFirstName(registerRequest.getFirstName());
 		user.setLastName(registerRequest.getLastName());
 		user.setGender(registerRequest.getGender());
-		userService.saveOneUser(user);
+		userService.signUp(user);
 		
 		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(registerRequest.getUsername(), registerRequest.getPassword());
 		Authentication auth = authenticationManager.authenticate(authToken);
