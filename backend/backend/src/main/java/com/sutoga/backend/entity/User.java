@@ -33,8 +33,8 @@ public class User {
 
     private LocalDate birthDate;
 
-    @ElementCollection
-    private List<Long> friends;
+    @OneToMany
+    private List<User> friends;
 
-
+    private Long steamId;
 }

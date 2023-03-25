@@ -8,6 +8,7 @@ import com.sutoga.backend.service.impl.UserServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.sutoga.backend.entity.request.UpdateRequest;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/users")
 public class UserController {
 
-    private UserServiceImpl userService;
+    private final UserService userService;
 
     public UserController(UserServiceImpl userService) {
         this.userService = userService;
@@ -24,12 +25,12 @@ public class UserController {
 
     @GetMapping
     public List<UserResponse> getAllUsers(){
-        return userService.getAllUsers().stream().map(u -> new UserResponse(u)).collect(Collectors.toList());
+        return userService.getAllUsers().stream().map(UserResponse::new).collect(Collectors.toList());
     }
 
     @PostMapping
     public ResponseEntity<Void> createUser(@RequestBody User newUser) {
-        User user = userService.saveOneUser(newUser);
+        User user = userService.signUp(newUser);
         if(user != null)
             return new ResponseEntity<>(HttpStatus.CREATED);
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -45,8 +46,8 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<Void> updateOneUser(@PathVariable Long userId, @RequestBody User newUser) {
-        User user = userService.updateOneUser(userId, newUser);
+    public ResponseEntity<Void> updateOneUser(@PathVariable Long userId, @RequestBody UpdateRequest  newUser) {
+        User user = userService.updateUser(userId, newUser);
         if(user != null)
             return new ResponseEntity<>(HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
