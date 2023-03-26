@@ -1,9 +1,11 @@
 package com.sutoga.backend.service;
 
 import com.sutoga.backend.entity.User;
+import com.sutoga.backend.entity.dto.AuthResponse;
 import com.sutoga.backend.entity.request.LoginRequest;
+import com.sutoga.backend.entity.request.RefreshRequest;
+import com.sutoga.backend.entity.request.RegisterRequest;
 import com.sutoga.backend.entity.request.UpdateRequest;
-import com.sutoga.backend.entity.response.LoginResponse;
 
 import java.util.List;
 
@@ -19,6 +21,7 @@ public interface UserService {
     void deleteById(Long userId);
     User getOneUserById(Long userId);
     List<User> getAllUsers();
-    User signUp(User newUser);
-    LoginResponse login(LoginRequest loginRequest);
+    AuthResponse signUp(RegisterRequest newUser);
+    AuthResponse login(LoginRequest loginRequest);
+    AuthResponse refresh(RefreshRequest refreshRequest);
 }

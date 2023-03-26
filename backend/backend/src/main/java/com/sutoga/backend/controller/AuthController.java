@@ -1,113 +1,39 @@
 package com.sutoga.backend.controller;
 
-import com.sutoga.backend.entity.RefreshToken;
-import com.sutoga.backend.entity.User;
 import com.sutoga.backend.entity.dto.AuthResponse;
 import com.sutoga.backend.entity.request.LoginRequest;
 import com.sutoga.backend.entity.request.RefreshRequest;
 import com.sutoga.backend.entity.request.RegisterRequest;
-import com.sutoga.backend.config.security.JwtTokenProvider;
-import com.sutoga.backend.service.RefreshTokenService;
-import com.sutoga.backend.service.impl.UserServiceImpl;
+import com.sutoga.backend.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/auth")
+@CrossOrigin(origins = "*")
 public class AuthController {
-	
-	private final AuthenticationManager authenticationManager;
-	
-	private final JwtTokenProvider jwtTokenProvider;
-	
-	private final UserServiceImpl userService;
-	
-	private final PasswordEncoder passwordEncoder;
 
-	private final RefreshTokenService refreshTokenService;
-	
-    public AuthController(AuthenticationManager authenticationManager, UserServiceImpl userService,
-                          PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider, RefreshTokenService refreshTokenService) {
-        this.authenticationManager = authenticationManager;
-        this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.refreshTokenService = refreshTokenService;
+    private final UserService userService;
+    @PostMapping(value = "/register")
+    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest newUser) {
+        AuthResponse response = userService.signUp(newUser);
+        if(response != null)
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    
-	@PostMapping("/login")
-	public AuthResponse login(@RequestBody LoginRequest loginRequest) {
-		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
-		Authentication auth = authenticationManager.authenticate(authToken);
-		SecurityContextHolder.getContext().setAuthentication(auth);
-		String jwtToken = jwtTokenProvider.generateJwtToken(auth);
-		User user = userService.getOneUserByUserName(loginRequest.getUsername());
-		AuthResponse authResponse = new AuthResponse();
-		authResponse.setAccessToken("Bearer " + jwtToken);
-		authResponse.setRefreshToken(refreshTokenService.createRefreshToken(user));
-		authResponse.setUserId(user.getId());
-		authResponse.setMessage("Succesfull login.");
-		return authResponse;
-	}
-	
-	@PostMapping("/register")
-	public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest registerRequest) {
-		AuthResponse authResponse = new AuthResponse();
-		if(userService.getOneUserByUserName(registerRequest.getUsername()) != null) {
-			authResponse.setMessage("Username already in use.");
-			return new ResponseEntity<>(authResponse, HttpStatus.BAD_REQUEST);
-		}
-		
-		User user = new User();
-		user.setUsername(registerRequest.getUsername());
-		user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-		user.setEmail(registerRequest.getEmail());
-		user.setPhoneNumber(registerRequest.getPhoneNumber());
-		user.setFirstName(registerRequest.getFirstName());
-		user.setLastName(registerRequest.getLastName());
-		user.setGender(registerRequest.getGender());
-		userService.signUp(user);
-		
-		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(registerRequest.getUsername(), registerRequest.getPassword());
-		Authentication auth = authenticationManager.authenticate(authToken);
-		SecurityContextHolder.getContext().setAuthentication(auth);
-		String jwtToken = jwtTokenProvider.generateJwtToken(auth);
-		
-		authResponse.setMessage("User successfully registered.");
-		authResponse.setAccessToken("Bearer " + jwtToken);
-		authResponse.setRefreshToken(refreshTokenService.createRefreshToken(user));
-		authResponse.setUserId(user.getId());
-		return new ResponseEntity<>(authResponse, HttpStatus.CREATED);		
-	}
-	
-	@PostMapping("/refresh")
-	public ResponseEntity<AuthResponse> refresh(@RequestBody RefreshRequest refreshRequest) {
-		AuthResponse response = new AuthResponse();
-		RefreshToken token = refreshTokenService.getByUser(refreshRequest.getUserId());
-		if(token.getToken().equals(refreshRequest.getRefreshToken()) &&
-				!refreshTokenService.isRefreshExpired(token)) {
 
-			User user = token.getUser();
-			String jwtToken = jwtTokenProvider.generateJwtTokenByUserId(user.getId());
-			response.setMessage("token successfully refreshed.");
-			response.setAccessToken("Bearer " + jwtToken);
-			response.setUserId(user.getId());
-			return new ResponseEntity<>(response, HttpStatus.OK);		
-		} else {
-			response.setMessage("refresh token is not valid.");
-			return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
-		}
-		
-	}
-	
+    @PostMapping(value = "/login")
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest loginRequest) {
+        final AuthResponse loginResponse = userService.login(loginRequest);
+        return ResponseEntity.status(HttpStatus.OK).body(loginResponse);
+    }
 
+    @PostMapping(value = "/refresh")
+    public ResponseEntity<AuthResponse> refresh(@RequestBody RefreshRequest refreshRequest) {
+        AuthResponse response = userService.refresh(refreshRequest);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
 }
