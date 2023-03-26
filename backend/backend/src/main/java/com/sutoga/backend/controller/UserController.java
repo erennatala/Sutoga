@@ -4,7 +4,7 @@ import com.sutoga.backend.entity.User;
 import com.sutoga.backend.entity.dto.UserResponse;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
 import com.sutoga.backend.service.UserService;
-import com.sutoga.backend.service.impl.UserServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,26 +14,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/users")
+@CrossOrigin(origins = "*")
 public class UserController {
 
     private final UserService userService;
 
-    public UserController(UserServiceImpl userService) {
-        this.userService = userService;
-    }
-
     @GetMapping
     public List<UserResponse> getAllUsers(){
         return userService.getAllUsers().stream().map(UserResponse::new).collect(Collectors.toList());
-    }
-
-    @PostMapping
-    public ResponseEntity<Void> createUser(@RequestBody User newUser) {
-        User user = userService.signUp(newUser);
-        if(user != null)
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @GetMapping("/{userId}")

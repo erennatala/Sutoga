@@ -1,16 +1,26 @@
 package com.sutoga.backend.service.impl;
 
+import com.sutoga.backend.config.security.JwtTokenProvider;
+import com.sutoga.backend.entity.RefreshToken;
 import com.sutoga.backend.entity.User;
+import com.sutoga.backend.entity.dto.AuthResponse;
 import com.sutoga.backend.entity.request.LoginRequest;
+import com.sutoga.backend.entity.request.RefreshRequest;
+import com.sutoga.backend.entity.request.RegisterRequest;
 import com.sutoga.backend.entity.request.UpdateRequest;
-import com.sutoga.backend.entity.response.LoginResponse;
 import com.sutoga.backend.repository.UserRepository;
+import com.sutoga.backend.service.RefreshTokenService;
 import com.sutoga.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,19 +32,60 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
+    private final RefreshTokenService refreshTokenService;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
     @Override
-    public User signUp(User newUser) {
-        return userRepository.save(newUser);
+    public AuthResponse signUp(RegisterRequest registerRequest) {
+        AuthResponse authResponse = new AuthResponse();
+        if(getOneUserByUserName(registerRequest.getUsername()) != null) {
+            authResponse.setMessage("Username already in use.");
+            return authResponse;
+        }
+
+        User user = new User();
+        user.setUsername(registerRequest.getUsername());
+        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        user.setEmail(registerRequest.getEmail());
+        user.setPhoneNumber(registerRequest.getPhoneNumber());
+        user.setFirstName(registerRequest.getFirstName());
+        user.setLastName(registerRequest.getLastName());
+        user.setGender(registerRequest.getGender());
+        userRepository.save(user);
+
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(registerRequest.getUsername(), registerRequest.getPassword());
+        Authentication auth = authenticationManager.authenticate(authToken);
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        String jwtToken = jwtTokenProvider.generateJwtToken(auth);
+
+        authResponse.setMessage("User successfully registered.");
+        authResponse.setAccessToken("Bearer " + jwtToken);
+        authResponse.setRefreshToken(refreshTokenService.createRefreshToken(user));
+        authResponse.setUserId(user.getId());
+
+        return authResponse;
     }
 
     @Override
-    public LoginResponse login(LoginRequest loginRequest) {
-        return null;
+    @Transactional
+    public AuthResponse login(LoginRequest loginRequest) {
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
+        Authentication auth = authenticationManager.authenticate(authToken);
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        String jwtToken = jwtTokenProvider.generateJwtToken(auth);
+        User user = getOneUserByUserName(loginRequest.getUsername());
+        AuthResponse authResponse = new AuthResponse();
+        authResponse.setAccessToken("Bearer " + jwtToken);
+        authResponse.setRefreshToken(refreshTokenService.createRefreshToken(user));
+        authResponse.setUserId(user.getId());
+        authResponse.setMessage("Succesfull login.");
+
+        return authResponse;
     }
 
     @Override
@@ -59,6 +110,25 @@ public class UserServiceImpl implements UserService {
             return foundUser;
         }else
             return null;
+    }
+
+    @Override
+    public AuthResponse refresh(RefreshRequest refreshRequest) {
+        AuthResponse response = new AuthResponse();
+        RefreshToken token = refreshTokenService.getByUser(refreshRequest.getUserId());
+        if(token.getToken().equals(refreshRequest.getRefreshToken()) &&
+                !refreshTokenService.isRefreshExpired(token)) {
+
+            User user = token.getUser();
+            String jwtToken = jwtTokenProvider.generateJwtTokenByUserId(user.getId());
+            response.setMessage("token successfully refreshed.");
+            response.setAccessToken("Bearer " + jwtToken);
+            response.setUserId(user.getId());
+            return response;
+        } else {
+            response.setMessage("refresh token is not valid.");
+            return response;
+        }
     }
 
     @Override
