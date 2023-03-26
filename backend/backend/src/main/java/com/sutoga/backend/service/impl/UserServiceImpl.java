@@ -1,7 +1,9 @@
 package com.sutoga.backend.service.impl;
 
 import com.sutoga.backend.entity.User;
+import com.sutoga.backend.entity.request.LoginRequest;
 import com.sutoga.backend.entity.request.UpdateRequest;
+import com.sutoga.backend.entity.response.LoginResponse;
 import com.sutoga.backend.repository.UserRepository;
 import com.sutoga.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,12 @@ public class UserServiceImpl implements UserService {
     public User signUp(User newUser) {
         return userRepository.save(newUser);
     }
+
+    @Override
+    public LoginResponse login(LoginRequest loginRequest) {
+        return null;
+    }
+
     @Override
     public User getOneUserById(Long userId) {
         return userRepository.findById(userId).orElse(null);
