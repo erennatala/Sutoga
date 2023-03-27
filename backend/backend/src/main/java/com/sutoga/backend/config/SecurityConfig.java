@@ -11,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,11 +24,11 @@ import org.springframework.web.filter.CorsFilter;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-	
-	private UserDetailsServiceImpl userDetailsService;
-	
-	private JwtAuthenticationEntryPoint handler;
-	
+
+    private UserDetailsServiceImpl userDetailsService;
+
+    private JwtAuthenticationEntryPoint handler;
+
     public SecurityConfig(UserDetailsServiceImpl userDetailsService, JwtAuthenticationEntryPoint handler) {
         this.userDetailsService = userDetailsService;
         this.handler = handler;
@@ -35,19 +36,19 @@ public class SecurityConfig {
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
-    	return new JwtAuthenticationFilter();
+        return new JwtAuthenticationFilter();
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
-    
+
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -65,22 +66,29 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
-    
+
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-    	httpSecurity
-    		.cors()
-    		.and()
-    		.csrf().disable()
-    		.exceptionHandling().authenticationEntryPoint(handler).and()
-    		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-    		.authorizeRequests()
-    		.requestMatchers("/auth/**")
-    		.permitAll()
-    		.anyRequest().authenticated();
-    		
-    	httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-    	return httpSecurity.build();
+        httpSecurity
+                .cors()
+                .and()
+                .csrf().disable()
+                .exceptionHandling().authenticationEntryPoint(handler).and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .authorizeHttpRequests()
+                .requestMatchers("/auth/**")
+                .permitAll()
+                .anyRequest().authenticated();
+
+        httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        return httpSecurity.build();
+    }
+
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").anyRequest();
     }
 }
 
