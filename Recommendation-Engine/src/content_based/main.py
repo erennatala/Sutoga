@@ -7,12 +7,12 @@ game_db = pd.read_csv("content-based.csv")
 game_db.drop_duplicates()
 # Get the games that a specific user has played
 #user_id = 151603712
-user_id = 110369840
+user_id = 33865373
 #user_id = 270356700
 user_games = user_db[(user_db['user_id'] == user_id) & (user_db['play'] == 1)][['game_name', 'hours']]
 user_games['user_id'] = user_id
 
-print(user_games)
+
 
 user_games['hours'] = user_games['hours'] / user_games['hours'].sum()
 
@@ -56,4 +56,4 @@ print(len(recommendations))
 
 sorted_dict = dict(sorted(rec_sim_dict.items(), key=lambda item: item[1], reverse=True))
 
-print(sorted_dict)
+
