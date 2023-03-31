@@ -14,7 +14,7 @@ game_db = pd.read_csv("content-based.csv")
 game_db.drop_duplicates()
 
 # Get a 10% random sample of the user_db
-user_db_sample = user_db.sample(frac=0.01, random_state=42)
+user_db_sample = user_db.sample(frac=0.01, random_state=41)
 MINIMUM_GAMES_PLAYED = 5
 
 # Filter out users with insufficient play history

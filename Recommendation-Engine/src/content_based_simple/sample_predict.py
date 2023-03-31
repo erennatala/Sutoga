@@ -1,5 +1,10 @@
 import csv
+import logging
 import random
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+
 """ Same script but it gives just 10 sample user and predictions"""
 
 def train(training_data):
@@ -28,20 +33,33 @@ def recommend(average_hours, game_name, threshold):
         return 0
 
 
-training_file = "training.csv"
-testing_file = "test.csv"
 
-# Read data from the CSV files
-with open(training_file, "r") as f:
-    reader = csv.DictReader(f)
-    training_data = [row for row in reader]
 
-with open(testing_file, "r") as f:
-    reader = csv.DictReader(f)
-    testing_data = [row for row in reader]
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+
+user_db = pd.read_csv("steam.csv")
+game_db = pd.read_csv("content-based.csv")
+game_db.drop_duplicates()
+
+# Get a 10% random sample of the user_db
+user_db_sample = user_db.sample(frac=0.1, random_state=41)
+MINIMUM_GAMES_PLAYED = 5
+
+# Filter out users with insufficient play history
+user_counts = user_db_sample.groupby('user_id').size()
+sufficient_play_history_users = user_counts[user_counts >= MINIMUM_GAMES_PLAYED].index
+filtered_user_db_sample = user_db_sample[user_db_sample['user_id'].isin(sufficient_play_history_users)]
+
+# Split the filtered sample user database into training and testing datasets
+training_data, testing_data = train_test_split(filtered_user_db_sample, test_size=0.2, random_state=42)
+
+# Convert the training data DataFrame to a list of dictionaries
+training_data = training_data.to_dict(orient="records")
 
 # Train the content-based recommendation algorithm with the training_data
 average_hours = train(training_data)
+
 
 # Set a threshold for recommending games based on average hours played
 threshold = 10
@@ -49,7 +67,7 @@ threshold = 10
 # Test the algorithm using the testing_data and calculate the accuracy
 correct_predictions = 0
 total_predictions = 0
-
+testing_data = testing_data.to_dict(orient="records")
 # Print recommendations for some users
 sample_size = 10
 sample_users = random.sample(testing_data, sample_size)
