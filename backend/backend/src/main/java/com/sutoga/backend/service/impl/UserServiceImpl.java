@@ -21,6 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -74,11 +75,16 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public AuthResponse login(LoginRequest loginRequest) {
+        User user = getOneUserByUserName(loginRequest.getUsername());
+
+        if (user == null) {
+            return null;
+        }
+
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
         Authentication auth = authenticationManager.authenticate(authToken);
         SecurityContextHolder.getContext().setAuthentication(auth);
         String jwtToken = jwtTokenProvider.generateJwtToken(auth);
-        User user = getOneUserByUserName(loginRequest.getUsername());
         AuthResponse authResponse = new AuthResponse();
         authResponse.setAccessToken("Bearer " + jwtToken);
         authResponse.setRefreshToken(refreshTokenService.createRefreshToken(user));
@@ -129,6 +135,16 @@ public class UserServiceImpl implements UserService {
             response.setMessage("refresh token is not valid.");
             return response;
         }
+    }
+
+    @Override
+    public void saveProfilePhoto(MultipartFile photo, Long userId) {
+
+    }
+
+    @Override
+    public MultipartFile getProfilePhoto(Long userId) {
+        return null;
     }
 
     @Override

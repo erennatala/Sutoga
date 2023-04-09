@@ -3,6 +3,7 @@ package com.sutoga.backend.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -26,4 +27,5 @@ public class Post {
     @OneToMany
     private List<Comment> comments;
 
+    private LocalDateTime postDate;
 }

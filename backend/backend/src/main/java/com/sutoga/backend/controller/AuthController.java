@@ -28,7 +28,11 @@ public class AuthController {
     @PostMapping(value = "/login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest loginRequest) {
         final AuthResponse loginResponse = userService.login(loginRequest);
-        return ResponseEntity.status(HttpStatus.OK).body(loginResponse);
+
+        if(loginResponse != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(loginResponse);
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
     @PostMapping(value = "/refresh")

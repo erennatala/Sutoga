@@ -37,4 +37,10 @@ public class User {
     private List<User> friends;
 
     private Long steamId;
+
+    private String profileDescription;
+
+    private String title;
+
+    private Boolean isPrivate;
 }

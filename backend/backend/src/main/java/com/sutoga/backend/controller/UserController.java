@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.sutoga.backend.entity.request.UpdateRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -49,6 +50,15 @@ public class UserController {
         userService.deleteById(userId);
     }
 
+    @GetMapping("/getProfilePhoto/{userId}")
+    public ResponseEntity<?> getProfilePhoto(@PathVariable Long userId) {
+        MultipartFile photo = userService.getProfilePhoto(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(photo);
+    }
 
+    @PostMapping("/saveProfilePhoto/{userId}")
+    public ResponseEntity<?> saveProfilePhoto(@RequestParam("file") MultipartFile file, @PathVariable Long userId) {
+        return null;
+    }
 
 }
