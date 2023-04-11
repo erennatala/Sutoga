@@ -6,13 +6,13 @@ user_db = pd.read_csv("steam.csv")
 game_db = pd.read_csv("content-based.csv")
 game_db.drop_duplicates()
 # Get the games that a specific user has played
-#user_id = 151603712
-user_id = 110369840
+user_id = 151603712
+#user_id = 33865373
 #user_id = 270356700
 user_games = user_db[(user_db['user_id'] == user_id) & (user_db['play'] == 1)][['game_name', 'hours']]
 user_games['user_id'] = user_id
 
-print(user_games)
+
 
 user_games['hours'] = user_games['hours'] / user_games['hours'].sum()
 
@@ -48,12 +48,12 @@ for game in games:
     similar_games = list(enumerate(game_similarity[game_index]))
     similar_games = sorted(similar_games, key=lambda x: x[1], reverse=True)
     for index, similarity in similar_games:
-        if similarity > 0 and game_db.at[index, 'name'] not in recommendations:
+        if similarity > 0.4 and game_db.at[index, 'name'] not in recommendations:
             recommendations.append(game_db.at[index, 'name'])
             rec_sim_dict[game_db.at[index, 'name']] = similarity
 
 print(len(recommendations))
 
-sorted_dict = dict(sorted(rec_sim_dict.items(), key=lambda item: item[1], reverse=True))
-
+sorted_dict = dict(sorted(rec_sim_dict.items(), key=lambda item: item[1], reverse=True)[:10])
 print(sorted_dict)
+
