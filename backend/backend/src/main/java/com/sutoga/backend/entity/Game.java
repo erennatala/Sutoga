@@ -13,21 +13,32 @@ import java.util.List;
 public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Long id;
 
     private String title;
 
     private String description;
 
-    private String genre;
-
-    @ElementCollection
-    private List<String> tags;
 
     private LocalDate releaseDate;
 
     private String developer;
 
     private String publisher;
+
+    @ManyToMany
+    @JoinTable(
+            name = "game_category",
+            joinColumns = @JoinColumn(name = "game_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private List<Category> categories;
+
+    @ManyToMany
+    @JoinTable(
+            name = "game_genre",
+            joinColumns = @JoinColumn(name = "game_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id")
+    )
+    private List<Genre> genres;
 }
