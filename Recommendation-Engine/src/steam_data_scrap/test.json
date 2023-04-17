@@ -1,0 +1,32 @@
+[
+  {
+    "game": "Counter-Strike: Global Offensive",
+    "review_text": "un joc foarte amusant",
+    "user_id": "76561199086961828",
+    "is_public": 0,
+    "polarity": 0.0,
+    "length": 21,
+    "friends": [
+      {
+        "steamid": "76561198242110020",
+        "relationship": "friend",
+        "friend_since": 1679347881
+      },
+      {
+                "steamid": "76561198831226856",
+                "relationship": "friend",
+                "friend_since": 1678544220
+            },
+            {
+                "steamid": "76561198903685596",
+                "relationship": "friend",
+                "friend_since": 1679083914
+            },
+            {
+                "steamid": "76561198938773179",
+                "relationship": "friend",
+                "friend_since": 1678527963
+            }
+    ]
+  }
+]
