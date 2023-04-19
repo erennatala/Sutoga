@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/game")
+@RequestMapping("/admin/game")
 @CrossOrigin
 @RequiredArgsConstructor
 public class GameController {

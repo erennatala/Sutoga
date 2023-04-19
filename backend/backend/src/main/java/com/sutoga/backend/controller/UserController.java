@@ -7,6 +7,8 @@ import com.sutoga.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import com.sutoga.backend.entity.request.UpdateRequest;
 
@@ -21,32 +23,33 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping
-    public List<UserResponse> getAllUsers(){
-        return userService.getAllUsers().stream().map(UserResponse::new).collect(Collectors.toList());
-    }
 
-    @GetMapping("/{userId}")
-    public UserResponse getOneUser(@PathVariable Long userId) {
-        User user = userService.getOneUserById(userId);
+    @GetMapping
+    public UserResponse getOneUser() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.getOneUserByEmail(userDetails.getUsername());
         if(user == null) {
-            throw new ResultNotFoundException("User with id "+ userId +" not found!" );
+            throw new ResultNotFoundException("User with email "+ userDetails.getUsername() +" not found!" );
         }
         return new UserResponse(user);
     }
 
-    @PutMapping("/{userId}")
-    public ResponseEntity<Void> updateOneUser(@PathVariable Long userId, @RequestBody UpdateRequest  newUser) {
-        User user = userService.updateUser(userId, newUser);
+    @PostMapping
+    public ResponseEntity<Void> updateOneUser( @RequestBody UpdateRequest  newUser) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User userToUpdate = userService.getOneUserByEmail(userDetails.getUsername());
+        User user = userService.updateUser(userToUpdate.getId(), newUser);
         if(user != null)
             return new ResponseEntity<>(HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
 
-    @DeleteMapping("/{userId}")
-    public void deleteOneUser(@PathVariable Long userId) {
-        userService.deleteById(userId);
+    @DeleteMapping
+    public void deleteOneUser() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User userToDelete = userService.getOneUserByEmail(userDetails.getUsername());
+        userService.deleteById(userToDelete.getId());
     }
 
 

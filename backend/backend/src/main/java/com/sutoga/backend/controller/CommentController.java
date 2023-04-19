@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/comments")
+@RequestMapping("/admin/comments")
 @CrossOrigin(origins = "*")
 public class CommentController {
 
