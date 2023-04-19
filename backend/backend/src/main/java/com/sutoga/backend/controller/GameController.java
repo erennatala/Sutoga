@@ -11,7 +11,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/admin/game")
-@CrossOrigin
 @RequiredArgsConstructor
 public class GameController {
 

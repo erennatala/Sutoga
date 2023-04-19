@@ -2,6 +2,7 @@ package com.sutoga.backend.service.impl;
 
 
 import com.sutoga.backend.config.security.JwtService;
+import com.sutoga.backend.entity.CustomUserDetails;
 import com.sutoga.backend.entity.Token;
 import com.sutoga.backend.entity.User;
 import com.sutoga.backend.entity.dto.AuthenticationResponse;
@@ -15,6 +16,7 @@ import com.sutoga.backend.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +46,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .build();
 
         User savedUser = userRepository.save(user);
-        String jwtToken = jwtService.generateToken(user);
+
+        UserDetails userDetails = new CustomUserDetails(user);
+        String jwtToken = jwtService.generateToken(userDetails);
         saveUserToken(savedUser, jwtToken);
         return AuthenticationResponse.builder()
                 .token("Bearer " + jwtToken)
@@ -63,7 +67,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         User user = userRepository.findByEmail(authenticationRequest.getEmail())
                 .orElseThrow();
-        String jwtToken = jwtService.generateToken(user);
+        String jwtToken = jwtService.generateToken(new CustomUserDetails(user));
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
         return AuthenticationResponse.builder()

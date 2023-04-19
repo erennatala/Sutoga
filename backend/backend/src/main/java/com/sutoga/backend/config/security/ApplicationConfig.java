@@ -1,5 +1,7 @@
 package com.sutoga.backend.config.security;
 
+import com.sutoga.backend.entity.CustomUserDetails;
+import com.sutoga.backend.entity.User;
 import com.sutoga.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -25,8 +27,10 @@ public class ApplicationConfig {
         return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                return userRepository.findByEmail(username)
+                User user =userRepository.findByEmail(username)
                         .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+                return new CustomUserDetails(user);
             }
         };
     }
