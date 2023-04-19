@@ -1,7 +1,9 @@
 package com.sutoga.backend.service.impl;
 
+import com.sutoga.backend.entity.FriendRequest;
 import com.sutoga.backend.entity.User;
 import com.sutoga.backend.entity.request.UpdateRequest;
+import com.sutoga.backend.repository.FriendRequestRepository;
 import com.sutoga.backend.repository.UserRepository;
 import com.sutoga.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -9,9 +11,9 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -21,12 +23,12 @@ public class UserServiceImpl implements UserService {
     private final AuthenticationManager authenticationManager;
 
     private final PasswordEncoder passwordEncoder;
+    private final FriendRequestRepository friendRequestRepository;
 
     @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
-
 
     @Override
     public User getOneUserById(Long userId) {
@@ -45,7 +47,6 @@ public class UserServiceImpl implements UserService {
             User foundUser = user.get();
             foundUser.setUsername(updateRequest.getUsername());
             foundUser.setPassword(updateRequest.getPassword());
-            foundUser.setGender(updateRequest.getGender());
             foundUser.setBirthDate(updateRequest.getBirthDate());
             foundUser.setFirstName(updateRequest.getFirstName());
             foundUser.setLastName(updateRequest.getLastName());
@@ -57,6 +58,16 @@ public class UserServiceImpl implements UserService {
             return null;
     }
 
+
+    @Override
+    public void saveProfilePhoto(MultipartFile photo, Long userId) {
+
+    }
+
+    @Override
+    public MultipartFile getProfilePhoto(Long userId) {
+        return null;
+    }
 
     @Override
     public void deleteById(Long userId) {
@@ -99,8 +110,59 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean addFriend(Long userId, Long friendId) {
-        return null;
+    public Boolean addFriend(Long userId, String receiverUsername) {
+        FriendRequest friendRequest = new FriendRequest();
+
+        User sender = userRepository.findById(userId).orElse(null);
+        User receiver = userRepository.findByUsername(receiverUsername);
+
+        friendRequest.setSender(sender);
+        friendRequest.setReceiver(receiver);
+
+        friendRequestRepository.save(friendRequest);
+        return true;
+    }
+
+    @Override
+    public Boolean acceptFriendRequest(Long requestId) {
+        FriendRequest friendRequest = friendRequestRepository.findById(requestId).orElse(null);
+        User sender = friendRequest.getSender();
+        User receiver = friendRequest.getReceiver();
+
+        sender.getFriends().add(receiver);
+        receiver.getFriends().add(sender);
+
+        friendRequestRepository.delete(friendRequest);
+        return true;
+    }
+
+    @Override
+    public Boolean declineFriendRequest(Long requestId) {
+        friendRequestRepository.delete(Objects.requireNonNull(friendRequestRepository.findById(requestId).orElse(null)));
+        return true;
+    }
+
+    @Override
+    public List<String> getFriendRecommendationsByUser(Long userId) {
+        List<User> userFriends = userRepository.findById(userId).orElse(null).getFriends();
+        List<Long> friendIds = new ArrayList<>();
+
+        userFriends.forEach(user -> friendIds.add(user.getId()));
+        friendIds.add(userId);
+
+        List<User> recommendations = userRepository.findRandomUsersExcludingIds(friendIds, 3);
+
+        List<String> usernames = new ArrayList<>();
+
+        recommendations.forEach(user -> usernames.add(user.getUsername()));
+
+        return usernames;
+    }
+
+    @Override
+    public List<FriendRequest> getAllRequestsByUserId(Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        return friendRequestRepository.findFriendRequestByReceiver(user);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.sutoga.backend.controller;
 
 import com.sutoga.backend.entity.Post;
 import com.sutoga.backend.entity.dto.PostResponse;
+import com.sutoga.backend.entity.request.CreatePostRequest;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
 import com.sutoga.backend.service.PostService;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createPost(@RequestBody Post newPost) {
+    public ResponseEntity<Void> createPost(@RequestBody CreatePostRequest newPost) {
         Post post = postService.createPost(newPost);
         if(post != null)
             return new ResponseEntity<>(HttpStatus.CREATED);

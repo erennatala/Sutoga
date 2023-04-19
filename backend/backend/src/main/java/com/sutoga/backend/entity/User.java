@@ -31,14 +31,11 @@ public class User implements UserDetails {
 
     private String username;
 
-    @Column(unique = true)
     private String email;
 
     private String password;
 
     private String phoneNumber;
-
-    private String gender;
 
     private LocalDate birthDate;
 
@@ -46,6 +43,12 @@ public class User implements UserDetails {
     private List<User> friends;
 
     private Long steamId;
+
+    private String profileDescription;
+
+    private String title;
+
+    private Boolean isPrivate;
 
 
     @Enumerated(EnumType.STRING)

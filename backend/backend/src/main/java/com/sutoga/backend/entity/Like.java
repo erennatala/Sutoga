@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "like")
 @Getter
@@ -22,4 +24,7 @@ public class Like {
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
+
+    private LocalDateTime likeDate;
+
 }
