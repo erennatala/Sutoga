@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/admin/posts")
+@RequestMapping("/posts")
 public class PostController {
 
     private final PostService postService;

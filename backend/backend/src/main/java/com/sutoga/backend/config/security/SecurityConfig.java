@@ -30,10 +30,10 @@ public class SecurityConfig {
         httpSecurity
                 .csrf()
                 .disable()
+                .cors(cors -> cors.disable())
                 .authorizeHttpRequests()
                 .requestMatchers("/auth/**")
                 .permitAll()
-                .requestMatchers("/admin/game").hasAuthority("ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()

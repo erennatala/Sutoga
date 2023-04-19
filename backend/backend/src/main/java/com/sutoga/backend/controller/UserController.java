@@ -27,31 +27,31 @@ public class UserController {
 
 
     @GetMapping
-    public UserResponse getOneUser() {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userService.getOneUserByEmail(userDetails.getUsername());
+    public List<UserResponse> getAllUsers(){
+        return userService.getAllUsers().stream().map(UserResponse::new).collect(Collectors.toList());
+    }
+
+    @GetMapping("/{userId}")
+    public UserResponse getOneUser(@PathVariable Long userId) {
+        User user = userService.getOneUserById(userId);
         if(user == null) {
-            throw new ResultNotFoundException("User with email "+ userDetails.getUsername() +" not found!" );
+            throw new ResultNotFoundException("User with id "+ userId +" not found!" );
         }
         return new UserResponse(user);
     }
 
-    @PostMapping
-    public ResponseEntity<Void> updateOneUser( @RequestBody UpdateRequest  newUser) {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User userToUpdate = userService.getOneUserByEmail(userDetails.getUsername());
-        User user = userService.updateUser(userToUpdate.getId(), newUser);
+    @PutMapping("/{userId}")
+    public ResponseEntity<Void> updateOneUser(@PathVariable Long userId, @RequestBody UpdateRequest  newUser) {
+        User user = userService.updateUser(userId, newUser);
         if(user != null)
             return new ResponseEntity<>(HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
 
-    @DeleteMapping
-    public void deleteOneUser() {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User userToDelete = userService.getOneUserByEmail(userDetails.getUsername());
-        userService.deleteById(userToDelete.getId());
+    @DeleteMapping("/{userId}")
+    public void deleteOneUser(@PathVariable Long userId) {
+        userService.deleteById(userId);
     }
 
     @GetMapping("/getProfilePhoto/{userId}")

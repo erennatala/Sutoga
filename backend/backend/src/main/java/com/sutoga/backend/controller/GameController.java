@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/admin/game")
+@RequestMapping("/game")
 @RequiredArgsConstructor
 public class GameController {
 
