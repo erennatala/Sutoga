@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/likes")
+@RequestMapping("/admin/likes")
 @CrossOrigin(origins = "*")
 public class LikeController {
 

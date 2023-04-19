@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/genre")
+@RequestMapping("/admin/genre")
 @CrossOrigin
 @RequiredArgsConstructor
 public class GenreController {

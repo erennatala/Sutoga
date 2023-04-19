@@ -2,10 +2,6 @@ package com.sutoga.backend.service;
 
 import com.sutoga.backend.entity.FriendRequest;
 import com.sutoga.backend.entity.User;
-import com.sutoga.backend.entity.dto.AuthResponse;
-import com.sutoga.backend.entity.request.LoginRequest;
-import com.sutoga.backend.entity.request.RefreshRequest;
-import com.sutoga.backend.entity.request.RegisterRequest;
 import com.sutoga.backend.entity.request.UpdateRequest;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,9 +23,8 @@ public interface UserService {
     void deleteById(Long userId);
     User getOneUserById(Long userId);
     List<User> getAllUsers();
-    AuthResponse signUp(RegisterRequest newUser);
-    AuthResponse login(LoginRequest loginRequest);
-    AuthResponse refresh(RefreshRequest refreshRequest);
     void saveProfilePhoto(MultipartFile photo, Long userId);
     MultipartFile getProfilePhoto(Long userId);
+
+    User getOneUserByEmail(String email);
 }
