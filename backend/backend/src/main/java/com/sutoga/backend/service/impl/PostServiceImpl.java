@@ -1,18 +1,19 @@
 package com.sutoga.backend.service.impl;
 
+import com.sutoga.backend.entity.request.CreatePostRequest;
 import com.sutoga.backend.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.sutoga.backend.entity.Post;
 import com.sutoga.backend.repository.PostRepository;
-import com.sutoga.backend.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
 
     @Autowired
@@ -24,7 +25,13 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post createPost(Post post) {
+    public Post createPost(CreatePostRequest newPost) {
+        Post post = new Post();
+
+        post.setPostDate(LocalDateTime.now());
+        post.setDescription(newPost.getDescription());
+        post.setUser(newPost.getUser());
+
         return postRepository.save(post);
     }
 
@@ -50,5 +57,15 @@ public class PostServiceImpl implements PostService {
     @Override
     public void deleteById(Long postId) {
         postRepository.deleteById(postId);
+    }
+
+    @Override
+    public List<Post> getUserPosts() {
+        return null;
+    }
+
+    @Override
+    public List<Post> getFriendsPosts() {
+        return null;
     }
 }

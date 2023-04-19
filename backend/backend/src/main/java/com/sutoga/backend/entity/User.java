@@ -29,8 +29,6 @@ public class User {
 
     private String phoneNumber;
 
-    private String gender;
-
     private LocalDate birthDate;
 
     @OneToMany

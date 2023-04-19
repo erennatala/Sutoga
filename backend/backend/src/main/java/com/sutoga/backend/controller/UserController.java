@@ -1,5 +1,6 @@
 package com.sutoga.backend.controller;
 
+import com.sutoga.backend.entity.FriendRequest;
 import com.sutoga.backend.entity.User;
 import com.sutoga.backend.entity.dto.UserResponse;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
@@ -60,5 +61,30 @@ public class UserController {
     public ResponseEntity<?> saveProfilePhoto(@RequestParam("file") MultipartFile file, @PathVariable Long userId) {
         return null;
     }
+
+    @PostMapping("/sendFriendRequest")
+    public ResponseEntity<?> sendFriendRequest(@RequestParam("senderId") Long senderId, @RequestParam("receiverUsername") String receiverUsername) {
+        userService.addFriend(senderId, receiverUsername);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/getFriendRequests")
+    public ResponseEntity<List<FriendRequest>> getFriendRequests(@RequestParam("userId") Long userId) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getAllRequestsByUserId(userId));
+    }
+
+    @GetMapping("/getFriendRecommendations")
+    public ResponseEntity<List<String>> getFriendRecommendations(@RequestParam("userId") Long userId) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getFriendRecommendationsByUser(userId));
+    }
+
+    @PostMapping("/acceptFriendRequest")
+    public ResponseEntity<?> acceptFriendRequest() {
+        return null;
+    }
+
+    @PostMapping("/declineFriendRequest")
+    public ResponseEntity<?> declineFriendRequest() {return null;}
+
 
 }
