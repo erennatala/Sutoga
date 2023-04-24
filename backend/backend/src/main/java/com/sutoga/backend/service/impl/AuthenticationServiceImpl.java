@@ -43,6 +43,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .phoneNumber(registerRequest.getPhoneNumber())
                 .password(passwordEncoder.encode(registerRequest.getPassword()))
                 .role(Role.USER)
+                .steamId(registerRequest.getSteamId())
                 .build();
 
         User savedUser = userRepository.save(user);
@@ -53,7 +54,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return AuthenticationResponse.builder()
                 .token("Bearer " + jwtToken)
                 .build();
-
     }
 
     @Override

@@ -8,8 +8,6 @@ import com.sutoga.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import com.sutoga.backend.entity.request.UpdateRequest;
 import org.springframework.web.multipart.MultipartFile;
