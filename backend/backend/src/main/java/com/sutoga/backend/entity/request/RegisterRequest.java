@@ -20,4 +20,5 @@ public class RegisterRequest {
     private String password;
     private String phoneNumber;
     private LocalDate birthDate;
+    private Long steamId;
 }
