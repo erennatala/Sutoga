@@ -53,6 +53,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         saveUserToken(savedUser, jwtToken);
         return AuthenticationResponse.builder()
                 .token("Bearer " + jwtToken)
+                .userId(savedUser.getId())
+                .username(savedUser.getUsername())
                 .build();
     }
 
@@ -72,6 +74,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         saveUserToken(user, jwtToken);
         return AuthenticationResponse.builder()
                 .token("Bearer " + jwtToken)
+                .userId(user.getId())
+                .username(user.getUsername())
                 .build();
     }
 
