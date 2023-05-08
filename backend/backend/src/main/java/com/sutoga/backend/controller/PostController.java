@@ -5,10 +5,11 @@ import com.sutoga.backend.entity.dto.PostResponse;
 import com.sutoga.backend.entity.request.CreatePostRequest;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
 import com.sutoga.backend.service.PostService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,5 +57,18 @@ public class PostController {
     public void deleteOnePost(@PathVariable Long postId) {
         postService.deleteById(postId);
     }
+
+    @GetMapping("/media/{filename}")
+    public ResponseEntity<InputStreamResource> serveMedia(@PathVariable("filename") String filename) {
+        InputStream inputStream = postService.getMediaAsStream(filename);
+        InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDisposition(ContentDisposition.builder("inline").filename(filename).build());
+
+        return new ResponseEntity<>(inputStreamResource, headers, HttpStatus.OK);
+    }
+
 
 }

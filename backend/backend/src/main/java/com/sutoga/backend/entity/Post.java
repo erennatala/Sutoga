@@ -2,7 +2,6 @@ package com.sutoga.backend.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,6 +26,11 @@ public class Post {
 
     @OneToMany
     private List<Comment> comments;
+
+    @ElementCollection
+    @CollectionTable(name = "post_media", joinColumns = @JoinColumn(name = "post_id"))
+    @Column(name = "media_url")
+    private List<String> mediaUrls;
 
     private LocalDateTime postDate;
 }
