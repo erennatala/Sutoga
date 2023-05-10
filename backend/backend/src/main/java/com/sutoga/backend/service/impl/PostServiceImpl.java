@@ -1,6 +1,9 @@
 package com.sutoga.backend.service.impl;
 
+import com.sutoga.backend.entity.User;
 import com.sutoga.backend.entity.request.CreatePostRequest;
+import com.sutoga.backend.exceptions.ResultNotFoundException;
+import com.sutoga.backend.repository.UserRepository;
 import com.sutoga.backend.service.PostService;
 import io.minio.PutObjectArgs;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +31,8 @@ public class PostServiceImpl implements PostService {
 
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    private UserRepository userRepository;
 
 //    @Autowired
 //    private AmazonS3 s3Client;
@@ -46,15 +51,27 @@ public class PostServiceImpl implements PostService {
         return postRepository.findAll();
     }
 
+
     @Override
     public Post createPost(CreatePostRequest newPost) {
-        Post post = new Post();
+        Optional<User> user = userRepository.findById(newPost.getUserId());
+        if(user.isEmpty()) {
+            throw new ResultNotFoundException("User with id "+ newPost.getUserId() +" not found!");
+        }
 
+        Post post = new Post();
         post.setPostDate(LocalDateTime.now());
         post.setDescription(newPost.getDescription());
-        post.setUser(newPost.getUser());
+        post.setUser(user.get());
 
-        return postRepository.save(post);
+        Post savedPost = postRepository.save(post);
+
+        // If a media file is included in the request, upload it to MinIO
+        if (newPost.getMedia() != null) {
+            handleMediaUpload(savedPost.getId(), newPost.getMedia());
+        }
+
+        return savedPost;
     }
 
     @Override
@@ -143,6 +160,4 @@ public class PostServiceImpl implements PostService {
             throw new RuntimeException("Error retrieving media from MinIO server", e);
         }
     }
-
-
 }
