@@ -8,6 +8,7 @@ import com.sutoga.backend.service.PostService;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/posts")
+@CrossOrigin(origins = "*")
 public class PostController {
 
     private final PostService postService;
@@ -28,12 +30,23 @@ public class PostController {
         return postService.getAllPosts().stream().map(PostResponse::new).collect(Collectors.toList());
     }
 
-    @PostMapping
-    public ResponseEntity<Void> createPost(@RequestBody CreatePostRequest newPost) {
-        Post post = postService.createPost(newPost);
-        if(post != null)
+    @PostMapping("/create")
+    public ResponseEntity<Void> createPost(@RequestParam("description") String description,
+                                           @RequestParam("userId") Long userId,
+                                           @RequestParam(value = "media", required = false) MultipartFile media) {
+        try {
+            CreatePostRequest newPost = new CreatePostRequest();
+            newPost.setDescription(description);
+            newPost.setUserId(userId);
+            newPost.setMedia(media); // assuming CreatePostRequest has a field to hold MultipartFile
+
+            postService.createPost(newPost);
             return new ResponseEntity<>(HttpStatus.CREATED);
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (ResultNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/{postId}")

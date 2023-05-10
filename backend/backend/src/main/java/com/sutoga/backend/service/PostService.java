@@ -10,7 +10,7 @@ public interface PostService {
 
     List<Post> getAllPosts();
 
-    Post createPost(CreatePostRequest post);
+    Post createPost(CreatePostRequest newPost);
 
     Post getOnePostById(Long postId);
 
