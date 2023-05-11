@@ -31,7 +31,7 @@ public class PostController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Void> createPost(@RequestParam("description") String description,
+    public ResponseEntity<Post> createPost(@RequestParam("description") String description,
                                            @RequestParam("userId") Long userId,
                                            @RequestParam(value = "media", required = false) MultipartFile media) {
         try {
@@ -40,8 +40,8 @@ public class PostController {
             newPost.setUserId(userId);
             newPost.setMedia(media); // assuming CreatePostRequest has a field to hold MultipartFile
 
-            postService.createPost(newPost);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            Post createdPost = postService.createPost(newPost);
+            return new ResponseEntity<>(createdPost, HttpStatus.CREATED);
         } catch (ResultNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
@@ -82,6 +82,4 @@ public class PostController {
 
         return new ResponseEntity<>(inputStreamResource, headers, HttpStatus.OK);
     }
-
-
 }

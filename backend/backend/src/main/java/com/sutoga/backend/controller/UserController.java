@@ -64,13 +64,17 @@ public class UserController {
     }
 
     @PostMapping("/sendFriendRequest")
-    public ResponseEntity<?> sendFriendRequest(@RequestParam("senderId") Long senderId, @RequestParam("receiverUsername") String receiverUsername) {
-        userService.addFriend(senderId, receiverUsername);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Boolean> sendFriendRequest(@RequestParam("senderId") Long senderId, @RequestParam("receiverUsername") String receiverUsername) {
+        Boolean isSent = userService.addFriend(senderId, receiverUsername);
+        if (Boolean.TRUE.equals(isSent)) {
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(false, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    @GetMapping("/getFriendRequests")
-    public ResponseEntity<List<FriendRequest>> getFriendRequests(@RequestParam("userId") Long userId) {
+    @GetMapping("/getFriendRequests/{userId}")
+    public ResponseEntity<List<FriendRequest>> getFriendRequests(@PathVariable Long userId) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getAllRequestsByUserId(userId));
     }
 
@@ -79,13 +83,21 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getFriendRecommendationsByUser(userId));
     }
 
-    @PostMapping("/acceptFriendRequest")
-    public ResponseEntity<?> acceptFriendRequest() {
-        return null;
+    @PostMapping("/acceptFriendRequest/{requestId}")
+    public ResponseEntity<?> acceptFriendRequest(@PathVariable Long requestId) {
+        if (userService.acceptFriendRequest(requestId)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    @PostMapping("/declineFriendRequest")
-    public ResponseEntity<?> declineFriendRequest() {return null;}
-
-
+    @PostMapping("/declineFriendRequest/{requestId}")
+    public ResponseEntity<?> declineFriendRequest(@PathVariable Long requestId) {
+        if (userService.declineFriendRequest(requestId)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
