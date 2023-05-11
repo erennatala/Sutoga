@@ -2,9 +2,11 @@ package com.sutoga.backend.service.impl;
 
 import com.sutoga.backend.entity.FriendRequest;
 import com.sutoga.backend.entity.User;
+import com.sutoga.backend.entity.dto.AuthenticationResponse;
 import com.sutoga.backend.entity.request.UpdateRequest;
 import com.sutoga.backend.repository.FriendRequestRepository;
 import com.sutoga.backend.repository.UserRepository;
+import com.sutoga.backend.service.AuthenticationService;
 import com.sutoga.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -21,6 +23,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
+    private final AuthenticationService authenticationService;
 
     private final PasswordEncoder passwordEncoder;
     private final FriendRequestRepository friendRequestRepository;
@@ -169,6 +172,5 @@ public class UserServiceImpl implements UserService {
     public Boolean removeFriend(Long userId, Long friendId) {
         return null;
     }
-
 
 }

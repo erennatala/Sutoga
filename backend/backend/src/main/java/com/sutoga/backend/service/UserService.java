@@ -2,6 +2,7 @@ package com.sutoga.backend.service;
 
 import com.sutoga.backend.entity.FriendRequest;
 import com.sutoga.backend.entity.User;
+import com.sutoga.backend.entity.dto.AuthenticationResponse;
 import com.sutoga.backend.entity.request.UpdateRequest;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,6 +26,5 @@ public interface UserService {
     List<User> getAllUsers();
     void saveProfilePhoto(MultipartFile photo, Long userId);
     MultipartFile getProfilePhoto(Long userId);
-
     User getOneUserByEmail(String email);
 }
