@@ -15,4 +15,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findRandomUsersExcludingIds(@Param("excludedIds") List<Long> excludedIds, @Param("limitCount") int limitCount);
 
     Optional<User> findByEmail(String email);
+    User findBySteamId(Long steamId);
 }

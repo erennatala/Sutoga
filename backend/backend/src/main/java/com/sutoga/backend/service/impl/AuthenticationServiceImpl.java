@@ -100,4 +100,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         });
         tokenRepository.saveAll(validUserTokens);
     }
+
+    public AuthenticationResponse handleSteamLogin(Long steamId) {
+        User user = userRepository.findBySteamId(steamId);
+        if (user == null) {
+            // If user doesn't exist, create new user
+            user = new User();
+            user.setSteamId(steamId);
+            userRepository.save(user);
+        }
+
+        String jwtToken = jwtService.generateToken(new CustomUserDetails(user));
+        revokeAllUserTokens(user);
+        saveUserToken(user, jwtToken);
+        return AuthenticationResponse.builder()
+                .token("Bearer " + jwtToken)
+                .userId(user.getId())
+                .username(user.getUsername())
+                .build();
+    }
 }

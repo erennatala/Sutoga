@@ -28,6 +28,10 @@ public class AuthenticationController
         return ResponseEntity.ok(authenticationService.authenticate(authenticationRequest));
     }
 
-
+    @PostMapping("/steamLogin/{steamId}")
+    public ResponseEntity<AuthenticationResponse> steamLogin(@PathVariable Long steamId) {
+        AuthenticationResponse user = authenticationService.handleSteamLogin(steamId);
+        return ResponseEntity.ok(user);
+    }
 
 }

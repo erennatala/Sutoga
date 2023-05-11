@@ -14,4 +14,5 @@ public interface AuthenticationService {
     void saveUserToken(User user, String jwtToken);
 
     void revokeAllUserTokens(User user);
+    AuthenticationResponse handleSteamLogin(Long steamId);
 }
