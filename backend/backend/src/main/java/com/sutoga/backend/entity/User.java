@@ -50,7 +50,6 @@ public class User  {
 
     private Boolean isPrivate;
 
-
     @Enumerated(EnumType.STRING)
     private Role role;
 

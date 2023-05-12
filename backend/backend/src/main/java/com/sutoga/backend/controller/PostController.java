@@ -6,6 +6,7 @@ import com.sutoga.backend.entity.request.CreatePostRequest;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
 import com.sutoga.backend.service.PostService;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.data.domain.Page;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -82,4 +83,12 @@ public class PostController {
 
         return new ResponseEntity<>(inputStreamResource, headers, HttpStatus.OK);
     }
+
+    @GetMapping("/getHomePosts")
+    public Page<Post> getFriendsPosts(@RequestParam("userId") Long userId,
+                                      @RequestParam(defaultValue = "0") int pageNumber,
+                                      @RequestParam(defaultValue = "10") int pageSize) {
+        return postService.getFriendsPosts(userId, pageNumber, pageSize);
+    }
+
 }

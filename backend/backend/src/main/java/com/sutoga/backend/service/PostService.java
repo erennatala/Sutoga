@@ -2,6 +2,7 @@ package com.sutoga.backend.service;
 
 import com.sutoga.backend.entity.Post;
 import com.sutoga.backend.entity.request.CreatePostRequest;
+import org.springframework.data.domain.Page;
 
 import java.io.InputStream;
 import java.util.List;
@@ -18,8 +19,8 @@ public interface PostService {
 
     void deleteById(Long postId);
 
-    List<Post> getUserPosts();
+    Page<Post> getUserPosts(Long userId, int pageNumber, int pageSize);
 
-    List<Post> getFriendsPosts();
+    Page<Post> getFriendsPosts(Long userId, int pageNumber, int pageSize);
     InputStream getMediaAsStream(String objectName);
 }
