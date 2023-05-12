@@ -8,6 +8,10 @@ import com.sutoga.backend.service.PostService;
 import io.minio.PutObjectArgs;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import com.sutoga.backend.entity.Post;
 import com.sutoga.backend.repository.PostRepository;
@@ -21,6 +25,7 @@ import io.minio.GetObjectArgs;
 
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -99,17 +104,45 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getUserPosts() {
-        return null;
+    public Page<Post> getUserPosts(Long userId, int pageNumber, int pageSize) {
+        User user = userRepository.findById(userId).orElse(null);
+
+        if (user == null) {
+            return null;
+        }
+
+        return postRepository.findByUser(user, PageRequest.of(pageNumber, pageSize, Sort.by("publishDate").descending()));
     }
 
     @Override
-    public List<Post> getFriendsPosts() {
-        return null;
+    public Page<Post> getFriendsPosts(Long userId, int pageNumber, int pageSize) {
+        User user = userRepository.findById(userId).orElse(null);
+
+        if (user == null) {
+            return null;
+        }
+
+        List<User> friends = user.getFriends();
+        List<Post> posts = new ArrayList<>();
+
+        friends.forEach(friend -> {
+            Page<Post> page = getUserPosts(friend.getId(), 0, Integer.MAX_VALUE);
+            if(page != null) {
+                posts.addAll(page.getContent());
+            }
+        });
+
+
+        posts.sort((post1, post2) -> post2.getPostDate().compareTo(post1.getPostDate()));
+
+        // Creating a page object
+        int start = (int) PageRequest.of(pageNumber, pageSize).getOffset();
+        int end = Math.min((start + PageRequest.of(pageNumber, pageSize).getPageSize()), posts.size());
+
+        return new PageImpl<>(posts.subList(start, end), PageRequest.of(pageNumber, pageSize), posts.size());
     }
 
     public Post handleMediaUpload(Long postId, MultipartFile file) {
-        // Fetch the post from the database using the postId
         Post post = postRepository.findById(postId).orElseThrow(() -> new NotFoundException("Post not found"));
 
         // Upload the media file to the MinIO server and generate the URL
