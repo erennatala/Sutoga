@@ -3,6 +3,7 @@ package com.sutoga.backend.controller;
 import com.sutoga.backend.entity.Game;
 import com.sutoga.backend.entity.response.LikeResponse;
 import com.sutoga.backend.service.GameService;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +15,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class GameController {
 
-    private final GameService gameService;
+    private GameService gameService;
 
     @PostMapping
     public Game createGame(@RequestBody Game game) {

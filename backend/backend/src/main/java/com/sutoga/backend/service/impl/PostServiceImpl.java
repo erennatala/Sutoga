@@ -1,7 +1,9 @@
 package com.sutoga.backend.service.impl;
 
 import com.sutoga.backend.entity.User;
+import com.sutoga.backend.entity.mapper.PostMapper;
 import com.sutoga.backend.entity.request.CreatePostRequest;
+import com.sutoga.backend.entity.response.PostResponse;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
 import com.sutoga.backend.repository.UserRepository;
 import com.sutoga.backend.service.PostService;
@@ -29,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +41,8 @@ public class PostServiceImpl implements PostService {
     private PostRepository postRepository;
     @Autowired
     private UserRepository userRepository;
+
+    private final PostMapper postMapper;
 
 //    @Autowired
 //    private AmazonS3 s3Client;
@@ -58,10 +63,10 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public Post createPost(CreatePostRequest newPost) {
+    public PostResponse createPost(CreatePostRequest newPost) {
         Optional<User> user = userRepository.findById(newPost.getUserId());
-        if(user.isEmpty()) {
-            throw new ResultNotFoundException("User with id "+ newPost.getUserId() +" not found!");
+        if (user.isEmpty()) {
+            throw new ResultNotFoundException("User with id " + newPost.getUserId() + " not found!");
         }
 
         Post post = new Post();
@@ -76,14 +81,12 @@ public class PostServiceImpl implements PostService {
             handleMediaUpload(savedPost.getId(), newPost.getMedia());
         }
 
-        return savedPost;
+        // Map the saved Post entity to PostResponse using PostMapper
+        PostResponse postResponse = postMapper.postToPostResponse(savedPost);
+
+        return postResponse;
     }
 
-    @Override
-    public Post getOnePostById(Long postId) {
-        Optional<Post> post = postRepository.findById(postId);
-        return post.orElse(null);
-    }
 
     @Override
     public Post updatePost(Long postId, Post newPost) {
@@ -111,7 +114,7 @@ public class PostServiceImpl implements PostService {
             return null;
         }
 
-        return postRepository.findByUser(user, PageRequest.of(pageNumber, pageSize, Sort.by("publishDate").descending()));
+        return postRepository.findByUser(user, PageRequest.of(pageNumber, pageSize, Sort.by("postDate").descending()));
     }
 
     @Override
@@ -142,16 +145,87 @@ public class PostServiceImpl implements PostService {
         return new PageImpl<>(posts.subList(start, end), PageRequest.of(pageNumber, pageSize), posts.size());
     }
 
+    @Override
+    public Page<PostResponse> getMergedPosts(Long userId, int pageNumber, int pageSize) {
+        User user = userRepository.findById(userId).orElse(null);
+
+        if (user == null) {
+            return null;
+        }
+
+        List<User> friends = user.getFriends();
+        List<Post> posts = new ArrayList<>();
+
+        // Fetch user's posts
+        Page<Post> userPosts = getUserPosts(userId, 0, Integer.MAX_VALUE);
+        if (userPosts != null) {
+            posts.addAll(userPosts.getContent());
+        }
+
+        // Fetch each friend's posts
+        friends.forEach(friend -> {
+            Page<Post> friendPosts = getUserPosts(friend.getId(), 0, Integer.MAX_VALUE);
+            if (friendPosts != null) {
+                posts.addAll(friendPosts.getContent());
+            }
+        });
+
+        // Sort the posts
+        posts.sort((post1, post2) -> post2.getPostDate().compareTo(post1.getPostDate()));
+
+        // Create a page object
+        int start = (int) PageRequest.of(pageNumber, pageSize).getOffset();
+        int end = Math.min((start + PageRequest.of(pageNumber, pageSize).getPageSize()), posts.size());
+
+        if (start > end) {
+            start = end; // or you could return an empty page here
+        }
+
+        List<PostResponse> postResponses = posts.subList(start, end)
+                .stream()
+                .map(post -> {
+                    PostResponse postResponse = postMapper.postToPostResponse(post);
+                    postResponse.setMediaUrl(post.getMediaUrl()); // Set the mediaUrl
+                    return postResponse;
+                })
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(postResponses, PageRequest.of(pageNumber, pageSize), posts.size());
+    }
+
+    @Override
+    public Page<PostResponse> getProfilePosts(Long userId, int pageNumber, int pageSize) {
+        User user = userRepository.findById(userId).orElse(null);
+
+        if (user == null) {
+            return null;
+        }
+
+        Page<Post> userPosts = getUserPosts(userId, pageNumber, pageSize);
+
+        List<PostResponse> postResponses = userPosts.getContent()
+                .stream()
+                .map(post -> {
+                    PostResponse postResponse = postMapper.postToPostResponse(post);
+                    postResponse.setMediaUrl(post.getMediaUrl()); // Set the mediaUrl
+                    postResponse.setUserId(user.getId()); // Set the userId
+                    postResponse.setUsername(user.getUsername()); // Set the username
+                    return postResponse;
+                })
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(postResponses, userPosts.getPageable(), userPosts.getTotalElements());
+    }
+
+
     public Post handleMediaUpload(Long postId, MultipartFile file) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new NotFoundException("Post not found"));
 
         // Upload the media file to the MinIO server and generate the URL
         String mediaUrl = uploadMediaToMinioAndGenerateUrl(file);
 
-        // Add the media URL to the mediaUrls list in the Post entity
-        List<String> mediaUrls = post.getMediaUrls();
-        mediaUrls.add(mediaUrl);
-        post.setMediaUrls(mediaUrls);
+        // Add the media URL to the mediaUrl field in the Post entity
+        post.setMediaUrl(mediaUrl);
 
         // Save the updated Post entity to the database
         return postRepository.save(post);
@@ -170,7 +244,8 @@ public class PostServiceImpl implements PostService {
                             .contentType(file.getContentType())
                             .build());
 
-            return cloudFrontDomainName + "/" + objectName;
+            String mediaUrl = cloudFrontDomainName + "/" + bucketName + "/" + objectName;
+            return mediaUrl;
 
         } catch (Exception e) {
             throw new RuntimeException("Error uploading media to MinIO server", e);

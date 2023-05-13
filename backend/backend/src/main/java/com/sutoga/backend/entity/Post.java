@@ -27,10 +27,8 @@ public class Post {
     @OneToMany
     private List<Comment> comments;
 
-    @ElementCollection
-    @CollectionTable(name = "post_media", joinColumns = @JoinColumn(name = "post_id"))
     @Column(name = "media_url")
-    private List<String> mediaUrls;
+    private String mediaUrl;
 
     private LocalDateTime postDate;
 }

@@ -29,19 +29,19 @@ public class LikeServiceImpl implements LikeService {
 
     @Override
     public Like createLike(CreateLikeRequest createLikeRequest) {
-        User user = userServiceImpl.getOneUserById(createLikeRequest.getUserId());
-        Post post = postServiceImpl.getOnePostById(createLikeRequest.getPostId());
-
-        if(user!=null && post!=null){
-            Like like = new Like();
-            like.setUser(user);
-            like.setPost(post);
-
-            return likeRepository.save(like);
-        }
-        else{
-            throw new ResultNotFoundException("Invalid userId or postId");
-        }
+//        User user = userServiceImpl.getOneUserById(createLikeRequest.getUserId());
+//
+//        if(user!=null && post!=null){
+//            Like like = new Like();
+//            like.setUser(user);
+//            like.setPost(post);
+//
+//            return likeRepository.save(like);
+//        }
+//        else{
+//            throw new ResultNotFoundException("Invalid userId or postId");
+//        }
+        return null;
     }
 
     @Override
