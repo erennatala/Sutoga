@@ -1,8 +1,8 @@
 package com.sutoga.backend.controller;
 
 import com.sutoga.backend.entity.Post;
-import com.sutoga.backend.entity.dto.PostResponse;
 import com.sutoga.backend.entity.request.CreatePostRequest;
+import com.sutoga.backend.entity.response.PostResponse;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
 import com.sutoga.backend.service.PostService;
 import org.springframework.core.io.InputStreamResource;
@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/posts")
@@ -26,13 +24,8 @@ public class PostController {
         this.postService = postService;
     }
 
-    @GetMapping
-    public List<PostResponse> getAllPosts(){
-        return postService.getAllPosts().stream().map(PostResponse::new).collect(Collectors.toList());
-    }
-
     @PostMapping("/create")
-    public ResponseEntity<Post> createPost(@RequestParam("description") String description,
+    public ResponseEntity<PostResponse> createPost(@RequestParam("description") String description,
                                            @RequestParam("userId") Long userId,
                                            @RequestParam(value = "media", required = false) MultipartFile media) {
         try {
@@ -41,22 +34,13 @@ public class PostController {
             newPost.setUserId(userId);
             newPost.setMedia(media); // assuming CreatePostRequest has a field to hold MultipartFile
 
-            Post createdPost = postService.createPost(newPost);
+            PostResponse createdPost = postService.createPost(newPost);
             return new ResponseEntity<>(createdPost, HttpStatus.CREATED);
         } catch (ResultNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-    }
-
-    @GetMapping("/{postId}")
-    public PostResponse getOnePost(@PathVariable Long postId) {
-        Post post = postService.getOnePostById(postId);
-        if(post == null) {
-            throw new ResultNotFoundException("Post with id "+ postId +" not found!" );
-        }
-        return new PostResponse(post);
     }
 
     @PutMapping("/{postId}")
@@ -85,10 +69,16 @@ public class PostController {
     }
 
     @GetMapping("/getHomePosts")
-    public Page<Post> getFriendsPosts(@RequestParam("userId") Long userId,
-                                      @RequestParam(defaultValue = "0") int pageNumber,
-                                      @RequestParam(defaultValue = "10") int pageSize) {
-        return postService.getFriendsPosts(userId, pageNumber, pageSize);
+    public Page<PostResponse> getFriendsPosts(@RequestParam("userId") Long userId,
+                                              @RequestParam(defaultValue = "0") int pageNumber,
+                                              @RequestParam(defaultValue = "10") int pageSize) {
+        return postService.getMergedPosts(userId, pageNumber, pageSize);
     }
 
+    @GetMapping("/getUserPosts")
+    public Page<PostResponse> getUserPosts(@RequestParam("userId") Long userId,
+                                      @RequestParam(defaultValue = "0") int pageNumber,
+                                      @RequestParam(defaultValue = "10") int pageSize) {
+        return postService.getProfilePosts(userId, pageNumber, pageSize);
+    }
 }

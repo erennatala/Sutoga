@@ -29,11 +29,11 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment createComment(CreateCommentRequest createCommentRequest) {
-        Post post = postServiceImpl.getOnePostById(createCommentRequest.getPostId());
+        //Post post = postServiceImpl.getOnePostById(createCommentRequest.getPostId());
 
-        if(post!=null){
+        if(createCommentRequest!=null){
             Comment comment = new Comment();
-            comment.setPost(post);
+            //comment.setPost(post);
             comment.setText(createCommentRequest.getText());
 
             return commentRepository.save(comment);

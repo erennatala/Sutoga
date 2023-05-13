@@ -2,6 +2,7 @@ package com.sutoga.backend.service;
 
 import com.sutoga.backend.entity.Post;
 import com.sutoga.backend.entity.request.CreatePostRequest;
+import com.sutoga.backend.entity.response.PostResponse;
 import org.springframework.data.domain.Page;
 
 import java.io.InputStream;
@@ -11,9 +12,7 @@ public interface PostService {
 
     List<Post> getAllPosts();
 
-    Post createPost(CreatePostRequest newPost);
-
-    Post getOnePostById(Long postId);
+    PostResponse createPost(CreatePostRequest newPost);
 
     Post updatePost(Long postId, Post newPost);
 
@@ -23,4 +22,6 @@ public interface PostService {
 
     Page<Post> getFriendsPosts(Long userId, int pageNumber, int pageSize);
     InputStream getMediaAsStream(String objectName);
+    Page<PostResponse> getMergedPosts(Long userId, int pageNumber, int pageSize);
+    Page<PostResponse> getProfilePosts(Long userId, int pageNumber, int pageSize);
 }
