@@ -4,17 +4,23 @@ import com.sutoga.backend.entity.FriendRequest;
 import com.sutoga.backend.entity.User;
 import com.sutoga.backend.entity.dto.AuthenticationResponse;
 import com.sutoga.backend.entity.request.UpdateRequest;
+import com.sutoga.backend.exceptions.ResultNotFoundException;
 import com.sutoga.backend.repository.FriendRequestRepository;
 import com.sutoga.backend.repository.UserRepository;
 import com.sutoga.backend.service.AuthenticationService;
 import com.sutoga.backend.service.UserService;
+import io.minio.GetObjectArgs;
+import io.minio.MinioClient;
+import io.minio.PutObjectArgs;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.InputStream;
 import java.util.*;
 
 @Service
@@ -28,6 +34,14 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final FriendRequestRepository friendRequestRepository;
 
+    @Value("${aws.s3.bucket-name}")
+    private String s3BucketName;
+
+    @Value("${aws.cloudfront.domain-name}")
+    private String cloudFrontDomainName;
+
+    private final MinioClient minioClient;
+
     @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -35,7 +49,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getOneUserById(Long userId) {
-        return userRepository.findById(userId).orElse(null);
+        return userRepository.findById(userId).orElseThrow(() -> new ResultNotFoundException("User with id "+ userId +" not found!" ));
     }
 
     @Override
@@ -49,12 +63,21 @@ public class UserServiceImpl implements UserService {
         if (user.isPresent()) {
             User foundUser = user.get();
             foundUser.setUsername(updateRequest.getUsername());
-            foundUser.setPassword(updateRequest.getPassword());
             foundUser.setBirthDate(updateRequest.getBirthDate());
             foundUser.setFirstName(updateRequest.getFirstName());
             foundUser.setLastName(updateRequest.getLastName());
             foundUser.setEmail(updateRequest.getEmail());
             foundUser.setPhoneNumber(updateRequest.getPhoneNumber());
+
+            // Check if there is a file to upload
+            if(updateRequest.getMedia() != null) {
+                // Upload the profile picture to the MinIO server and generate the URL
+                String profilePhotoUrl = uploadMediaToMinioAndGenerateUrl(updateRequest.getMedia());
+
+                // Add the media URL to the profilePhotoUrl field in the User entity
+                foundUser.setProfilePhotoUrl(profilePhotoUrl);
+            }
+
             userRepository.save(foundUser);
             return foundUser;
         } else
@@ -172,5 +195,57 @@ public class UserServiceImpl implements UserService {
     public Boolean removeFriend(Long userId, Long friendId) {
         return null;
     }
+
+    public User handleProfilePictureUpload(Long userId, MultipartFile file) {
+        User user = userRepository.findById(userId).orElseThrow(null);
+
+        // Upload the profile picture to the MinIO server and generate the URL
+        String profilePhotoUrl = uploadMediaToMinioAndGenerateUrl(file);
+
+        // Add the media URL to the profilePhotoUrl field in the User entity
+        user.setProfilePhotoUrl(profilePhotoUrl);
+
+        // Save the updated User entity to the database
+        return userRepository.save(user);
+    }
+
+    private String generateUniqueMediaName(String originalFilename) {
+        String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        return UUID.randomUUID().toString() + extension;
+    }
+
+    public InputStream getMediaAsStream(String objectName) {
+        try {
+            return minioClient.getObject(
+                    GetObjectArgs.builder()
+                            .bucket(s3BucketName)
+                            .object(objectName)
+                            .build());
+        } catch (Exception e) {
+            throw new RuntimeException("Error retrieving media from MinIO server", e);
+        }
+    }
+
+    public String uploadMediaToMinioAndGenerateUrl(MultipartFile file) {
+        String objectName = generateUniqueMediaName(file.getOriginalFilename());
+        String bucketName = s3BucketName;
+
+        try {
+            minioClient.putObject(
+                    PutObjectArgs.builder()
+                            .bucket(bucketName)
+                            .object(objectName)
+                            .stream(file.getInputStream(), file.getSize(), -1)
+                            .contentType(file.getContentType())
+                            .build());
+
+            String mediaUrl = cloudFrontDomainName + "/" + bucketName + "/" + objectName;
+            return mediaUrl;
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error uploading media to MinIO server", e);
+        }
+    }
+
 
 }
