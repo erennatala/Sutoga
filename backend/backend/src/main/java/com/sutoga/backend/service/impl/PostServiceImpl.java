@@ -1,15 +1,18 @@
 package com.sutoga.backend.service.impl;
 
+import com.sutoga.backend.entity.Like;
 import com.sutoga.backend.entity.User;
 import com.sutoga.backend.entity.mapper.PostMapper;
 import com.sutoga.backend.entity.request.CreatePostRequest;
 import com.sutoga.backend.entity.response.PostResponse;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
 import com.sutoga.backend.repository.UserRepository;
+import com.sutoga.backend.service.LikeService;
 import com.sutoga.backend.service.PostService;
 import io.minio.PutObjectArgs;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -34,27 +37,35 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
 
-    @Autowired
-    private PostRepository postRepository;
-    @Autowired
-    private UserRepository userRepository;
+    private final PostRepository postRepository;
+    private final UserRepository userRepository;
+
+    @Lazy
+    private final LikeService likeService;
 
     private final PostMapper postMapper;
 
-//    @Autowired
-//    private AmazonS3 s3Client;
-
-    @Autowired
-    private MinioClient minioClient;
+    private final MinioClient minioClient;
 
     @Value("${aws.s3.bucket-name}")
     private String s3BucketName;
 
     @Value("${aws.cloudfront.domain-name}")
     private String cloudFrontDomainName;
+
+    @Autowired
+    public PostServiceImpl(PostRepository postRepository, UserRepository userRepository, @Lazy LikeService likeService, PostMapper postMapper, MinioClient minioClient) {
+        this.postRepository = postRepository;
+        this.userRepository = userRepository;
+        this.likeService = likeService;
+        this.postMapper = postMapper;
+        this.minioClient = minioClient;
+    }
+
+//    @Autowired
+//    private AmazonS3 s3Client;
 
     @Override
     public List<Post> getAllPosts() {
@@ -186,6 +197,10 @@ public class PostServiceImpl implements PostService {
                 .map(post -> {
                     PostResponse postResponse = postMapper.postToPostResponse(post);
                     postResponse.setMediaUrl(post.getMediaUrl()); // Set the mediaUrl
+                    postResponse.setLikeCount(post.getLikes().size()); // Set the likeCount
+                    postResponse.setCommentCount(post.getComments().size());
+                    // Set the isLiked field based on the user's like status
+                    postResponse.setLikedByUser(likeService.isPostLikedByUser(post.getId(), userId));
                     return postResponse;
                 })
                 .collect(Collectors.toList());
@@ -210,13 +225,16 @@ public class PostServiceImpl implements PostService {
                     postResponse.setMediaUrl(post.getMediaUrl()); // Set the mediaUrl
                     postResponse.setUserId(user.getId()); // Set the userId
                     postResponse.setUsername(user.getUsername()); // Set the username
+                    postResponse.setLikeCount(post.getLikes().size()); // Set the likeCount
+                    postResponse.setCommentCount(post.getComments().size());
+                    // Set the isLiked field based on the user's like status
+                    postResponse.setLikedByUser(likeService.isPostLikedByUser(post.getId(), userId));
                     return postResponse;
                 })
                 .collect(Collectors.toList());
 
         return new PageImpl<>(postResponses, userPosts.getPageable(), userPosts.getTotalElements());
     }
-
 
     public Post handleMediaUpload(Long postId, MultipartFile file) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new NotFoundException("Post not found"));
@@ -267,5 +285,10 @@ public class PostServiceImpl implements PostService {
         } catch (Exception e) {
             throw new RuntimeException("Error retrieving media from MinIO server", e);
         }
+    }
+
+    @Override
+    public Post getPostById(Long postId) {
+        return postRepository.findById(postId).orElse(null);
     }
 }

@@ -13,6 +13,7 @@ public interface LikeService {
     List<LikeResponse> getAllLikesByParameter(Optional<Long> userId, Optional<Long> postId);
 
     void deleteLike(Long id);
+    void deleteLikeByPostIdAndUserId(Long postId, Long userId);
 
-
+    boolean isPostLikedByUser(Long postId, Long userId);
 }

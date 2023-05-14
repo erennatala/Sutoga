@@ -8,20 +8,28 @@ import com.sutoga.backend.exceptions.ResultNotFoundException;
 import com.sutoga.backend.repository.CommentRepository;
 import com.sutoga.backend.service.CommentService;
 import com.sutoga.backend.service.LikeService;
+import com.sutoga.backend.service.PostService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Controller
+@Service
 public class CommentServiceImpl implements CommentService {
 
-    private CommentRepository commentRepository;
-    private UserServiceImpl userServiceImpl;
-    private PostServiceImpl postServiceImpl;
+    private final CommentRepository commentRepository;
+    private final UserServiceImpl userServiceImpl;
 
-    public CommentServiceImpl(CommentRepository commentRepository, UserServiceImpl userServiceImpl, PostServiceImpl postServiceImpl) {
+    @Lazy
+    private final PostService postServiceImpl;
+
+    @Autowired
+    public CommentServiceImpl(CommentRepository commentRepository, UserServiceImpl userServiceImpl, @Lazy PostService postServiceImpl) {
         this.commentRepository = commentRepository;
         this.userServiceImpl = userServiceImpl;
         this.postServiceImpl = postServiceImpl;

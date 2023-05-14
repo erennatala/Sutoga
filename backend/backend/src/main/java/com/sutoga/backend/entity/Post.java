@@ -1,5 +1,6 @@
 package com.sutoga.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,11 +25,24 @@ public class Post {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany
+    @OneToMany(mappedBy = "post")
+    @JsonIgnore
     private List<Comment> comments;
+
+    @OneToMany(mappedBy = "post")
+    @JsonIgnore
+    private List<Like> likes;
 
     @Column(name = "media_url")
     private String mediaUrl;
 
     private LocalDateTime postDate;
+
+    public int getLikeCount() {
+        return likes.size();
+    }
+
+    public int getCommentCount() {
+        return comments.size();
+    }
 }

@@ -8,40 +8,52 @@ import com.sutoga.backend.entity.response.LikeResponse;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
 import com.sutoga.backend.repository.LikeRepository;
 import com.sutoga.backend.service.LikeService;
-import org.springframework.stereotype.Controller;
+import com.sutoga.backend.service.PostService;
+import com.sutoga.backend.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Controller
+@Service
 public class LikeServiceImpl implements LikeService {
 
-    private LikeRepository likeRepository;
-    private UserServiceImpl userServiceImpl;
-    private PostServiceImpl postServiceImpl;
+    private final LikeRepository likeRepository;
+    private final UserService userServiceImpl;
 
-    public LikeServiceImpl(LikeRepository likeRepository, UserServiceImpl userServiceImpl, PostServiceImpl postServiceImpl) {
+    @Lazy
+    private final PostService postServiceImpl;
+
+    @Autowired
+    public LikeServiceImpl(LikeRepository likeRepository, UserService userService, @Lazy PostService postService) {
         this.likeRepository = likeRepository;
-        this.userServiceImpl = userServiceImpl;
-        this.postServiceImpl = postServiceImpl;
+        this.userServiceImpl = userService;
+        this.postServiceImpl = postService;
     }
-
     @Override
     public Like createLike(CreateLikeRequest createLikeRequest) {
-//        User user = userServiceImpl.getOneUserById(createLikeRequest.getUserId());
-//
-//        if(user!=null && post!=null){
-//            Like like = new Like();
-//            like.setUser(user);
-//            like.setPost(post);
-//
-//            return likeRepository.save(like);
-//        }
-//        else{
-//            throw new ResultNotFoundException("Invalid userId or postId");
-//        }
-        return null;
+        User user = userServiceImpl.getOneUserById(createLikeRequest.getUserId());
+        Post post = postServiceImpl.getPostById(createLikeRequest.getPostId());
+
+        if (user != null && post != null) {
+            Like existingLike = likeRepository.findByPostIdAndUserId(createLikeRequest.getPostId(), createLikeRequest.getUserId());
+            if (existingLike != null) {
+                // A like already exists for this user and post.
+                // You can throw an exception or return the existingLike directly, depending on your needs.
+                throw new IllegalArgumentException("User has already liked this post");
+            }
+
+            Like like = new Like();
+            like.setUser(user);
+            like.setPost(post);
+
+            return likeRepository.save(like);
+        } else {
+            throw new ResultNotFoundException("Invalid userId or postId");
+        }
     }
 
     @Override
@@ -68,5 +80,20 @@ public class LikeServiceImpl implements LikeService {
         likeRepository.deleteById(id);
     }
 
+    @Override
+    public void deleteLikeByPostIdAndUserId(Long postId, Long userId) {
+        Like like = likeRepository.findByPostIdAndUserId(postId, userId);
+        if (like != null) {
+            likeRepository.delete(like);
+        } else {
+            throw new IllegalArgumentException("Like not found for provided postId and userId");
+        }
+    }
 
+
+    @Override
+    public boolean isPostLikedByUser(Long postId, Long userId) {
+        Like like = likeRepository.findByPostIdAndUserId(postId, userId);
+        return like != null;
+    }
 }
