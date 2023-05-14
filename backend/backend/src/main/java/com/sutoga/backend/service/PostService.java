@@ -24,4 +24,5 @@ public interface PostService {
     InputStream getMediaAsStream(String objectName);
     Page<PostResponse> getMergedPosts(Long userId, int pageNumber, int pageSize);
     Page<PostResponse> getProfilePosts(Long userId, int pageNumber, int pageSize);
+    Post getPostById(Long postId);
 }

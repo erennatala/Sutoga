@@ -16,4 +16,7 @@ public class PostResponse {
     private String mediaUrl;
     private LocalDateTime postDate;
     private String username;
+    private Integer likeCount;
+    private Integer commentCount;
+    private boolean likedByUser;
 }
