@@ -50,6 +50,8 @@ public class User  {
 
     private Boolean isPrivate;
 
+    private String profilePhotoUrl;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
