@@ -27,4 +27,5 @@ public interface UserService {
     void saveProfilePhoto(MultipartFile photo, Long userId);
     MultipartFile getProfilePhoto(Long userId);
     User getOneUserByEmail(String email);
+    String getProfilePhotoUrl(Long userId);
 }

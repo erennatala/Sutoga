@@ -54,12 +54,6 @@ public class UserController {
         userService.deleteById(userId);
     }
 
-    @GetMapping("/getProfilePhoto/{userId}")
-    public ResponseEntity<?> getProfilePhoto(@PathVariable Long userId) {
-        MultipartFile photo = userService.getProfilePhoto(userId);
-        return ResponseEntity.status(HttpStatus.OK).body(photo);
-    }
-
     @PostMapping("/saveProfilePhoto/{userId}")
     public ResponseEntity<?> saveProfilePhoto(@RequestParam("file") MultipartFile file, @PathVariable Long userId) {
         return null;
@@ -101,5 +95,10 @@ public class UserController {
         } else {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/getProfilePhoto/{userId}")
+    public ResponseEntity<String> getProfilePhoto(@PathVariable Long userId) {
+        return new ResponseEntity<>(userService.getProfilePhotoUrl(userId), HttpStatus.OK);
     }
 }

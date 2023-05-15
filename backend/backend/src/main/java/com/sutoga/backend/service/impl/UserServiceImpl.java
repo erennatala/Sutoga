@@ -9,9 +9,7 @@ import com.sutoga.backend.repository.FriendRequestRepository;
 import com.sutoga.backend.repository.UserRepository;
 import com.sutoga.backend.service.AuthenticationService;
 import com.sutoga.backend.service.UserService;
-import io.minio.GetObjectArgs;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
+import io.minio.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -247,5 +245,10 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    public String getProfilePhotoUrl(Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        assert user != null;
+        return user.getProfilePhotoUrl();
+    }
 
 }
