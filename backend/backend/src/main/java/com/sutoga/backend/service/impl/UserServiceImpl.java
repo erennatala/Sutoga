@@ -3,7 +3,10 @@ package com.sutoga.backend.service.impl;
 import com.sutoga.backend.entity.FriendRequest;
 import com.sutoga.backend.entity.User;
 import com.sutoga.backend.entity.dto.AuthenticationResponse;
+import com.sutoga.backend.entity.dto.UserResponse;
+import com.sutoga.backend.entity.mapper.UserMapper;
 import com.sutoga.backend.entity.request.UpdateRequest;
+import com.sutoga.backend.entity.response.UserSearchResponse;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
 import com.sutoga.backend.repository.FriendRequestRepository;
 import com.sutoga.backend.repository.UserRepository;
@@ -20,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +32,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
     private final AuthenticationService authenticationService;
-
+    private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final FriendRequestRepository friendRequestRepository;
 
@@ -249,6 +253,31 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId).orElse(null);
         assert user != null;
         return user.getProfilePhotoUrl();
+    }
+
+    public List<UserSearchResponse> searchUsers(String query) {
+        String lowerCaseQuery = query.toLowerCase();
+        List<User> users = userRepository.findAll();
+
+        return users.stream()
+                .filter(user -> user.getUsername().toLowerCase().contains(lowerCaseQuery))
+                .map(user -> {
+                    UserSearchResponse userResponse = new UserSearchResponse();
+                    userResponse.setUsername(user.getUsername());
+                    userResponse.setProfilePhotoUrl(user.getProfilePhotoUrl());
+                    return userResponse;
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public UserResponse getUserByUsername(String username) {
+        User user = userRepository.findByUsername(username);
+        if (user != null) {
+            return userMapper.toUserResponse(user);
+        } else {
+            return null;
+        }
     }
 
 }

@@ -4,6 +4,7 @@ import com.sutoga.backend.entity.FriendRequest;
 import com.sutoga.backend.entity.User;
 import com.sutoga.backend.entity.dto.AuthenticationResponse;
 import com.sutoga.backend.entity.dto.UserResponse;
+import com.sutoga.backend.entity.response.UserSearchResponse;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
 import com.sutoga.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -101,4 +102,20 @@ public class UserController {
     public ResponseEntity<String> getProfilePhoto(@PathVariable Long userId) {
         return new ResponseEntity<>(userService.getProfilePhotoUrl(userId), HttpStatus.OK);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<UserSearchResponse>> searchUsers(@RequestParam("q") String query) {
+        List<UserSearchResponse> users = userService.searchUsers(query);
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    @GetMapping("/getByUsername/{username}")
+    public ResponseEntity<UserResponse> getUserByUsername(@PathVariable String username) {
+        UserResponse user = userService.getUserByUsername(username);
+        if (user == null) {
+            throw new ResultNotFoundException("User with username " + username + " not found!");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
+
 }

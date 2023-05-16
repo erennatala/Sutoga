@@ -3,7 +3,9 @@ package com.sutoga.backend.service;
 import com.sutoga.backend.entity.FriendRequest;
 import com.sutoga.backend.entity.User;
 import com.sutoga.backend.entity.dto.AuthenticationResponse;
+import com.sutoga.backend.entity.dto.UserResponse;
 import com.sutoga.backend.entity.request.UpdateRequest;
+import com.sutoga.backend.entity.response.UserSearchResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -28,4 +30,6 @@ public interface UserService {
     MultipartFile getProfilePhoto(Long userId);
     User getOneUserByEmail(String email);
     String getProfilePhotoUrl(Long userId);
+    List<UserSearchResponse> searchUsers(String query);
+    UserResponse getUserByUsername(String username);
 }
