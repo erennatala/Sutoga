@@ -5,12 +5,12 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
 public class FriendRequest {
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
@@ -23,4 +23,10 @@ public class FriendRequest {
     @ManyToOne
     @JoinColumn(name = "receiver_id")
     private User receiver;
+
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "confirmed", nullable = false)
+    private boolean confirmed;
 }

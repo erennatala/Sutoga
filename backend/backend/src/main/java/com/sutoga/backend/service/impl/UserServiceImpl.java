@@ -6,6 +6,7 @@ import com.sutoga.backend.entity.dto.AuthenticationResponse;
 import com.sutoga.backend.entity.dto.UserResponse;
 import com.sutoga.backend.entity.mapper.UserMapper;
 import com.sutoga.backend.entity.request.UpdateRequest;
+import com.sutoga.backend.entity.response.FriendRequestResponse;
 import com.sutoga.backend.entity.response.UserSearchResponse;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
 import com.sutoga.backend.repository.FriendRequestRepository;
@@ -152,25 +153,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean acceptFriendRequest(Long requestId) {
-        FriendRequest friendRequest = friendRequestRepository.findById(requestId).orElse(null);
-        User sender = friendRequest.getSender();
-        User receiver = friendRequest.getReceiver();
-
-        sender.getFriends().add(receiver);
-        receiver.getFriends().add(sender);
-
-        friendRequestRepository.delete(friendRequest);
-        return true;
-    }
-
-    @Override
-    public Boolean declineFriendRequest(Long requestId) {
-        friendRequestRepository.delete(Objects.requireNonNull(friendRequestRepository.findById(requestId).orElse(null)));
-        return true;
-    }
-
-    @Override
     public List<String> getFriendRecommendationsByUser(Long userId) {
         List<User> userFriends = userRepository.findById(userId).orElse(null).getFriends();
         List<Long> friendIds = new ArrayList<>();
@@ -185,12 +167,6 @@ public class UserServiceImpl implements UserService {
         recommendations.forEach(user -> usernames.add(user.getUsername()));
 
         return usernames;
-    }
-
-    @Override
-    public List<FriendRequest> getAllRequestsByUserId(Long userId) {
-        User user = userRepository.findById(userId).orElse(null);
-        return friendRequestRepository.findFriendRequestByReceiver(user);
     }
 
     @Override
@@ -279,5 +255,72 @@ public class UserServiceImpl implements UserService {
             return null;
         }
     }
+
+    @Override
+    public List<FriendRequest> getUnconfirmedFriendRequestsByUserId(Long userId) {
+        List<FriendRequest> unconfirmedRequests = friendRequestRepository.findByReceiverIdAndConfirmedFalse(userId);
+        unconfirmedRequests.sort(Comparator.comparing(FriendRequest::getCreatedAt).reversed());
+
+        return unconfirmedRequests;
+    }
+
+    @Override
+    public Boolean acceptFriendRequest(Long requestId) {
+        Optional<FriendRequest> friendRequestOptional = friendRequestRepository.findById(requestId);
+        if (friendRequestOptional.isPresent()) {
+            FriendRequest friendRequest = friendRequestOptional.get();
+            friendRequest.setConfirmed(true);
+            friendRequestRepository.save(friendRequest);
+            User sender = friendRequest.getSender();
+            User receiver = friendRequest.getReceiver();
+            sender.getFriends().add(receiver);
+            receiver.getFriends().add(sender);
+            userRepository.save(sender);
+            userRepository.save(receiver);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean declineFriendRequest(Long requestId) {
+        Optional<FriendRequest> friendRequestOptional = friendRequestRepository.findById(requestId);
+        if (friendRequestOptional.isPresent()) {
+            FriendRequest friendRequest = friendRequestOptional.get();
+            friendRequestRepository.delete(friendRequest);
+            return true;
+        }
+        return false;
+    }
+    @Override
+    public Boolean areFriends(Long userId1, Long userId2) {
+        User user1 = userRepository.findById(userId1)
+                .orElseThrow(() -> new ResultNotFoundException("User with ID " + userId1 + " not found"));
+        User user2 = userRepository.findById(userId2)
+                .orElseThrow(() -> new ResultNotFoundException("User with ID " + userId2 + " not found"));
+
+        return user1.getFriends().contains(user2) && user2.getFriends().contains(user1);
+    }
+
+    @Override
+    public FriendRequestResponse checkFriendRequest(Long userId, Long accountId) {
+        User sender = userRepository.findById(userId).orElseThrow(() -> new ResultNotFoundException("User with id " + userId + " not found"));
+        User receiver = userRepository.findById(accountId).orElseThrow(() -> new ResultNotFoundException("User with id " + accountId + " not found"));
+
+        FriendRequest friendRequest = friendRequestRepository.findBySenderAndReceiver(sender, receiver);
+
+        if (friendRequest != null) {
+            FriendRequestResponse response = new FriendRequestResponse();
+            response.setId(friendRequest.getId());
+            response.setSenderId(friendRequest.getSender().getId());
+            response.setReceiverId(friendRequest.getReceiver().getId());
+            return response;
+        } else {
+            return null;
+        }
+    }
+
+
+
 
 }

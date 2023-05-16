@@ -29,8 +29,10 @@ public class User  {
 
     private String lastName;
 
+    @Column(unique = true)
     private String username;
 
+    @Column(unique = true)
     private String email;
 
     private String password;
