@@ -5,6 +5,7 @@ import com.sutoga.backend.entity.User;
 import com.sutoga.backend.entity.dto.AuthenticationResponse;
 import com.sutoga.backend.entity.dto.UserResponse;
 import com.sutoga.backend.entity.request.UpdateRequest;
+import com.sutoga.backend.entity.response.FriendRequestResponse;
 import com.sutoga.backend.entity.response.UserSearchResponse;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,7 +21,6 @@ public interface UserService {
     Boolean acceptFriendRequest(Long requestId);
     Boolean declineFriendRequest(Long requestId);
     List<String> getFriendRecommendationsByUser(Long userId);
-    List<FriendRequest> getAllRequestsByUserId(Long userId);
     Boolean removeFriend(Long userId, Long friendId);
     User getOneUserByUserName(String userName);
     void deleteById(Long userId);
@@ -32,4 +32,7 @@ public interface UserService {
     String getProfilePhotoUrl(Long userId);
     List<UserSearchResponse> searchUsers(String query);
     UserResponse getUserByUsername(String username);
+    List<FriendRequest> getUnconfirmedFriendRequestsByUserId(Long userId);
+    Boolean areFriends(Long userId1, Long userId2);
+    FriendRequestResponse checkFriendRequest(Long userId, Long accountId);
 }

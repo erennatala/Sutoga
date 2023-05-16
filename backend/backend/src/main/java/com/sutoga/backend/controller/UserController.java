@@ -2,8 +2,8 @@ package com.sutoga.backend.controller;
 
 import com.sutoga.backend.entity.FriendRequest;
 import com.sutoga.backend.entity.User;
-import com.sutoga.backend.entity.dto.AuthenticationResponse;
 import com.sutoga.backend.entity.dto.UserResponse;
+import com.sutoga.backend.entity.response.FriendRequestResponse;
 import com.sutoga.backend.entity.response.UserSearchResponse;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
 import com.sutoga.backend.service.UserService;
@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private final UserService userService;
-
 
     @GetMapping
     public List<UserResponse> getAllUsers(){
@@ -70,32 +69,9 @@ public class UserController {
         }
     }
 
-    @GetMapping("/getFriendRequests/{userId}")
-    public ResponseEntity<List<FriendRequest>> getFriendRequests(@PathVariable Long userId) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.getAllRequestsByUserId(userId));
-    }
-
     @GetMapping("/getFriendRecommendations")
     public ResponseEntity<List<String>> getFriendRecommendations(@RequestParam("userId") Long userId) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getFriendRecommendationsByUser(userId));
-    }
-
-    @PostMapping("/acceptFriendRequest/{requestId}")
-    public ResponseEntity<?> acceptFriendRequest(@PathVariable Long requestId) {
-        if (userService.acceptFriendRequest(requestId)) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @PostMapping("/declineFriendRequest/{requestId}")
-    public ResponseEntity<?> declineFriendRequest(@PathVariable Long requestId) {
-        if (userService.declineFriendRequest(requestId)) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
 
     @GetMapping("/getProfilePhoto/{userId}")
@@ -116,6 +92,43 @@ public class UserController {
             throw new ResultNotFoundException("User with username " + username + " not found!");
         }
         return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
+
+    @GetMapping("/unconfirmed")
+    public ResponseEntity<List<FriendRequest>> getUnconfirmedFriendRequests(@RequestParam("userId") Long userId) {
+        List<FriendRequest> unconfirmedRequests = userService.getUnconfirmedFriendRequestsByUserId(userId);
+        return new ResponseEntity<>(unconfirmedRequests, HttpStatus.OK);
+    }
+
+    @PostMapping("/acceptFriendRequest/{requestId}")
+    public ResponseEntity<?> acceptFriendRequest(@PathVariable Long requestId) {
+        if (userService.acceptFriendRequest(requestId)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/declineFriendRequest/{requestId}")
+    public ResponseEntity<?> declineFriendRequest(@PathVariable Long requestId) {
+        if (userService.declineFriendRequest(requestId)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/areFriends")
+    public ResponseEntity<Boolean> areFriends(@RequestParam("userId1") Long userId1, @RequestParam("userId2") Long userId2) {
+        boolean areFriends = userService.areFriends(userId1, userId2);
+        return ResponseEntity.ok(areFriends);
+    }
+
+    @PostMapping("/checkFriendRequest")
+    public ResponseEntity<FriendRequestResponse> checkFriendRequest(@RequestParam("userId") Long userId,
+                                                                    @RequestParam("accountId") Long accountId) {
+        FriendRequestResponse friendRequestResponse = userService.checkFriendRequest(userId, accountId);
+        return ResponseEntity.ok(friendRequestResponse);
     }
 
 }
