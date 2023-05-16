@@ -87,12 +87,9 @@ public class PostServiceImpl implements PostService {
 
         Post savedPost = postRepository.save(post);
 
-        // If a media file is included in the request, upload it to MinIO
         if (newPost.getMedia() != null) {
             handleMediaUpload(savedPost.getId(), newPost.getMedia());
         }
-
-        // Map the saved Post entity to PostResponse using PostMapper
         PostResponse postResponse = postMapper.postToPostResponse(savedPost);
 
         return postResponse;
@@ -201,6 +198,7 @@ public class PostServiceImpl implements PostService {
                     postResponse.setCommentCount(post.getComments().size());
                     // Set the isLiked field based on the user's like status
                     postResponse.setLikedByUser(likeService.isPostLikedByUser(post.getId(), userId));
+                    postResponse.setUsersPost(post.getUser().getId().equals(userId));
                     return postResponse;
                 })
                 .collect(Collectors.toList());
@@ -229,6 +227,7 @@ public class PostServiceImpl implements PostService {
                     postResponse.setCommentCount(post.getComments().size());
                     // Set the isLiked field based on the user's like status
                     postResponse.setLikedByUser(likeService.isPostLikedByUser(post.getId(), userId));
+                    postResponse.setUsersPost(true);
                     return postResponse;
                 })
                 .collect(Collectors.toList());
@@ -238,14 +237,10 @@ public class PostServiceImpl implements PostService {
 
     public Post handleMediaUpload(Long postId, MultipartFile file) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new NotFoundException("Post not found"));
-
-        // Upload the media file to the MinIO server and generate the URL
         String mediaUrl = uploadMediaToMinioAndGenerateUrl(file);
 
-        // Add the media URL to the mediaUrl field in the Post entity
         post.setMediaUrl(mediaUrl);
 
-        // Save the updated Post entity to the database
         return postRepository.save(post);
     }
 
@@ -291,4 +286,10 @@ public class PostServiceImpl implements PostService {
     public Post getPostById(Long postId) {
         return postRepository.findById(postId).orElse(null);
     }
+
+    @Override
+    public void deletePost(Long postId) {
+        postRepository.deleteById(postId);
+    }
+
 }

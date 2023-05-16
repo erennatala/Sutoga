@@ -19,4 +19,5 @@ public class PostResponse {
     private Integer likeCount;
     private Integer commentCount;
     private boolean likedByUser;
+    private boolean isUsersPost;
 }

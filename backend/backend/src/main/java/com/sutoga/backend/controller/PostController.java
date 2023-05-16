@@ -32,7 +32,7 @@ public class PostController {
             CreatePostRequest newPost = new CreatePostRequest();
             newPost.setDescription(description);
             newPost.setUserId(userId);
-            newPost.setMedia(media); // assuming CreatePostRequest has a field to hold MultipartFile
+            newPost.setMedia(media);
 
             PostResponse createdPost = postService.createPost(newPost);
             return new ResponseEntity<>(createdPost, HttpStatus.CREATED);
@@ -49,11 +49,6 @@ public class PostController {
         if(post != null)
             return new ResponseEntity<>(HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    @DeleteMapping("/{postId}")
-    public void deleteOnePost(@PathVariable Long postId) {
-        postService.deleteById(postId);
     }
 
     @GetMapping("/media/{filename}")
@@ -81,4 +76,11 @@ public class PostController {
                                       @RequestParam(defaultValue = "10") int pageSize) {
         return postService.getProfilePosts(userId, pageNumber, pageSize);
     }
+
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<Void> deleteOnePost(@PathVariable Long postId) {
+        postService.deletePost(postId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
