@@ -14,6 +14,6 @@ public interface LikeService {
 
     void deleteLike(Long id);
     void deleteLikeByPostIdAndUserId(Long postId, Long userId);
-
+    void deleteLikesByPostId(Long postId);
     boolean isPostLikedByUser(Long postId, Long userId);
 }

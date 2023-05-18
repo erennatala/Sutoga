@@ -14,5 +14,7 @@ public class UpdateRequest {
     private String username;
     private LocalDate birthDate;
     private String phoneNumber;
+    private String description;
     private MultipartFile media;
 }
+

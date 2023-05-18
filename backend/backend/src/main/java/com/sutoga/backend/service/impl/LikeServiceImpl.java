@@ -71,13 +71,17 @@ public class LikeServiceImpl implements LikeService {
         }
         return likeList.stream().map(like ->
             new LikeResponse(like.getId(), like.getUser().getId(), like.getPost().getId())).collect(Collectors.toList());
-
-
     }
 
     @Override
     public void deleteLike(Long id) {
         likeRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteLikesByPostId(Long postId) {
+        List<Like> likes = likeRepository.findByPostId(postId);
+        likeRepository.deleteAll(likes);
     }
 
     @Override
@@ -89,7 +93,6 @@ public class LikeServiceImpl implements LikeService {
             throw new IllegalArgumentException("Like not found for provided postId and userId");
         }
     }
-
 
     @Override
     public boolean isPostLikedByUser(Long postId, Long userId) {

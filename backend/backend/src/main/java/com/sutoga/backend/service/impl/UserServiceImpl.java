@@ -2,7 +2,6 @@ package com.sutoga.backend.service.impl;
 
 import com.sutoga.backend.entity.FriendRequest;
 import com.sutoga.backend.entity.User;
-import com.sutoga.backend.entity.dto.AuthenticationResponse;
 import com.sutoga.backend.entity.dto.UserResponse;
 import com.sutoga.backend.entity.mapper.UserMapper;
 import com.sutoga.backend.entity.request.UpdateRequest;
@@ -71,13 +70,11 @@ public class UserServiceImpl implements UserService {
             foundUser.setLastName(updateRequest.getLastName());
             foundUser.setEmail(updateRequest.getEmail());
             foundUser.setPhoneNumber(updateRequest.getPhoneNumber());
+            foundUser.setProfileDescription(updateRequest.getDescription());
 
-            // Check if there is a file to upload
             if(updateRequest.getMedia() != null) {
-                // Upload the profile picture to the MinIO server and generate the URL
                 String profilePhotoUrl = uploadMediaToMinioAndGenerateUrl(updateRequest.getMedia());
 
-                // Add the media URL to the profilePhotoUrl field in the User entity
                 foundUser.setProfilePhotoUrl(profilePhotoUrl);
             }
 
