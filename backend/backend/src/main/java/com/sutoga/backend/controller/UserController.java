@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import com.sutoga.backend.entity.request.UpdateRequest;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,14 +41,33 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<Void> updateOneUser(@PathVariable Long userId, @RequestBody UpdateRequest newUser) {
-        User user = userService.updateUser(userId, newUser);
+    public ResponseEntity<Void> updateOneUser(@PathVariable Long userId,
+                                              @RequestParam("email") String email,
+                                              @RequestParam("username") String username,
+                                              @RequestParam("description") String description,
+                                              @RequestParam("firstName") String firstName,
+                                              @RequestParam("lastName") String lastName,
+                                              @RequestParam("phoneNumber") String phoneNumber,
+                                              @RequestParam("birthDate") LocalDate birthDate,
+                                              @RequestParam(value = "media", required = false) MultipartFile media) {
+        UpdateRequest updateRequest = new UpdateRequest();
+        updateRequest.setEmail(email);
+        updateRequest.setUsername(username);
+        updateRequest.setDescription(description);
+        updateRequest.setFirstName(firstName);
+        updateRequest.setLastName(lastName);
+        updateRequest.setPhoneNumber(phoneNumber);
+        updateRequest.setBirthDate(birthDate);
+        updateRequest.setMedia(media);
+
+        User user = userService.updateUser(userId, updateRequest);
 
         if (user != null) {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 
     @DeleteMapping("/{userId}")
     public void deleteOneUser(@PathVariable Long userId) {

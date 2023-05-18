@@ -10,7 +10,6 @@ import com.sutoga.backend.repository.UserRepository;
 import com.sutoga.backend.service.LikeService;
 import com.sutoga.backend.service.PostService;
 import io.minio.PutObjectArgs;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
@@ -41,7 +40,6 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
-
     @Lazy
     private final LikeService likeService;
 
@@ -289,6 +287,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void deletePost(Long postId) {
+        likeService.deleteLikesByPostId(postId);
         postRepository.deleteById(postId);
     }
 
