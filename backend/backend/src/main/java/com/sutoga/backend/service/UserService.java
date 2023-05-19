@@ -7,6 +7,7 @@ import com.sutoga.backend.entity.dto.UserResponse;
 import com.sutoga.backend.entity.request.UpdateRequest;
 import com.sutoga.backend.entity.response.FriendRecResponse;
 import com.sutoga.backend.entity.response.FriendRequestResponse;
+import com.sutoga.backend.entity.response.FriendResponse;
 import com.sutoga.backend.entity.response.UserSearchResponse;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,4 +39,6 @@ public interface UserService {
     FriendRequestResponse checkFriendRequest(Long userId, Long accountId);
     String getProfilePhotoUrlByUsername(String username);
     FriendRecResponse getFriendRecommendationByUser(Long userId);
+    List<FriendResponse> getFriendsByUserId(Long userId, int page, int size);
+    List<FriendResponse> getFriendsByUsername(String username, Long userId, int page, int size);
 }
