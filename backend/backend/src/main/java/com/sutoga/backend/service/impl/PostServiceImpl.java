@@ -200,6 +200,7 @@ public class PostServiceImpl implements PostService {
                     // Set the isLiked field based on the user's like status
                     postResponse.setLikedByUser(likeService.isPostLikedByUser(post.getId(), userId));
                     postResponse.setUsersPost(post.getUser().getId().equals(userId));
+                    postResponse.setPhotoUrl(user.getProfilePhotoUrl());
                     return postResponse;
                 })
                 .collect(Collectors.toList());
@@ -229,6 +230,7 @@ public class PostServiceImpl implements PostService {
                     // Set the isLiked field based on the user's like status
                     postResponse.setLikedByUser(likeService.isPostLikedByUser(post.getId(), userId));
                     postResponse.setUsersPost(true);
+                    postResponse.setPhotoUrl(user.getProfilePhotoUrl());
                     return postResponse;
                 })
                 .collect(Collectors.toList());

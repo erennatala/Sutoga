@@ -20,4 +20,5 @@ public class PostResponse {
     private Integer commentCount;
     private boolean likedByUser;
     private boolean isUsersPost;
+    private String photoUrl;
 }
