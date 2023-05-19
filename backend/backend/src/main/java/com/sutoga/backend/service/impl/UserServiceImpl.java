@@ -5,6 +5,7 @@ import com.sutoga.backend.entity.User;
 import com.sutoga.backend.entity.dto.UserResponse;
 import com.sutoga.backend.entity.mapper.UserMapper;
 import com.sutoga.backend.entity.request.UpdateRequest;
+import com.sutoga.backend.entity.response.FriendRecResponse;
 import com.sutoga.backend.entity.response.FriendRequestResponse;
 import com.sutoga.backend.entity.response.UserSearchResponse;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -142,28 +144,76 @@ public class UserServiceImpl implements UserService {
         User sender = userRepository.findById(userId).orElse(null);
         User receiver = userRepository.findByUsername(receiverUsername);
 
+        FriendRequest existingFriendRequest = friendRequestRepository.findBySenderAndReceiver(sender, receiver);
+        if (existingFriendRequest != null) {
+            return false;
+        }
+
         friendRequest.setSender(sender);
         friendRequest.setReceiver(receiver);
+        friendRequest.setCreatedAt(LocalDateTime.now());
+        friendRequest.setConfirmed(false);
 
         friendRequestRepository.save(friendRequest);
         return true;
     }
 
     @Override
-    public List<String> getFriendRecommendationsByUser(Long userId) {
-        List<User> userFriends = userRepository.findById(userId).orElse(null).getFriends();
+    public List<FriendRecResponse> getFriendRecommendationsByUser(Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        List<User> userFriends = user.getFriends();
         List<Long> friendIds = new ArrayList<>();
 
-        userFriends.forEach(user -> friendIds.add(user.getId()));
+        userFriends.forEach(user1 -> friendIds.add(user1.getId()));
         friendIds.add(userId);
 
-        List<User> recommendations = userRepository.findRandomUsersExcludingIds(friendIds, 3);
+        List<FriendRequest> existingFriendRequests = friendRequestRepository.findBySenderAndReceiverIn(user, userFriends);
 
-        List<String> usernames = new ArrayList<>();
+        List<Long> excludedUserIds = existingFriendRequests.stream()
+                .map(friendRequest -> friendRequest.getReceiver().getId())
+                .collect(Collectors.toList());
 
-        recommendations.forEach(user -> usernames.add(user.getUsername()));
+        excludedUserIds.addAll(friendIds);
 
-        return usernames;
+        List<User> recommendations = userRepository.findRandomUsersExcludingIds(excludedUserIds, 3);
+
+        List<FriendRecResponse> recs = new ArrayList<>();
+
+        recommendations.forEach(user2 -> {
+            FriendRecResponse rec = new FriendRecResponse();
+            rec.setUsername(user2.getUsername());
+            rec.setProfilePhotoUrl(user2.getProfilePhotoUrl());
+
+            recs.add(rec);
+        });
+
+        return recs;
+    }
+
+    @Override
+    public FriendRecResponse getFriendRecommendationByUser(Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        List<User> userFriends = user.getFriends();
+        List<Long> friendIds = new ArrayList<>();
+
+        userFriends.forEach(user1 -> friendIds.add(user1.getId()));
+        friendIds.add(userId);
+
+        List<FriendRequest> existingFriendRequests = friendRequestRepository.findBySenderAndReceiverIn(user, userFriends);
+
+        List<Long> excludedUserIds = new ArrayList<>();
+        for (FriendRequest friendRequest : existingFriendRequests) {
+            excludedUserIds.add(friendRequest.getReceiver().getId());
+        }
+        excludedUserIds.addAll(friendIds);
+
+        User recommendation = userRepository.findRandomUserExcludingIds(excludedUserIds);
+
+        FriendRecResponse rec = new FriendRecResponse();
+        rec.setUsername(recommendation.getUsername());
+        rec.setProfilePhotoUrl(recommendation.getProfilePhotoUrl());
+
+        return rec;
     }
 
     @Override
@@ -317,7 +367,10 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
+    @Override
+    public String getProfilePhotoUrlByUsername(String username) {
+        return userRepository.findByUsername(username).getProfilePhotoUrl();
+    }
 
 
 }

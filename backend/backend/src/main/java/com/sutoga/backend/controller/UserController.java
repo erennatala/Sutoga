@@ -3,6 +3,7 @@ package com.sutoga.backend.controller;
 import com.sutoga.backend.entity.FriendRequest;
 import com.sutoga.backend.entity.User;
 import com.sutoga.backend.entity.dto.UserResponse;
+import com.sutoga.backend.entity.response.FriendRecResponse;
 import com.sutoga.backend.entity.response.FriendRequestResponse;
 import com.sutoga.backend.entity.response.UserSearchResponse;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
@@ -90,8 +91,14 @@ public class UserController {
     }
 
     @GetMapping("/getFriendRecommendations")
-    public ResponseEntity<List<String>> getFriendRecommendations(@RequestParam("userId") Long userId) {
+    public ResponseEntity<List<FriendRecResponse>> getFriendRecommendations(@RequestParam("userId") Long userId) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getFriendRecommendationsByUser(userId));
+    }
+
+    @GetMapping("/getFriendRecommendation")
+    public ResponseEntity<FriendRecResponse> getFriendRecommendation(@RequestParam("userId") Long userId) {
+        FriendRecResponse recommendation = userService.getFriendRecommendationByUser(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(recommendation);
     }
 
     @GetMapping("/getProfilePhoto/{userId}")
@@ -149,6 +156,11 @@ public class UserController {
                                                                     @RequestParam("accountId") Long accountId) {
         FriendRequestResponse friendRequestResponse = userService.checkFriendRequest(userId, accountId);
         return ResponseEntity.ok(friendRequestResponse);
+    }
+
+    @GetMapping("/profilePhoto")
+    public ResponseEntity<String> getProfilePhotoByUsername(@RequestParam("username") String username) {
+        return ResponseEntity.ok(userService.getProfilePhotoUrlByUsername(username));
     }
 
 }
