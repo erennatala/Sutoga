@@ -90,6 +90,9 @@ public class PostServiceImpl implements PostService {
         }
         PostResponse postResponse = postMapper.postToPostResponse(savedPost);
 
+        postResponse.setLikeCount(0);
+        postResponse.setCommentCount(0);
+
         return postResponse;
     }
 
