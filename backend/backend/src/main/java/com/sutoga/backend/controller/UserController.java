@@ -5,6 +5,7 @@ import com.sutoga.backend.entity.User;
 import com.sutoga.backend.entity.dto.UserResponse;
 import com.sutoga.backend.entity.response.FriendRecResponse;
 import com.sutoga.backend.entity.response.FriendRequestResponse;
+import com.sutoga.backend.entity.response.FriendResponse;
 import com.sutoga.backend.entity.response.UserSearchResponse;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
 import com.sutoga.backend.service.UserService;
@@ -161,6 +162,21 @@ public class UserController {
     @GetMapping("/profilePhoto")
     public ResponseEntity<String> getProfilePhotoByUsername(@RequestParam("username") String username) {
         return ResponseEntity.ok(userService.getProfilePhotoUrlByUsername(username));
+    }
+
+    @GetMapping("/getFriendsByUserId")
+    public ResponseEntity<List<FriendResponse>> getFriendsByUserId(@RequestParam("userId") Long userId,
+                                                                   @RequestParam(value = "page", defaultValue = "0") int page,
+                                                                   @RequestParam(value = "size", defaultValue = "10") int size) {
+        return ResponseEntity.ok(userService.getFriendsByUserId(userId, page, size));
+    }
+
+    @GetMapping("/getFriendsByUsername")
+    public ResponseEntity<List<FriendResponse>> getFriendsByUsername(@RequestParam("username") String username,
+                                                                   @RequestParam("userId") Long userId,
+                                                                   @RequestParam(value = "page", defaultValue = "0") int page,
+                                                                   @RequestParam(value = "size", defaultValue = "10") int size) {
+        return ResponseEntity.ok(userService.getFriendsByUsername(username, userId, page, size));
     }
 
 }

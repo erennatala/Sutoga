@@ -7,6 +7,7 @@ import com.sutoga.backend.entity.mapper.UserMapper;
 import com.sutoga.backend.entity.request.UpdateRequest;
 import com.sutoga.backend.entity.response.FriendRecResponse;
 import com.sutoga.backend.entity.response.FriendRequestResponse;
+import com.sutoga.backend.entity.response.FriendResponse;
 import com.sutoga.backend.entity.response.UserSearchResponse;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
 import com.sutoga.backend.repository.FriendRequestRepository;
@@ -17,6 +18,8 @@ import io.minio.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -216,6 +219,62 @@ public class UserServiceImpl implements UserService {
         return rec;
     }
 
+    public List<FriendResponse> getFriendsByUserId(Long userId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        User user = userRepository.findById(userId).orElse(null);
+
+        List<User> friends = user.getFriends();
+
+        // pagination logic here
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), friends.size());
+        List<User> friendsSlice = new ArrayList<>(friends.subList(start, end));
+
+        List<FriendResponse> friendsResponse = new ArrayList<>();
+
+        friendsSlice.forEach(friend -> {
+            FriendResponse userResponse = new FriendResponse();
+
+            userResponse.setProfilePhotoUrl(friend.getProfilePhotoUrl());
+            userResponse.setUsername(friend.getUsername());
+            userResponse.setId(friend.getId());
+            userResponse.setIsFriend(true);
+
+            friendsResponse.add(userResponse);
+        });
+
+        return friendsResponse;
+    }
+
+    @Override
+    public List<FriendResponse> getFriendsByUsername(String username, Long userId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        User user = userRepository.findByUsername(username);
+
+        User appUser = userRepository.findById(userId).orElse(null);
+
+        List<User> friends = user.getFriends();
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), friends.size());
+        List<User> friendsSlice = new ArrayList<>(friends.subList(start, end));
+
+        List<FriendResponse> friendsResponse = new ArrayList<>();
+
+        friendsSlice.forEach(friend -> {
+            FriendResponse userResponse = new FriendResponse();
+
+            userResponse.setProfilePhotoUrl(friend.getProfilePhotoUrl());
+            userResponse.setUsername(friend.getUsername());
+            userResponse.setId(friend.getId());
+            userResponse.setIsFriend(areFriends(friend.getId(), appUser.getId()) || friend.getId() == appUser.getId());
+
+            friendsResponse.add(userResponse);
+        });
+
+        return friendsResponse;
+    }
+
     @Override
     public Boolean removeFriend(Long userId, Long friendId) {
         return null;
@@ -317,9 +376,11 @@ public class UserServiceImpl implements UserService {
         if (friendRequestOptional.isPresent()) {
             FriendRequest friendRequest = friendRequestOptional.get();
             friendRequest.setConfirmed(true);
-            friendRequestRepository.save(friendRequest);
             User sender = friendRequest.getSender();
             User receiver = friendRequest.getReceiver();
+
+            friendRequestRepository.delete(friendRequest);
+
             sender.getFriends().add(receiver);
             receiver.getFriends().add(sender);
             userRepository.save(sender);
