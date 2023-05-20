@@ -28,10 +28,10 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping
-    public List<UserResponse> getAllUsers(){
-        return userService.getAllUsers().stream().map(UserResponse::new).collect(Collectors.toList());
-    }
+//    @GetMapping
+//    public List<UserResponse> getAllUsers(){
+//        return userService.getAllUsers().stream().map(UserResponse::new).collect(Collectors.toList());
+//    }
 
     @GetMapping("/{userId}")
     public UserResponse getOneUser(@PathVariable Long userId) {
@@ -177,6 +177,21 @@ public class UserController {
                                                                    @RequestParam(value = "page", defaultValue = "0") int page,
                                                                    @RequestParam(value = "size", defaultValue = "10") int size) {
         return ResponseEntity.ok(userService.getFriendsByUsername(username, userId, page, size));
+    }
+
+    @GetMapping("/getPostCount/{userId}")
+    public ResponseEntity<Integer> getPostCount(@PathVariable("userId") Long userId){
+        return ResponseEntity.ok(userService.getPostCountByUserId(userId));
+    }
+
+    @GetMapping("/getFriendCount/{userId}")
+    public ResponseEntity<Integer> getFriendCount(@PathVariable("userId") Long userId){
+        return ResponseEntity.ok(userService.getFriendCountByUserId(userId));
+    }
+
+    @GetMapping("/getGameCount/{userId}")
+    public ResponseEntity<Integer> getGameCount(@PathVariable("userId") Long userId){
+        return ResponseEntity.ok(userService.getGameCountByUserId(userId));
     }
 
 }

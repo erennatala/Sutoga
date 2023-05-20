@@ -41,4 +41,7 @@ public interface UserService {
     FriendRecResponse getFriendRecommendationByUser(Long userId);
     List<FriendResponse> getFriendsByUserId(Long userId, int page, int size);
     List<FriendResponse> getFriendsByUsername(String username, Long userId, int page, int size);
+    Integer getPostCountByUserId(Long userId);
+    Integer getGameCountByUserId(Long userId);
+    Integer getFriendCountByUserId(Long userId);
 }

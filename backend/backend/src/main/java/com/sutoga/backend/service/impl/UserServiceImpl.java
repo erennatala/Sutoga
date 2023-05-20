@@ -11,6 +11,7 @@ import com.sutoga.backend.entity.response.FriendResponse;
 import com.sutoga.backend.entity.response.UserSearchResponse;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
 import com.sutoga.backend.repository.FriendRequestRepository;
+import com.sutoga.backend.repository.PostRepository;
 import com.sutoga.backend.repository.UserRepository;
 import com.sutoga.backend.service.AuthenticationService;
 import com.sutoga.backend.service.UserService;
@@ -40,6 +41,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final FriendRequestRepository friendRequestRepository;
+    private final PostRepository postRepository;
 
     @Value("${aws.s3.bucket-name}")
     private String s3BucketName;
@@ -273,6 +275,21 @@ public class UserServiceImpl implements UserService {
         });
 
         return friendsResponse;
+    }
+
+    @Override
+    public Integer getPostCountByUserId(Long userId) {
+        return postRepository.findPostCountByUserId(userId);
+    }
+
+    @Override
+    public Integer getFriendCountByUserId(Long userId) {
+        return userRepository.findById(userId).get().getFriends().size();
+    }
+
+    @Override
+    public Integer getGameCountByUserId(Long userId) {
+        return null;
     }
 
     @Override
