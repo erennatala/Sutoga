@@ -380,12 +380,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<FriendRequest> getUnconfirmedFriendRequestsByUserId(Long userId) {
+    public List<FriendRequestResponse> getUnconfirmedFriendRequestsByUserId(Long userId) {
         List<FriendRequest> unconfirmedRequests = friendRequestRepository.findByReceiverIdAndConfirmedFalse(userId);
         unconfirmedRequests.sort(Comparator.comparing(FriendRequest::getCreatedAt).reversed());
 
-        return unconfirmedRequests;
+        // Convert entity list to DTO list
+        return unconfirmedRequests.stream().map(this::convertToDto).collect(Collectors.toList());
     }
+
+    private FriendRequestResponse convertToDto(FriendRequest friendRequest) {
+        FriendRequestResponse dto = new FriendRequestResponse();
+        dto.setId(friendRequest.getId());
+        dto.setSenderId(friendRequest.getSender().getId());
+        dto.setReceiverId(friendRequest.getReceiver().getId());
+
+        FriendRecResponse sender = new FriendRecResponse();
+        sender.setUsername(friendRequest.getSender().getUsername());
+        sender.setProfilePhotoUrl(friendRequest.getSender().getProfilePhotoUrl());
+        dto.setSender(sender);
+
+        FriendRecResponse receiver = new FriendRecResponse();
+        receiver.setUsername(friendRequest.getReceiver().getUsername());
+        receiver.setProfilePhotoUrl(friendRequest.getReceiver().getProfilePhotoUrl());
+        dto.setReceiver(receiver);
+
+        return dto;
+    }
+
 
     @Override
     public Boolean acceptFriendRequest(Long requestId) {
@@ -398,8 +419,14 @@ public class UserServiceImpl implements UserService {
 
             friendRequestRepository.delete(friendRequest);
 
-            sender.getFriends().add(receiver);
-            receiver.getFriends().add(sender);
+            if (!sender.getFriends().contains(receiver)) {
+                sender.getFriends().add(receiver);
+            }
+
+            if (!receiver.getFriends().contains(sender)) {
+                receiver.getFriends().add(sender);
+            }
+
             userRepository.save(sender);
             userRepository.save(receiver);
             return true;
@@ -441,7 +468,19 @@ public class UserServiceImpl implements UserService {
             response.setReceiverId(friendRequest.getReceiver().getId());
             return response;
         } else {
-            return null;
+            friendRequest = friendRequestRepository.findBySenderAndReceiver(receiver, sender);
+
+            if (friendRequest != null) {
+                FriendRequestResponse response = new FriendRequestResponse();
+                response.setId(friendRequest.getId());
+                response.setSenderId(friendRequest.getSender().getId());
+                response.setReceiverId(friendRequest.getReceiver().getId());
+                return response;
+            }
+
+            else {
+                return null;
+            }
         }
     }
 
