@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(Long userId, UpdateRequest updateRequest) {
+    public UserResponse updateUser(Long userId, UpdateRequest updateRequest) {
         Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()) {
             User foundUser = user.get();
@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
             }
 
             userRepository.save(foundUser);
-            return foundUser;
+            return new UserResponse(foundUser);
         } else
             return null;
     }
@@ -514,6 +514,7 @@ public class UserServiceImpl implements UserService {
     public String getProfilePhotoUrlByUsername(String username) {
         return userRepository.findByUsername(username).getProfilePhotoUrl();
     }
+
 
 
 }
