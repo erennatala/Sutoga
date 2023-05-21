@@ -15,7 +15,7 @@ import java.util.List;
 
 public interface UserService {
 
-    User updateUser(Long userId, UpdateRequest updateRequest);
+    UserResponse updateUser(Long userId, UpdateRequest updateRequest);
     Boolean changePassword(String oldPassword, String newPassword, Long userId);
     Boolean connectSteam(Long userId);
     List<User> getAllFriends(Long userId);

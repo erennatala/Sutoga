@@ -2,6 +2,7 @@ package com.sutoga.backend.service;
 
 import com.sutoga.backend.entity.Like;
 import com.sutoga.backend.entity.request.CreateLikeRequest;
+import com.sutoga.backend.entity.response.FriendResponse;
 import com.sutoga.backend.entity.response.LikeResponse;
 
 import java.util.List;
@@ -16,4 +17,5 @@ public interface LikeService {
     void deleteLikeByPostIdAndUserId(Long postId, Long userId);
     void deleteLikesByPostId(Long postId);
     boolean isPostLikedByUser(Long postId, Long userId);
+    List<FriendResponse> getLikersByPostId(Long postId, Long appUserId);
 }

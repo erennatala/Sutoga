@@ -4,6 +4,7 @@ import com.sutoga.backend.entity.Like;
 import com.sutoga.backend.entity.Post;
 import com.sutoga.backend.entity.User;
 import com.sutoga.backend.entity.request.CreateLikeRequest;
+import com.sutoga.backend.entity.response.FriendResponse;
 import com.sutoga.backend.entity.response.LikeResponse;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
 import com.sutoga.backend.repository.LikeRepository;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -99,4 +101,25 @@ public class LikeServiceImpl implements LikeService {
         Like like = likeRepository.findByPostIdAndUserId(postId, userId);
         return like != null;
     }
+
+    @Override
+    public List<FriendResponse> getLikersByPostId(Long postId, Long appUserId) {
+        Post post = postServiceImpl.getPostById(postId);
+
+        List<Like> likes = post.getLikes();
+        List<FriendResponse> likers = new ArrayList<>();
+
+        for (Like like : likes) {
+            FriendResponse liker = new FriendResponse();
+            liker.setId(like.getUser().getId());
+            liker.setUsername(like.getUser().getUsername());
+            liker.setProfilePhotoUrl(like.getUser().getProfilePhotoUrl());
+            liker.setIsFriend(userServiceImpl.areFriends(like.getUser().getId(), appUserId));
+
+            likers.add(liker);
+        }
+
+        return likers;
+    }
+
 }

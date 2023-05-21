@@ -43,7 +43,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<Void> updateOneUser(@PathVariable Long userId,
+    public ResponseEntity<UserResponse> updateOneUser(@PathVariable Long userId,
                                               @RequestParam("email") String email,
                                               @RequestParam("username") String username,
                                               @RequestParam("description") String description,
@@ -62,10 +62,10 @@ public class UserController {
         updateRequest.setBirthDate(birthDate);
         updateRequest.setMedia(media);
 
-        User user = userService.updateUser(userId, updateRequest);
+        UserResponse user = userService.updateUser(userId, updateRequest);
 
         if (user != null) {
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(user, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
