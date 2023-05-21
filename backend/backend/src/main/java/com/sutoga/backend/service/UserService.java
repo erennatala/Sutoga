@@ -34,7 +34,7 @@ public interface UserService {
     String getProfilePhotoUrl(Long userId);
     List<UserSearchResponse> searchUsers(String query);
     UserResponse getUserByUsername(String username);
-    List<FriendRequest> getUnconfirmedFriendRequestsByUserId(Long userId);
+    List<FriendRequestResponse> getUnconfirmedFriendRequestsByUserId(Long userId);
     Boolean areFriends(Long userId1, Long userId2);
     FriendRequestResponse checkFriendRequest(Long userId, Long accountId);
     String getProfilePhotoUrlByUsername(String username);

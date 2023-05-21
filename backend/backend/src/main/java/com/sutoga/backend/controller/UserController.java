@@ -123,8 +123,8 @@ public class UserController {
     }
 
     @GetMapping("/unconfirmed")
-    public ResponseEntity<List<FriendRequest>> getUnconfirmedFriendRequests(@RequestParam("userId") Long userId) {
-        List<FriendRequest> unconfirmedRequests = userService.getUnconfirmedFriendRequestsByUserId(userId);
+    public ResponseEntity<List<FriendRequestResponse>> getUnconfirmedFriendRequests(@RequestParam("userId") Long userId) {
+        List<FriendRequestResponse> unconfirmedRequests = userService.getUnconfirmedFriendRequestsByUserId(userId);
         return new ResponseEntity<>(unconfirmedRequests, HttpStatus.OK);
     }
 

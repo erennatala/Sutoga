@@ -2,6 +2,7 @@ package com.sutoga.backend.service.impl;
 
 import com.sutoga.backend.entity.Like;
 import com.sutoga.backend.entity.User;
+import com.sutoga.backend.entity.UserFriend;
 import com.sutoga.backend.entity.mapper.PostMapper;
 import com.sutoga.backend.entity.request.CreatePostRequest;
 import com.sutoga.backend.entity.response.PostResponse;
@@ -134,7 +135,8 @@ public class PostServiceImpl implements PostService {
             return null;
         }
 
-        List<User> friends = user.getFriends();
+        List<UserFriend> userFriends = user.getUserFriends();
+        List<User> friends = userFriends.stream().map(UserFriend::getFriend).collect(Collectors.toList());
         List<Post> posts = new ArrayList<>();
 
         friends.forEach(friend -> {
@@ -143,7 +145,6 @@ public class PostServiceImpl implements PostService {
                 posts.addAll(page.getContent());
             }
         });
-
 
         posts.sort((post1, post2) -> post2.getPostDate().compareTo(post1.getPostDate()));
 
@@ -162,7 +163,8 @@ public class PostServiceImpl implements PostService {
             return null;
         }
 
-        List<User> friends = user.getFriends();
+        List<UserFriend> userFriends = user.getUserFriends();
+        List<User> friends = userFriends.stream().map(UserFriend::getFriend).collect(Collectors.toList());
         List<Post> posts = new ArrayList<>();
 
         // Fetch user's posts

@@ -2,6 +2,7 @@ package com.sutoga.backend.service.impl;
 
 import com.sutoga.backend.entity.FriendRequest;
 import com.sutoga.backend.entity.User;
+import com.sutoga.backend.entity.UserFriend;
 import com.sutoga.backend.entity.dto.UserResponse;
 import com.sutoga.backend.entity.mapper.UserMapper;
 import com.sutoga.backend.entity.request.UpdateRequest;
@@ -139,8 +140,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllFriends(Long userId) {
-        return userRepository.findById(userId).get().getFriends();
+        User user = userRepository.findById(userId).get();
+        List<UserFriend> userFriends = user.getUserFriends();
+        return userFriends.stream()
+                .map(UserFriend::getFriend)
+                .collect(Collectors.toList());
     }
+
 
     @Override
     public Boolean addFriend(Long userId, String receiverUsername) {
@@ -166,13 +172,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<FriendRecResponse> getFriendRecommendationsByUser(Long userId) {
         User user = userRepository.findById(userId).orElse(null);
-        List<User> userFriends = user.getFriends();
+        List<UserFriend> userFriendEntities = user.getUserFriends();
         List<Long> friendIds = new ArrayList<>();
+        List<User> friends = new ArrayList<>();
 
-        userFriends.forEach(user1 -> friendIds.add(user1.getId()));
+        userFriendEntities.forEach(userFriend -> {
+            friendIds.add(userFriend.getFriend().getId());
+            friends.add(userFriend.getFriend());
+        });
         friendIds.add(userId);
 
-        List<FriendRequest> existingFriendRequests = friendRequestRepository.findBySenderAndReceiverIn(user, userFriends);
+        List<FriendRequest> existingFriendRequests = friendRequestRepository.findBySenderAndReceiverIn(user, friends);
 
         List<Long> excludedUserIds = existingFriendRequests.stream()
                 .map(friendRequest -> friendRequest.getReceiver().getId())
@@ -198,18 +208,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public FriendRecResponse getFriendRecommendationByUser(Long userId) {
         User user = userRepository.findById(userId).orElse(null);
-        List<User> userFriends = user.getFriends();
-        List<Long> friendIds = new ArrayList<>();
-
-        userFriends.forEach(user1 -> friendIds.add(user1.getId()));
+        List<UserFriend> userFriends = user.getUserFriends();
+        List<User> friends = userFriends.stream().map(UserFriend::getFriend).collect(Collectors.toList());
+        List<Long> friendIds = friends.stream().map(User::getId).collect(Collectors.toList());
         friendIds.add(userId);
 
-        List<FriendRequest> existingFriendRequests = friendRequestRepository.findBySenderAndReceiverIn(user, userFriends);
+        List<FriendRequest> existingFriendRequests = friendRequestRepository.findBySenderAndReceiverIn(user, friends); //TODO BURDA HATA OLABİLİR
 
-        List<Long> excludedUserIds = new ArrayList<>();
-        for (FriendRequest friendRequest : existingFriendRequests) {
-            excludedUserIds.add(friendRequest.getReceiver().getId());
-        }
+        List<Long> excludedUserIds = existingFriendRequests.stream()
+                .map(friendRequest -> friendRequest.getReceiver().getId())
+                .collect(Collectors.toList());
         excludedUserIds.addAll(friendIds);
 
         User recommendation = userRepository.findRandomUserExcludingIds(excludedUserIds);
@@ -225,11 +233,15 @@ public class UserServiceImpl implements UserService {
         Pageable pageable = PageRequest.of(page, size);
         User user = userRepository.findById(userId).orElse(null);
 
-        List<User> friends = user.getFriends();
+        List<User> friends = user.getUserFriends().stream().map(UserFriend::getFriend).collect(Collectors.toList());
 
-        // pagination logic here
         int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), friends.size());
+        int end = Math.min(start + pageable.getPageSize(), friends.size());
+
+        if (start > end) {
+            start = 0;
+        }
+
         List<User> friendsSlice = new ArrayList<>(friends.subList(start, end));
 
         List<FriendResponse> friendsResponse = new ArrayList<>();
@@ -255,7 +267,7 @@ public class UserServiceImpl implements UserService {
 
         User appUser = userRepository.findById(userId).orElse(null);
 
-        List<User> friends = user.getFriends();
+        List<User> friends = user.getUserFriends().stream().map(UserFriend::getFriend).collect(Collectors.toList());
 
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), friends.size());
@@ -284,7 +296,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Integer getFriendCountByUserId(Long userId) {
-        return userRepository.findById(userId).get().getFriends().size();
+        return userRepository.findById(userId).orElseThrow(() -> new ResultNotFoundException("User not found")).getUserFriends().size();
     }
 
     @Override
@@ -294,7 +306,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean removeFriend(Long userId, Long friendId) {
-        return null;
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResultNotFoundException("User not found"));
+        User friend = userRepository.findById(friendId).orElseThrow(() -> new ResultNotFoundException("Friend not found"));
+
+        Optional<UserFriend> userFriend = user.getUserFriends().stream()
+                .filter(uf -> uf.getFriend().getId().equals(friendId))
+                .findFirst();
+
+        if (userFriend.isPresent()) {
+            user.getUserFriends().remove(userFriend.get());
+            userRepository.save(user);
+            return true;
+        }
+
+        return false;
     }
 
     public User handleProfilePictureUpload(Long userId, MultipartFile file) {
@@ -380,12 +405,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<FriendRequest> getUnconfirmedFriendRequestsByUserId(Long userId) {
+    public List<FriendRequestResponse> getUnconfirmedFriendRequestsByUserId(Long userId) {
         List<FriendRequest> unconfirmedRequests = friendRequestRepository.findByReceiverIdAndConfirmedFalse(userId);
         unconfirmedRequests.sort(Comparator.comparing(FriendRequest::getCreatedAt).reversed());
 
-        return unconfirmedRequests;
+        // Convert entity list to DTO list
+        return unconfirmedRequests.stream().map(this::convertToDto).collect(Collectors.toList());
     }
+
+    private FriendRequestResponse convertToDto(FriendRequest friendRequest) {
+        FriendRequestResponse dto = new FriendRequestResponse();
+        dto.setId(friendRequest.getId());
+        dto.setSenderId(friendRequest.getSender().getId());
+        dto.setReceiverId(friendRequest.getReceiver().getId());
+
+        FriendRecResponse sender = new FriendRecResponse();
+        sender.setUsername(friendRequest.getSender().getUsername());
+        sender.setProfilePhotoUrl(friendRequest.getSender().getProfilePhotoUrl());
+        dto.setSender(sender);
+
+        FriendRecResponse receiver = new FriendRecResponse();
+        receiver.setUsername(friendRequest.getReceiver().getUsername());
+        receiver.setProfilePhotoUrl(friendRequest.getReceiver().getProfilePhotoUrl());
+        dto.setReceiver(receiver);
+
+        return dto;
+    }
+
 
     @Override
     public Boolean acceptFriendRequest(Long requestId) {
@@ -398,8 +444,12 @@ public class UserServiceImpl implements UserService {
 
             friendRequestRepository.delete(friendRequest);
 
-            sender.getFriends().add(receiver);
-            receiver.getFriends().add(sender);
+            UserFriend userFriend1 = new UserFriend(null, sender, receiver);
+            UserFriend userFriend2 = new UserFriend(null, receiver, sender);
+
+            sender.getUserFriends().add(userFriend1);
+            receiver.getUserFriends().add(userFriend2);
+
             userRepository.save(sender);
             userRepository.save(receiver);
             return true;
@@ -424,7 +474,10 @@ public class UserServiceImpl implements UserService {
         User user2 = userRepository.findById(userId2)
                 .orElseThrow(() -> new ResultNotFoundException("User with ID " + userId2 + " not found"));
 
-        return user1.getFriends().contains(user2) && user2.getFriends().contains(user1);
+        List<User> friendsOfUser1 = user1.getUserFriends().stream().map(UserFriend::getFriend).collect(Collectors.toList());
+        List<User> friendsOfUser2 = user2.getUserFriends().stream().map(UserFriend::getFriend).collect(Collectors.toList());
+
+        return friendsOfUser1.contains(user2) && friendsOfUser2.contains(user1);
     }
 
     @Override
@@ -441,7 +494,19 @@ public class UserServiceImpl implements UserService {
             response.setReceiverId(friendRequest.getReceiver().getId());
             return response;
         } else {
-            return null;
+            friendRequest = friendRequestRepository.findBySenderAndReceiver(receiver, sender);
+
+            if (friendRequest != null) {
+                FriendRequestResponse response = new FriendRequestResponse();
+                response.setId(friendRequest.getId());
+                response.setSenderId(friendRequest.getSender().getId());
+                response.setReceiverId(friendRequest.getReceiver().getId());
+                return response;
+            }
+
+            else {
+                return null;
+            }
         }
     }
 
