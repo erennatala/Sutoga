@@ -1,6 +1,7 @@
 package com.sutoga.backend.entity;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -41,8 +42,8 @@ public class User  {
 
     private LocalDate birthDate;
 
-    @OneToMany
-    private List<User> friends;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserFriend> userFriends = new ArrayList<>();
 
     private Long steamId;
 
