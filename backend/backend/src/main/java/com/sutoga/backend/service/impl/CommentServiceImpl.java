@@ -7,44 +7,41 @@ import com.sutoga.backend.entity.response.CommentResponse;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
 import com.sutoga.backend.repository.CommentRepository;
 import com.sutoga.backend.service.CommentService;
-import com.sutoga.backend.service.LikeService;
 import com.sutoga.backend.service.PostService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Controller;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.time.LocalDateTime;
 
 @Service
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
     private final UserServiceImpl userServiceImpl;
-
-    @Lazy
     private final PostService postServiceImpl;
 
     @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository, UserServiceImpl userServiceImpl, @Lazy PostService postServiceImpl) {
+    public CommentServiceImpl(CommentRepository commentRepository, UserServiceImpl userServiceImpl, PostService postServiceImpl) {
         this.commentRepository = commentRepository;
         this.userServiceImpl = userServiceImpl;
         this.postServiceImpl = postServiceImpl;
     }
 
     @Override
-    public Comment createComment(CreateCommentRequest createCommentRequest) {
-        //Post post = postServiceImpl.getOnePostById(createCommentRequest.getPostId());
+    public CommentResponse createComment(CreateCommentRequest createCommentRequest) {
+        Post post = postServiceImpl.getPostById(createCommentRequest.getPostId());
 
-        if(createCommentRequest!=null){
+        if(post != null){
             Comment comment = new Comment();
-            //comment.setPost(post);
+            comment.setPost(post);
+            comment.setUser(userServiceImpl.getOneUserById(createCommentRequest.getSenderId()));
             comment.setText(createCommentRequest.getText());
+            comment.setCommentDate(LocalDateTime.now());
+            Comment savedComment = commentRepository.save(comment);
 
-            return commentRepository.save(comment);
+            return new CommentResponse(savedComment.getId(), savedComment.getText(), savedComment.getUser().getId(), savedComment.getUser().getProfilePhotoUrl(), savedComment.getUser().getUsername());
         }
         else{
             throw new ResultNotFoundException("Invalid postId");
@@ -52,18 +49,10 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentResponse> getAllCommentsByParameter(Optional<Long> postId) {
-        List<Comment> commentList;
-        if(postId.isPresent()){
-            commentList=commentRepository.findByPostId(postId.get());
-        }
-        else {
-            commentList= commentRepository.findAll();
-        }
-        return commentList.stream().map(comment ->
-                new CommentResponse(comment.getId(), comment.getPost().getId(), comment.getText())).collect(Collectors.toList());
+    public Page<CommentResponse> getCommentsByPostId(Long postId, Pageable pageable) {
+        Page<Comment> comments = commentRepository.findAllByPostId(postId, pageable);
 
-
+        return comments.map(comment -> new CommentResponse(comment.getId(), comment.getText(), comment.getUser().getId(), comment.getUser().getProfilePhotoUrl(), comment.getUser().getUsername()));
     }
 
     @Override
@@ -71,5 +60,9 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.deleteById(id);
     }
 
-
+    @Override
+    public Integer getCommentCountByPostId(Long postId) {
+        return commentRepository.getCommentCountByPostId(postId);
+    }
 }
+

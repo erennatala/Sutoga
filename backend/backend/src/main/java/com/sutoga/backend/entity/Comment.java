@@ -20,6 +20,7 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     @ManyToOne
@@ -30,5 +31,11 @@ public class Comment {
     @Column(name = "text")
     private String text;
 
+    @Column(name = "comment_date")
     private LocalDateTime commentDate;
+
+    @PrePersist
+    public void prePersist() {
+        commentDate = LocalDateTime.now();
+    }
 }
