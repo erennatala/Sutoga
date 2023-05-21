@@ -181,28 +181,25 @@ public class PostServiceImpl implements PostService {
             }
         });
 
-        // Sort the posts
         posts.sort((post1, post2) -> post2.getPostDate().compareTo(post1.getPostDate()));
 
-        // Create a page object
         int start = (int) PageRequest.of(pageNumber, pageSize).getOffset();
         int end = Math.min((start + PageRequest.of(pageNumber, pageSize).getPageSize()), posts.size());
 
         if (start > end) {
-            start = end; // or you could return an empty page here
+            start = end;
         }
 
         List<PostResponse> postResponses = posts.subList(start, end)
                 .stream()
                 .map(post -> {
                     PostResponse postResponse = postMapper.postToPostResponse(post);
-                    postResponse.setMediaUrl(post.getMediaUrl()); // Set the mediaUrl
-                    postResponse.setLikeCount(post.getLikes().size()); // Set the likeCount
+                    postResponse.setMediaUrl(post.getMediaUrl());
+                    postResponse.setLikeCount(post.getLikes().size());
                     postResponse.setCommentCount(post.getComments().size());
-                    // Set the isLiked field based on the user's like status
                     postResponse.setLikedByUser(likeService.isPostLikedByUser(post.getId(), userId));
                     postResponse.setUsersPost(post.getUser().getId().equals(userId));
-                    postResponse.setPhotoUrl(user.getProfilePhotoUrl());
+                    postResponse.setPhotoUrl(post.getUser().getProfilePhotoUrl());
                     return postResponse;
                 })
                 .collect(Collectors.toList());
