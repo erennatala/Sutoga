@@ -13,8 +13,11 @@ import com.sutoga.backend.service.PostService;
 import com.sutoga.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -43,14 +46,13 @@ public class LikeServiceImpl implements LikeService {
         if (user != null && post != null) {
             Like existingLike = likeRepository.findByPostIdAndUserId(createLikeRequest.getPostId(), createLikeRequest.getUserId());
             if (existingLike != null) {
-                // A like already exists for this user and post.
-                // You can throw an exception or return the existingLike directly, depending on your needs.
                 throw new IllegalArgumentException("User has already liked this post");
             }
 
             Like like = new Like();
             like.setUser(user);
             like.setPost(post);
+            like.setLikeDate(LocalDateTime.now());
 
             return likeRepository.save(like);
         } else {
@@ -120,6 +122,11 @@ public class LikeServiceImpl implements LikeService {
         }
 
         return likers;
+    }
+
+    @Override
+    public Page<Like> getUserLikedPosts(Long userId, Pageable pageable) {
+        return likeRepository.findByUserId(userId, pageable);
     }
 
 }
