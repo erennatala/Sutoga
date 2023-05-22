@@ -26,4 +26,5 @@ public interface PostService {
     Page<PostResponse> getProfilePosts(Long userId, int pageNumber, int pageSize);
     Post getPostById(Long postId);
     void deletePost(Long postId);
+    Page<PostResponse> getUserLikedPosts(Long userId, int pageNumber, int pageSize);
 }

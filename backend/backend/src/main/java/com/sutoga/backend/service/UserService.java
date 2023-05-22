@@ -44,4 +44,5 @@ public interface UserService {
     Integer getPostCountByUserId(Long userId);
     Integer getGameCountByUserId(Long userId);
     Integer getFriendCountByUserId(Long userId);
+    Boolean changePassword(Long userId, String currentPassword, String newPassword, String confirmPassword);
 }

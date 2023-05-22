@@ -83,4 +83,11 @@ public class PostController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @GetMapping("/getUserLikedPosts")
+    public Page<PostResponse> getUserLikedPosts(@RequestParam("userId") Long userId,
+                                                @RequestParam(defaultValue = "0") int pageNumber,
+                                                @RequestParam(defaultValue = "10") int pageSize) {
+        return postService.getUserLikedPosts(userId, pageNumber, pageSize);
+    }
+
 }

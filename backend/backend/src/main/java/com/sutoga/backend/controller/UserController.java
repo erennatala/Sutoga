@@ -1,6 +1,5 @@
 package com.sutoga.backend.controller;
 
-import com.sutoga.backend.entity.FriendRequest;
 import com.sutoga.backend.entity.User;
 import com.sutoga.backend.entity.dto.UserResponse;
 import com.sutoga.backend.entity.response.FriendRecResponse;
@@ -18,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -194,4 +192,16 @@ public class UserController {
         return ResponseEntity.ok(userService.getGameCountByUserId(userId));
     }
 
+    @PostMapping("/changePassword/{userId}")
+    public ResponseEntity<?> changePassword(@PathVariable("userId") Long userId,
+                                            @RequestParam("currentPassword") String currentPassword,
+                                            @RequestParam("newPassword") String newPassword,
+                                            @RequestParam("confirmPassword") String confirmPassword) {
+        Boolean isPasswordChanged = userService.changePassword(userId, currentPassword, newPassword, confirmPassword);
+        if (isPasswordChanged) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

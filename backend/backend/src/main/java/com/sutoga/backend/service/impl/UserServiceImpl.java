@@ -1,5 +1,6 @@
 package com.sutoga.backend.service.impl;
 
+import com.amazonaws.services.cognitoidp.model.InvalidPasswordException;
 import com.sutoga.backend.entity.FriendRequest;
 import com.sutoga.backend.entity.User;
 import com.sutoga.backend.entity.UserFriend;
@@ -25,6 +26,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
@@ -515,6 +517,23 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUsername(username).getProfilePhotoUrl();
     }
 
+    @Transactional
+    public Boolean changePassword(Long userId, String currentPassword, String newPassword, String confirmPassword) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResultNotFoundException("User with id " + userId + " not found!"));
 
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            throw new InvalidPasswordException("Invalid current password!");
+        }
+
+        if (!newPassword.equals(confirmPassword)) {
+            throw new InvalidPasswordException("New password and confirm password do not match!");
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+
+        return true;
+    }
 
 }

@@ -295,4 +295,40 @@ public class PostServiceImpl implements PostService {
         postRepository.deleteById(postId);
     }
 
+    @Override
+    public Page<PostResponse> getUserLikedPosts(Long userId, int pageNumber, int pageSize) {
+        User user = userRepository.findById(userId).orElse(null);
+
+        if (user == null) {
+            return null;
+        }
+
+        Page<Like> userLikedPosts = likeService.getUserLikedPosts(userId, PageRequest.of(pageNumber, pageSize, Sort.by("likeDate").descending()));
+        List<Post> posts = userLikedPosts.stream().map(Like::getPost).collect(Collectors.toList());
+
+        int start = (int) userLikedPosts.getPageable().getOffset();
+        int end = Math.min((start + userLikedPosts.getPageable().getPageSize()), posts.size());
+
+        if (start > end) {
+            start = end;
+        }
+
+        List<PostResponse> postResponses = posts.subList(start, end)
+                .stream()
+                .map(post -> {
+                    PostResponse postResponse = postMapper.postToPostResponse(post);
+                    postResponse.setMediaUrl(post.getMediaUrl());
+                    postResponse.setLikeCount(post.getLikes().size());
+                    postResponse.setCommentCount(post.getComments().size());
+                    postResponse.setLikedByUser(true);
+                    postResponse.setUsersPost(post.getUser().getId().equals(userId));
+                    postResponse.setPhotoUrl(post.getUser().getProfilePhotoUrl());
+                    return postResponse;
+                })
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(postResponses, userLikedPosts.getPageable(), userLikedPosts.getTotalElements());
+    }
+
+
 }
