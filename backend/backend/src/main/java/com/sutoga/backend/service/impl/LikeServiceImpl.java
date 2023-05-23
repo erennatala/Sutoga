@@ -31,7 +31,6 @@ public class LikeServiceImpl implements LikeService {
     private final LikeRepository likeRepository;
     private final UserService userServiceImpl;
     private final NotificationService notificationService;
-
     @Lazy
     private final PostService postServiceImpl;
     private final NotificationRepository notificationRepository;

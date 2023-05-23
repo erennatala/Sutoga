@@ -8,6 +8,7 @@ import com.sutoga.backend.entity.request.CreateCommentRequest;
 import com.sutoga.backend.entity.response.CommentResponse;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
 import com.sutoga.backend.repository.CommentRepository;
+import com.sutoga.backend.repository.NotificationRepository;
 import com.sutoga.backend.service.CommentService;
 import com.sutoga.backend.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +25,15 @@ public class CommentServiceImpl implements CommentService {
     private final UserServiceImpl userServiceImpl;
     private final PostService postServiceImpl;
     private final NotificationService notificationService;
+    private final NotificationRepository notificationRepository;
 
     @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository, UserServiceImpl userServiceImpl, PostService postServiceImpl, NotificationService notificationService) {
+    public CommentServiceImpl(CommentRepository commentRepository, UserServiceImpl userServiceImpl, PostService postServiceImpl, NotificationService notificationService, NotificationRepository notificationRepository) {
         this.commentRepository = commentRepository;
         this.userServiceImpl = userServiceImpl;
         this.postServiceImpl = postServiceImpl;
         this.notificationService = notificationService;
+        this.notificationRepository = notificationRepository;
     }
 
     @Override
@@ -73,7 +76,16 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void deleteComment(Long id) {
+        Comment comment = commentRepository.findById(id).orElse(null);
+        Notification notification = notificationRepository.findByCommentActivity(comment);
+        if(notification != null) {
+            notification.setCommentActivity(null);
+            notificationRepository.save(notification);
+        }
         commentRepository.deleteById(id);
+        if (notification != null) {
+            notificationRepository.delete(notification);
+        }
     }
 
     @Override

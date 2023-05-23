@@ -14,6 +14,7 @@ import com.sutoga.backend.entity.response.FriendResponse;
 import com.sutoga.backend.entity.response.UserSearchResponse;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
 import com.sutoga.backend.repository.FriendRequestRepository;
+import com.sutoga.backend.repository.NotificationRepository;
 import com.sutoga.backend.repository.PostRepository;
 import com.sutoga.backend.repository.UserRepository;
 import com.sutoga.backend.service.AuthenticationService;
@@ -47,6 +48,7 @@ public class UserServiceImpl implements UserService {
     private final FriendRequestRepository friendRequestRepository;
     private final PostRepository postRepository;
     private final NotificationService notificationService;
+    private final NotificationRepository notificationRepository;
 
     @Value("${aws.s3.bucket-name}")
     private String s3BucketName;
@@ -465,7 +467,17 @@ public class UserServiceImpl implements UserService {
             User sender = friendRequest.getSender();
             User receiver = friendRequest.getReceiver();
 
+            Notification notification = notificationRepository.findByFriendRequestActivity(friendRequest);
+
+            if(notification != null) {
+                notification.setFriendRequestActivity(null);
+                notificationRepository.save(notification);
+            }
+
             friendRequestRepository.delete(friendRequest);
+            if (notification != null) {
+                notificationRepository.delete(notification);
+            }
 
             UserFriend userFriend1 = new UserFriend(null, sender, receiver);
             UserFriend userFriend2 = new UserFriend(null, receiver, sender);
@@ -485,7 +497,18 @@ public class UserServiceImpl implements UserService {
         Optional<FriendRequest> friendRequestOptional = friendRequestRepository.findById(requestId);
         if (friendRequestOptional.isPresent()) {
             FriendRequest friendRequest = friendRequestOptional.get();
+
+            Notification notification = notificationRepository.findByFriendRequestActivity(friendRequest);
+
+            if(notification != null) {
+                notification.setFriendRequestActivity(null);
+                notificationRepository.save(notification);
+            }
+
             friendRequestRepository.delete(friendRequest);
+            if (notification != null) {
+                notificationRepository.delete(notification);
+            }
             return true;
         }
         return false;
@@ -569,7 +592,10 @@ public class UserServiceImpl implements UserService {
 
     public List<Notification> getNotification(Long userId) {
         User user = userRepository.findById(userId).orElse(null);
-        return notificationService.getNotifications(user);
+        List<Notification> notifications = notificationService.getNotifications(user);
+        notifications.sort(Comparator.comparing(Notification::getCreatedAt).reversed());
+
+        return notifications;
     }
 
 }
