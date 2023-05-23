@@ -20,4 +20,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
     User findBySteamId(Long steamId);
     List<User> findByUsernameIgnoreCaseContaining(String query);
+    Boolean existsByUsername(String username);
+    Boolean existsByEmail(String email);
 }

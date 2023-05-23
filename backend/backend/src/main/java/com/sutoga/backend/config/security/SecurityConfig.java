@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .disable()
                 .cors(cors -> cors.disable())
                 .authorizeHttpRequests()
-                .requestMatchers("/auth/**")
+                .requestMatchers("/auth/**", "/socket.io/*")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

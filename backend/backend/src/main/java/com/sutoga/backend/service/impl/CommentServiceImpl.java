@@ -1,7 +1,9 @@
 package com.sutoga.backend.service.impl;
 
 import com.sutoga.backend.entity.Comment;
+import com.sutoga.backend.entity.Notification;
 import com.sutoga.backend.entity.Post;
+import com.sutoga.backend.entity.User;
 import com.sutoga.backend.entity.request.CreateCommentRequest;
 import com.sutoga.backend.entity.response.CommentResponse;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
@@ -21,16 +23,19 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final UserServiceImpl userServiceImpl;
     private final PostService postServiceImpl;
+    private final NotificationService notificationService;
 
     @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository, UserServiceImpl userServiceImpl, PostService postServiceImpl) {
+    public CommentServiceImpl(CommentRepository commentRepository, UserServiceImpl userServiceImpl, PostService postServiceImpl, NotificationService notificationService) {
         this.commentRepository = commentRepository;
         this.userServiceImpl = userServiceImpl;
         this.postServiceImpl = postServiceImpl;
+        this.notificationService = notificationService;
     }
 
     @Override
     public CommentResponse createComment(CreateCommentRequest createCommentRequest) {
+        User user = userServiceImpl.getOneUserById(createCommentRequest.getSenderId());
         Post post = postServiceImpl.getPostById(createCommentRequest.getPostId());
 
         if(post != null){
@@ -40,6 +45,17 @@ public class CommentServiceImpl implements CommentService {
             comment.setText(createCommentRequest.getText());
             comment.setCommentDate(LocalDateTime.now());
             Comment savedComment = commentRepository.save(comment);
+
+            Notification notification = new Notification();
+            notification.setReceiver(comment.getPost().getUser());
+            notification.setCommentActivity(comment);
+            notification.setSeen(false);
+            notification.setCreatedAt(LocalDateTime.now());
+            notification.setSenderUsername(user.getUsername());
+            notification.setSenderPhotoUrl(user.getProfilePhotoUrl());
+
+            // Save and send notification
+            notificationService.createAndSendNotification(notification);
 
             return new CommentResponse(savedComment.getId(), savedComment.getText(), savedComment.getUser().getId(), savedComment.getUser().getProfilePhotoUrl(), savedComment.getUser().getUsername());
         }

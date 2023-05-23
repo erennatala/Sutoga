@@ -1,6 +1,7 @@
 package com.sutoga.backend.service;
 
 import com.sutoga.backend.entity.FriendRequest;
+import com.sutoga.backend.entity.Notification;
 import com.sutoga.backend.entity.User;
 import com.sutoga.backend.entity.dto.AuthenticationResponse;
 import com.sutoga.backend.entity.dto.UserResponse;
@@ -45,4 +46,7 @@ public interface UserService {
     Integer getGameCountByUserId(Long userId);
     Integer getFriendCountByUserId(Long userId);
     Boolean changePassword(Long userId, String currentPassword, String newPassword, String confirmPassword);
+    Boolean checkUsername(String username);
+    Boolean checkEmail(String email);
+    List<Notification> getNotification(Long userId);
 }
