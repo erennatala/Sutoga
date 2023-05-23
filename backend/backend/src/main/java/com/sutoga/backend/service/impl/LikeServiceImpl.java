@@ -1,6 +1,7 @@
 package com.sutoga.backend.service.impl;
 
 import com.sutoga.backend.entity.Like;
+import com.sutoga.backend.entity.Notification;
 import com.sutoga.backend.entity.Post;
 import com.sutoga.backend.entity.User;
 import com.sutoga.backend.entity.request.CreateLikeRequest;
@@ -8,6 +9,7 @@ import com.sutoga.backend.entity.response.FriendResponse;
 import com.sutoga.backend.entity.response.LikeResponse;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
 import com.sutoga.backend.repository.LikeRepository;
+import com.sutoga.backend.repository.NotificationRepository;
 import com.sutoga.backend.service.LikeService;
 import com.sutoga.backend.service.PostService;
 import com.sutoga.backend.service.UserService;
@@ -28,15 +30,19 @@ public class LikeServiceImpl implements LikeService {
 
     private final LikeRepository likeRepository;
     private final UserService userServiceImpl;
+    private final NotificationService notificationService;
 
     @Lazy
     private final PostService postServiceImpl;
+    private final NotificationRepository notificationRepository;
 
     @Autowired
-    public LikeServiceImpl(LikeRepository likeRepository, UserService userService, @Lazy PostService postService) {
+    public LikeServiceImpl(LikeRepository likeRepository, UserService userService, @Lazy PostService postService, NotificationService notificationService, NotificationRepository notificationRepository) {
         this.likeRepository = likeRepository;
         this.userServiceImpl = userService;
         this.postServiceImpl = postService;
+        this.notificationService = notificationService;
+        this.notificationRepository = notificationRepository;
     }
     @Override
     public Like createLike(CreateLikeRequest createLikeRequest) {
@@ -53,8 +59,20 @@ public class LikeServiceImpl implements LikeService {
             like.setUser(user);
             like.setPost(post);
             like.setLikeDate(LocalDateTime.now());
+            likeRepository.save(like);
 
-            return likeRepository.save(like);
+            Notification notification = new Notification();
+            notification.setReceiver(like.getPost().getUser());
+            notification.setLikeActivity(like);
+            notification.setSeen(false);
+            notification.setCreatedAt(LocalDateTime.now());
+            notification.setSenderUsername(user.getUsername());
+            notification.setSenderPhotoUrl(user.getProfilePhotoUrl());
+
+            // Save and send notification
+            notificationService.createAndSendNotification(notification);
+
+            return like;
         } else {
             throw new ResultNotFoundException("Invalid userId or postId");
         }
@@ -91,8 +109,16 @@ public class LikeServiceImpl implements LikeService {
     @Override
     public void deleteLikeByPostIdAndUserId(Long postId, Long userId) {
         Like like = likeRepository.findByPostIdAndUserId(postId, userId);
+        Notification notification = notificationRepository.findByLikeActivity(like);
+        if(notification != null) {
+            notification.setLikeActivity(null);
+            notificationRepository.save(notification);
+        }
         if (like != null) {
             likeRepository.delete(like);
+            if (notification != null) {
+                notificationRepository.delete(notification);
+            }
         } else {
             throw new IllegalArgumentException("Like not found for provided postId and userId");
         }

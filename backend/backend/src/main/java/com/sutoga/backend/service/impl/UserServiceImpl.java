@@ -2,6 +2,7 @@ package com.sutoga.backend.service.impl;
 
 import com.amazonaws.services.cognitoidp.model.InvalidPasswordException;
 import com.sutoga.backend.entity.FriendRequest;
+import com.sutoga.backend.entity.Notification;
 import com.sutoga.backend.entity.User;
 import com.sutoga.backend.entity.UserFriend;
 import com.sutoga.backend.entity.dto.UserResponse;
@@ -45,6 +46,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final FriendRequestRepository friendRequestRepository;
     private final PostRepository postRepository;
+    private final NotificationService notificationService;
 
     @Value("${aws.s3.bucket-name}")
     private String s3BucketName;
@@ -72,6 +74,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse updateUser(Long userId, UpdateRequest updateRequest) {
         Optional<User> user = userRepository.findById(userId);
+        if (userRepository.existsByUsername(updateRequest.getUsername()) && !Objects.equals(user.get().getUsername(), updateRequest.getUsername())) {
+            throw new IllegalArgumentException("Username is already taken");
+        }
+
+        if (userRepository.existsByEmail(updateRequest.getEmail()) && !Objects.equals(user.get().getEmail(), updateRequest.getEmail())) {
+            throw new IllegalArgumentException("Email is already taken");
+        }
         if (user.isPresent()) {
             User foundUser = user.get();
             foundUser.setUsername(updateRequest.getUsername());
@@ -168,6 +177,18 @@ public class UserServiceImpl implements UserService {
         friendRequest.setConfirmed(false);
 
         friendRequestRepository.save(friendRequest);
+
+        Notification notification = new Notification();
+        notification.setReceiver(receiver);
+        notification.setFriendRequestActivity(friendRequest);
+        notification.setSeen(false);
+        notification.setCreatedAt(LocalDateTime.now());
+        notification.setSenderUsername(sender.getUsername());
+        notification.setSenderPhotoUrl(sender.getProfilePhotoUrl());
+
+        // Save and send notification
+        notificationService.createAndSendNotification(notification);
+
         return true;
     }
 
@@ -534,6 +555,21 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         return true;
+    }
+
+    @Override
+    public Boolean checkUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    @Override
+    public Boolean checkEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    public List<Notification> getNotification(Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        return notificationService.getNotifications(user);
     }
 
 }

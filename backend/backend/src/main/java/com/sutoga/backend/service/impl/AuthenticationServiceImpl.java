@@ -29,12 +29,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final JwtService jwtService;
 
     private final AuthenticationManager authenticationManager;
-
     private final TokenRepository tokenRepository;
 
 
     @Override
     public AuthenticationResponse register(RegisterRequest registerRequest) {
+        if (userRepository.existsByUsername(registerRequest.getUsername())) {
+            throw new IllegalArgumentException("Username is already taken");
+        }
+
+        if (userRepository.existsByEmail(registerRequest.getEmail())) {
+            throw new IllegalArgumentException("Email is already taken");
+        }
+
         User user = User.builder()
                 .firstName(registerRequest.getFirstName())
                 .lastName(registerRequest.getLastName())
@@ -42,6 +49,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .email(registerRequest.getEmail())
                 .phoneNumber(registerRequest.getPhoneNumber())
                 .password(passwordEncoder.encode(registerRequest.getPassword()))
+                .birthDate(registerRequest.getBirthDate())
                 .role(Role.USER)
                 .steamId(registerRequest.getSteamId())
                 .build();

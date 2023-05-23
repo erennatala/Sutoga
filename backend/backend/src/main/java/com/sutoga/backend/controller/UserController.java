@@ -1,5 +1,6 @@
 package com.sutoga.backend.controller;
 
+import com.sutoga.backend.entity.Notification;
 import com.sutoga.backend.entity.User;
 import com.sutoga.backend.entity.dto.UserResponse;
 import com.sutoga.backend.entity.response.FriendRecResponse;
@@ -204,4 +205,10 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/notifications/{userId}")
+    public ResponseEntity<List<Notification> > getUserNotifications(@PathVariable Long userId) {
+        return ResponseEntity.ok(userService.getNotification(userId));
+    }
+
 }
