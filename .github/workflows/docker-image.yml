@@ -23,7 +23,7 @@ jobs:
         distribution: 'adopt'
     - name: Build with Maven
       working-directory: backend/backend
-      run: mvn clean install -U -DprofileIdEnabled=true -DskipTests -Dfile=sutoga.jar -DgroupId=com.sutoga -DartifactId=backend -Dversion=0.0.1 -Dpackaging=jar -DgeneratePom=true
+      run: mvn clean install -U -DskipTests -Dfile=sutoga.jar -DgroupId=com.sutoga -DartifactId=backend -Dversion=0.0.1 -Dpackaging=jar -DgeneratePom=true
       
     - name: Build & push Docker image
       uses: mr-smithers-excellent/docker-build-push@v5
@@ -31,6 +31,6 @@ jobs:
           image: keremmican1/sutoga
           tags: latest
           registry: docker.io
-          dockerfile: backend/backend/Dockerfile
+          dockerfile: Dockerfile
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
