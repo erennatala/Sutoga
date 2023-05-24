@@ -97,7 +97,6 @@ public class PostServiceImpl implements PostService {
         return postResponse;
     }
 
-
     @Override
     public Post updatePost(Long postId, Post newPost) {
         Optional<Post> existingPost = postRepository.findById(postId);

@@ -112,10 +112,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public AuthenticationResponse handleSteamLogin(Long steamId) {
         User user = userRepository.findBySteamId(steamId);
         if (user == null) {
-            // If user doesn't exist, create new user
-            user = new User();
-            user.setSteamId(steamId);
-            userRepository.save(user);
+            return null;
         }
 
         String jwtToken = jwtService.generateToken(new CustomUserDetails(user));
