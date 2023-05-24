@@ -15,10 +15,12 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private long appid;
+
     private String title;
 
+    @Column(columnDefinition = "TEXT", length = 5000)
     private String description;
-
 
     private LocalDate releaseDate;
 
