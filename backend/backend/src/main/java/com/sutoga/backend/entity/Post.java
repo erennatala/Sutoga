@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,11 +28,11 @@ public class Post {
 
     @OneToMany(mappedBy = "post")
     @JsonIgnore
-    private List<Comment> comments;
+    private List<Comment> comments= new ArrayList<>();;
 
     @OneToMany(mappedBy = "post")
     @JsonIgnore
-    private List<Like> likes;
+    private List<Like> likes= new ArrayList<>();;
 
     @Column(name = "media_url")
     private String mediaUrl;
