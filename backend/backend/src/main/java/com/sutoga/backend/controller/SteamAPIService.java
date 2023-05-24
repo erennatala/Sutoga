@@ -29,6 +29,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @Transactional
@@ -66,25 +67,6 @@ public class SteamAPIService {
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
     }
-
-    public void saveGame(Game game) {
-        for (Genre genre : game.getGenres()) {
-            Genre existingGenre = genreRepository.findByName(genre.getName());
-            if (existingGenre != null) {
-                genre.setId(existingGenre.getId());
-            }
-        }
-
-        for (Category category : game.getCategories()) {
-            Category existingCategory = categoryRepository.findByName(category.getName());
-            if (existingCategory != null) {
-                category.setId(existingCategory.getId());
-            }
-        }
-
-        gameRepository.save(game);
-    }
-
     public List<Game> getAllGames() {
         return gameRepository.findAll();
     }
@@ -127,6 +109,40 @@ public class SteamAPIService {
         }
     }
 
+    public Genre findGenreByName(String name) {
+        Optional<Genre> genreOptional = genreRepository.findByName(name);
+        return genreOptional.orElse(null);
+    }
+
+    public Category findCategoryByName(String name) {
+        Optional<Category> categoryOptional = categoryRepository.findByName(name);
+        return categoryOptional.orElse(null);
+    }
+
+    public void saveGame(Game game) {
+        for (Genre genre : game.getGenres()) {
+            Optional<Genre> existingGenreOptional = genreRepository.findByName(genre.getName());
+            if (existingGenreOptional.isPresent()) {
+                Genre existingGenre = existingGenreOptional.get();
+                genre.setId(existingGenre.getId());
+            } else {
+                genre = genreRepository.save(genre);
+            }
+        }
+
+        for (Category category : game.getCategories()) {
+            Optional<Category> existingCategoryOptional = categoryRepository.findByName(category.getName());
+            if (existingCategoryOptional.isPresent()) {
+                Category existingCategory = existingCategoryOptional.get();
+                category.setId(existingCategory.getId());
+            } else {
+                category = categoryRepository.save(category);
+            }
+        }
+
+        gameRepository.save(game);
+    }
+
     public void getGameDetails(long appId) {
         String steamApiUrl = "/api/appdetails?appids=" + appId;
         Duration delayDuration = Duration.ofSeconds(5);
@@ -163,14 +179,7 @@ public class SteamAPIService {
                     Game game = new Game();
                     game.setAppid(appId);
                     game.setTitle(gameInfo.getString("name"));
-                    //game.setDescription(gameInfo.getString("short_description"));
-
-//                    String shortDescription = gameInfo.getString("short_description");
-//
-//                    // Kısaltılmış bir açıklama oluştur
-//                    String truncatedDescription = truncateDescription(shortDescription, 1000); // 500 karakter sınırlaması örneği
-//
-//                    game.setDescription(truncatedDescription);
+                    game.setDescription(gameInfo.getString("short_description"));
 
 
                     JSONObject releaseDateObject = gameInfo.optJSONObject("release_date");
@@ -211,28 +220,33 @@ public class SteamAPIService {
                         List<Genre> genres = new ArrayList<>();
                         for (int i = 0; i < genresArray.length(); i++) {
                             String genreName = genresArray.getJSONObject(i).getString("description");
-                            Genre genre = genreRepository.findByName(genreName);
-                            if (genre == null) {
+                            Optional<Genre> genreOptional = genreRepository.findByName(genreName);
+                            Genre genre;
+                            if (genreOptional.isPresent()) {
+                                genre = genreOptional.get();
+                            } else {
                                 genre = new Genre();
                                 genre.setName(genreName);
-                                genre = genreRepository.save(genre);
+                                genre = genreRepository.saveAndFlush(genre); // Burada saveAndFlush() kullanılıyor
                             }
                             genres.add(genre);
                         }
                         game.setGenres(genres);
                     }
 
-                    // Get categories
                     if (gameInfo.has("categories")) {
                         JSONArray categoriesArray = gameInfo.getJSONArray("categories");
                         List<Category> categories = new ArrayList<>();
                         for (int i = 0; i < categoriesArray.length(); i++) {
                             String categoryName = categoriesArray.getJSONObject(i).getString("description");
-                            Category category = categoryRepository.findByName(categoryName);
-                            if (category == null) {
+                            Optional<Category> categoryOptional = categoryRepository.findByName(categoryName);
+                            Category category;
+                            if (categoryOptional.isPresent()) {
+                                category = categoryOptional.get();
+                            } else {
                                 category = new Category();
                                 category.setName(categoryName);
-                                category = categoryRepository.save(category);
+                                category = categoryRepository.saveAndFlush(category);
                             }
                             categories.add(category);
                         }

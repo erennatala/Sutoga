@@ -18,6 +18,7 @@ public class Genre {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     public Long id;
 
+    @Column(unique = true)
     public String name;
 
     @JsonIgnore

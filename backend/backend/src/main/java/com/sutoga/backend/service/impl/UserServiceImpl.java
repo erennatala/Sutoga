@@ -408,6 +408,8 @@ public class UserServiceImpl implements UserService {
         String lowerCaseQuery = query.toLowerCase();
         List<User> users = userRepository.findAll();
 
+        System.out.println(users);
+
         return users.stream()
                 .filter(user -> user.getUsername().toLowerCase().contains(lowerCaseQuery))
                 .map(user -> {
