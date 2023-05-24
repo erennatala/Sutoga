@@ -8,10 +8,7 @@ import com.sutoga.backend.entity.UserFriend;
 import com.sutoga.backend.entity.dto.UserResponse;
 import com.sutoga.backend.entity.mapper.UserMapper;
 import com.sutoga.backend.entity.request.UpdateRequest;
-import com.sutoga.backend.entity.response.FriendRecResponse;
-import com.sutoga.backend.entity.response.FriendRequestResponse;
-import com.sutoga.backend.entity.response.FriendResponse;
-import com.sutoga.backend.entity.response.UserSearchResponse;
+import com.sutoga.backend.entity.response.*;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
 import com.sutoga.backend.repository.FriendRequestRepository;
 import com.sutoga.backend.repository.NotificationRepository;
@@ -307,6 +304,29 @@ public class UserServiceImpl implements UserService {
             userResponse.setUsername(friend.getUsername());
             userResponse.setId(friend.getId());
             userResponse.setIsFriend(areFriends(friend.getId(), appUser.getId()) || friend.getId() == appUser.getId());
+
+            friendsResponse.add(userResponse);
+        });
+
+        return friendsResponse;
+    }
+
+
+    @Override
+    public List<ChatFriendResponse> getFriendsByUsernameForChat(String username) {
+        User user = userRepository.findByUsername(username);
+
+
+        List<User> friends = user.getUserFriends().stream().map(UserFriend::getFriend).collect(Collectors.toList());
+
+
+        List<ChatFriendResponse> friendsResponse = new ArrayList<>();
+
+        friends.forEach(friend -> {
+            ChatFriendResponse userResponse = new ChatFriendResponse();
+
+            userResponse = ChatFriendResponse.builder().id(friend.getId()).secondUser(friend.getUsername()).build();
+
 
             friendsResponse.add(userResponse);
         });
