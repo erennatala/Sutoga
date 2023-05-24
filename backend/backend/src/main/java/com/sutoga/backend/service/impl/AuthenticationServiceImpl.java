@@ -68,15 +68,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
+
+        User user = userRepository.findByEmail(authenticationRequest.getEmail())
+                .orElseThrow();
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        authenticationRequest.getEmail(),
+                        user.getId().toString(),
                         authenticationRequest.getPassword()
                 )
         ); // throws exception if cannot make authentication
 
-        User user = userRepository.findByEmail(authenticationRequest.getEmail())
-                .orElseThrow();
+
         String jwtToken = jwtService.generateToken(new CustomUserDetails(user));
         revokeAllUserTokens(user);
         saveUserToken(user, jwtToken);
