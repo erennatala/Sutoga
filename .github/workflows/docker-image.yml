@@ -2,7 +2,7 @@ name: sutoga deploy
 
 on:
   push:
-    branches: [ "deploy" ]
+    branches: [ "develop" ]
   #pull_request:
     #branches: [ "deploy" ]
     #types: [closed]
