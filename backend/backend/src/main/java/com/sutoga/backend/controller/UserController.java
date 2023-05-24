@@ -3,10 +3,7 @@ package com.sutoga.backend.controller;
 import com.sutoga.backend.entity.Notification;
 import com.sutoga.backend.entity.User;
 import com.sutoga.backend.entity.dto.UserResponse;
-import com.sutoga.backend.entity.response.FriendRecResponse;
-import com.sutoga.backend.entity.response.FriendRequestResponse;
-import com.sutoga.backend.entity.response.FriendResponse;
-import com.sutoga.backend.entity.response.UserSearchResponse;
+import com.sutoga.backend.entity.response.*;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
 import com.sutoga.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -176,6 +173,13 @@ public class UserController {
                                                                    @RequestParam(value = "page", defaultValue = "0") int page,
                                                                    @RequestParam(value = "size", defaultValue = "10") int size) {
         return ResponseEntity.ok(userService.getFriendsByUsername(username, userId, page, size));
+    }
+
+
+    @GetMapping("/getFriendsByUsernameForChat")
+    public ResponseEntity<List<ChatFriendResponse>> getFriendsByUsernameForChat(@RequestParam("username") String username)
+                                                                     {
+        return ResponseEntity.ok(userService.getFriendsByUsernameForChat(username));
     }
 
     @GetMapping("/getPostCount/{userId}")

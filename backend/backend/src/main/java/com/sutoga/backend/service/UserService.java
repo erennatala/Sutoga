@@ -6,10 +6,7 @@ import com.sutoga.backend.entity.User;
 import com.sutoga.backend.entity.dto.AuthenticationResponse;
 import com.sutoga.backend.entity.dto.UserResponse;
 import com.sutoga.backend.entity.request.UpdateRequest;
-import com.sutoga.backend.entity.response.FriendRecResponse;
-import com.sutoga.backend.entity.response.FriendRequestResponse;
-import com.sutoga.backend.entity.response.FriendResponse;
-import com.sutoga.backend.entity.response.UserSearchResponse;
+import com.sutoga.backend.entity.response.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -42,6 +39,8 @@ public interface UserService {
     FriendRecResponse getFriendRecommendationByUser(Long userId);
     List<FriendResponse> getFriendsByUserId(Long userId, int page, int size);
     List<FriendResponse> getFriendsByUsername(String username, Long userId, int page, int size);
+
+    List<ChatFriendResponse> getFriendsByUsernameForChat(String username);
     Integer getPostCountByUserId(Long userId);
     Integer getGameCountByUserId(Long userId);
     Integer getFriendCountByUserId(Long userId);

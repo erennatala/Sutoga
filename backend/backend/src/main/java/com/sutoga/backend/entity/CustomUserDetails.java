@@ -22,7 +22,7 @@ public class CustomUserDetails implements UserDetails {
     }
     @Override
     public String getUsername() {
-        return user.getEmail();
+        return user.getId().toString();
     }
     @Override
     public boolean isAccountNonExpired() {
