@@ -22,7 +22,7 @@ jobs:
         java-version: '17'
         distribution: 'adopt'
     - name: Build with Maven
-      working-directory: backend
+      working-directory: backend/backend
       run: mvn clean install -U -DprofileIdEnabled=true -DskipTests -Dfile=sutoga.jar -DgroupId=com.sutoga -DartifactId=backend -Dversion=0.0.1 -Dpackaging=jar -DgeneratePom=true
       
     - name: Build & push Docker image
@@ -31,6 +31,6 @@ jobs:
           image: keremmican1/sutoga
           tags: latest
           registry: docker.io
-          dockerfile: backend/Dockerfile
+          dockerfile: Dockerfile
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
