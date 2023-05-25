@@ -46,7 +46,7 @@ public class UserController {
                                               @RequestParam("firstName") String firstName,
                                               @RequestParam("lastName") String lastName,
                                               @RequestParam("phoneNumber") String phoneNumber,
-                                              @RequestParam("birthDate") LocalDate birthDate,
+                                              @RequestParam("birthDate") String birthDate,
                                               @RequestParam(value = "media", required = false) MultipartFile media) {
         UpdateRequest updateRequest = new UpdateRequest();
         updateRequest.setEmail(email);
@@ -213,6 +213,16 @@ public class UserController {
     @GetMapping("/notifications/{userId}")
     public ResponseEntity<List<Notification> > getUserNotifications(@PathVariable Long userId) {
         return ResponseEntity.ok(userService.getNotification(userId));
+    }
+
+    @DeleteMapping("/{userId}/remove/{friendId}")
+    public ResponseEntity<?> removeFriend(@PathVariable Long userId, @PathVariable Long friendId) {
+        Boolean isRemoved = userService.removeFriend(userId, friendId);
+        if (Boolean.TRUE.equals(isRemoved)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }
