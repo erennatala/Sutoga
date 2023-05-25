@@ -45,6 +45,9 @@ public class User  {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserFriend> userFriends = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserGame> userGames = new ArrayList<>();
+
     private Long steamId;
 
     private String profileDescription;

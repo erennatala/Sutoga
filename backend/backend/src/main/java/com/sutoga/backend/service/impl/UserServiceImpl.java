@@ -1,19 +1,13 @@
 package com.sutoga.backend.service.impl;
 
 import com.amazonaws.services.cognitoidp.model.InvalidPasswordException;
-import com.sutoga.backend.entity.FriendRequest;
-import com.sutoga.backend.entity.Notification;
-import com.sutoga.backend.entity.User;
-import com.sutoga.backend.entity.UserFriend;
+import com.sutoga.backend.entity.*;
 import com.sutoga.backend.entity.dto.UserResponse;
 import com.sutoga.backend.entity.mapper.UserMapper;
 import com.sutoga.backend.entity.request.UpdateRequest;
 import com.sutoga.backend.entity.response.*;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
-import com.sutoga.backend.repository.FriendRequestRepository;
-import com.sutoga.backend.repository.NotificationRepository;
-import com.sutoga.backend.repository.PostRepository;
-import com.sutoga.backend.repository.UserRepository;
+import com.sutoga.backend.repository.*;
 import com.sutoga.backend.service.AuthenticationService;
 import com.sutoga.backend.service.UserService;
 import io.minio.*;
@@ -46,6 +40,10 @@ public class UserServiceImpl implements UserService {
     private final PostRepository postRepository;
     private final NotificationService notificationService;
     private final NotificationRepository notificationRepository;
+
+    private final GameRepository gameRepository;
+
+    private final UserGameRepository userGameRepository;
 
     @Value("${aws.s3.bucket-name}")
     private String s3BucketName;
@@ -156,7 +154,6 @@ public class UserServiceImpl implements UserService {
                 .map(UserFriend::getFriend)
                 .collect(Collectors.toList());
     }
-
 
     @Override
     public Boolean addFriend(Long userId, String receiverUsername) {
@@ -366,6 +363,31 @@ public class UserServiceImpl implements UserService {
 
         return false;
     }
+    public Boolean addUserGame(Long userId, Long appId) {
+        User user = userRepository.findBySteamId(userId);
+        Optional<Game> optionalGame = gameRepository.findByAppid(appId);
+
+        if (user == null || !optionalGame.isPresent()) {
+            return false;  // User or Game does not exist
+        }
+
+        Game game = optionalGame.get();  // Retrieve the game from Optional
+
+        UserGame existingUserGame = userGameRepository.findByUserAndGame(user, game);
+        if (existingUserGame != null) {
+            return false;  // UserGame relationship already exists
+        }
+
+        UserGame userGame = new UserGame();
+        userGame.setUser(user);
+        userGame.setGame(game);
+        userGame.setPlayTime(0L);
+
+        userGameRepository.save(userGame);
+
+        return true;
+    }
+
 
     public User handleProfilePictureUpload(Long userId, MultipartFile file) {
         User user = userRepository.findById(userId).orElseThrow(null);
@@ -619,5 +641,4 @@ public class UserServiceImpl implements UserService {
 
         return notifications;
     }
-
 }
