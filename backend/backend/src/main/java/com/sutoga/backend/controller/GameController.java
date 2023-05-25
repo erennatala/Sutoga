@@ -5,6 +5,7 @@ import com.sutoga.backend.entity.response.LikeResponse;
 import com.sutoga.backend.service.GameService;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,14 +43,15 @@ public class GameController {
         gameService.deleteGame(gameId);
     }
 
-    @PostMapping
-    public ResponseEntity<Boolean> loadUserGames(@RequestParam Long userId) {
+    @PostMapping("/loadUserGames")
+    public ResponseEntity<List<Long>> loadUserGames(@RequestParam Long userId) {
         try {
-            boolean success = steamAPIService.fetchUserOwnedGames(userId);
-            return ResponseEntity.ok(success);
+            List<Long> ownedGames = steamAPIService.fetchUserOwnedGames(userId);
+            return ResponseEntity.ok(ownedGames);
         } catch (RuntimeException ex) {
             // handle the exception, you can return a suitable error message or status code
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
 }

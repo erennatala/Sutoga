@@ -3,9 +3,11 @@ package com.sutoga.backend.controller;
 import com.sutoga.backend.entity.Category;
 import com.sutoga.backend.entity.Game;
 import com.sutoga.backend.entity.Genre;
+import com.sutoga.backend.entity.User;
 import com.sutoga.backend.repository.CategoryRepository;
 import com.sutoga.backend.repository.GameRepository;
 import com.sutoga.backend.repository.GenreRepository;
+import com.sutoga.backend.repository.UserRepository;
 import com.sutoga.backend.service.UserService;
 import com.sutoga.backend.service.impl.UserServiceImpl;
 import org.json.JSONArray;
@@ -42,14 +44,16 @@ public class SteamAPIService {
     private final WebClient steamSpyWebClient;
     private final WebClient steamWebClient;
 
+    private final UserRepository userRepository;
     private final UserServiceImpl userService;
 
     @Autowired
-    public SteamAPIService(UserServiceImpl userService, GameRepository gameRepository, CategoryRepository categoryRepository, GenreRepository genreRepository) {
+    public SteamAPIService(UserRepository userRepository, UserServiceImpl userService, GameRepository gameRepository, CategoryRepository categoryRepository, GenreRepository genreRepository) {
         this.gameRepository = gameRepository;
         this.genreRepository = genreRepository;
         this.categoryRepository = categoryRepository;
         this.userService = userService;
+        this.userRepository = userRepository;
 
         HttpClient httpClient = HttpClient.create().responseTimeout(Duration.ofSeconds(10));
         ClientHttpConnector connector = new ReactorClientHttpConnector(httpClient);
@@ -79,7 +83,7 @@ public class SteamAPIService {
     public Game getGameById(Long id) {
         return gameRepository.findById(id).orElse(null);
     }
-
+    /*
     public void fetchUserOwnedGames(Long steamId) {
         String steamApiUrl = "/IPlayerService/GetOwnedGames/v0001/?key=" + "4D3BE17D82F44DE7727A8287A7F0F869" + "&steamid=" + steamId + "&format=json";
         Mono<String> responseMono = steamWebClient.get()
@@ -118,7 +122,58 @@ public class SteamAPIService {
 
             }
         });
+    }*/
+    public List<Long> fetchUserOwnedGames(Long userId) {
+        List<Long> ownedGames = new ArrayList<>();
+        User user = userRepository.findBySteamId(userId);
+
+        if (user == null) {
+            // Handle the case where the user is not found
+            return ownedGames;
+        }
+
+        Long steamId = user.getSteamId(); // Assuming the method to retrieve the Steam ID from the User object is getSteamId()
+        System.out.println(userId);
+        String steamApiUrl = "/IPlayerService/GetOwnedGames/v0001/?key=" + "4D3BE17D82F44DE7727A8287A7F0F869" + "&steamid=" + steamId + "&format=json";
+        Mono<String> responseMono = steamWebClient.get()
+                .uri(steamApiUrl)
+                .headers(headers -> headers.set(HttpHeaders.USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"))
+                .exchange()
+                .flatMap(clientResponse -> {
+                    if (clientResponse.statusCode().is3xxRedirection()) {
+                        String redirectedUrl = clientResponse.headers().header(HttpHeaders.LOCATION).get(0);
+                        return steamWebClient.get()
+                                .uri(redirectedUrl)
+                                .headers(headers -> headers.set(HttpHeaders.USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"))
+                                .retrieve()
+                                .bodyToMono(String.class);
+                    } else {
+                        return clientResponse.bodyToMono(String.class);
+                    }
+                });
+
+        responseMono.subscribe(response -> {
+            try {
+                JSONObject responseObject = new JSONObject(response);
+
+                JSONObject responseGamesObject = responseObject.getJSONObject("response");
+                JSONArray gamesArray = responseGamesObject.getJSONArray("games");
+
+                for (int i = 0; i < gamesArray.length(); i++) {
+                    JSONObject game = gamesArray.getJSONObject(i);
+                    long appId = game.getLong("appid");
+
+                    ownedGames.add(appId);
+                }
+
+            } catch (JSONException ex) {
+                System.out.println("Invalid JSON response: " + ex.getMessage());
+            }
+        });
+
+        return ownedGames;
     }
+
 
 
 
