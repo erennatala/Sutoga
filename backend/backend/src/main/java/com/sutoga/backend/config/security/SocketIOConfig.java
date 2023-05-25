@@ -24,8 +24,7 @@ public class SocketIOConfig {
             Configuration config = new Configuration();
             config.setHostname(host);
             config.setPort(port);
-            final SocketIOServer server = new SocketIOServer(config);
-            return server;
+            return new SocketIOServer(config);
         } catch (Exception e) {
             System.out.println("Failed to configure");
         }
