@@ -7,7 +7,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 
 @Entity
-@Table(name="userGame")
+@Table(name="user_game")
 @Getter
 @Setter
 public class UserGame {
@@ -20,7 +20,7 @@ public class UserGame {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "game_ID")
+    @JoinColumn(name = "game_id")
     private Game game;
 
     private int playTime;

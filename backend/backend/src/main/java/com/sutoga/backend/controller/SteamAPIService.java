@@ -6,6 +6,8 @@ import com.sutoga.backend.entity.Genre;
 import com.sutoga.backend.repository.CategoryRepository;
 import com.sutoga.backend.repository.GameRepository;
 import com.sutoga.backend.repository.GenreRepository;
+import com.sutoga.backend.service.UserService;
+import com.sutoga.backend.service.impl.UserServiceImpl;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,11 +42,14 @@ public class SteamAPIService {
     private final WebClient steamSpyWebClient;
     private final WebClient steamWebClient;
 
+    private final UserServiceImpl userService;
+
     @Autowired
-    public SteamAPIService(GameRepository gameRepository, CategoryRepository categoryRepository, GenreRepository genreRepository) {
+    public SteamAPIService(UserServiceImpl userService, GameRepository gameRepository, CategoryRepository categoryRepository, GenreRepository genreRepository) {
         this.gameRepository = gameRepository;
         this.genreRepository = genreRepository;
         this.categoryRepository = categoryRepository;
+        this.userService = userService;
 
         HttpClient httpClient = HttpClient.create().responseTimeout(Duration.ofSeconds(10));
         ClientHttpConnector connector = new ReactorClientHttpConnector(httpClient);
@@ -75,31 +80,50 @@ public class SteamAPIService {
         return gameRepository.findById(id).orElse(null);
     }
 
-    public void fetchAllSteamGames() {
-        String steamApiUrl = "/ISteamApps/GetAppList/v0002/?format=json";
-
+    public void fetchUserOwnedGames(Long steamId) {
+        String steamApiUrl = "/IPlayerService/GetOwnedGames/v0001/?key=" + "4D3BE17D82F44DE7727A8287A7F0F869" + "&steamid=" + steamId + "&format=json";
         Mono<String> responseMono = steamWebClient.get()
                 .uri(steamApiUrl)
-                .retrieve()
-                .bodyToMono(String.class);
+                .headers(headers -> headers.set(HttpHeaders.USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"))
+                .exchange()
+                .flatMap(clientResponse -> {
+                    if (clientResponse.statusCode().is3xxRedirection()) {
+                        String redirectedUrl = clientResponse.headers().header(HttpHeaders.LOCATION).get(0);
+                        return steamWebClient.get()
+                                .uri(redirectedUrl)
+                                .headers(headers -> headers.set(HttpHeaders.USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"))
+                                .retrieve()
+                                .bodyToMono(String.class);
+                    } else {
+                        return clientResponse.bodyToMono(String.class);
+                    }
+                });
 
         responseMono.subscribe(response -> {
             try {
-                JSONObject jsonResponse = new JSONObject(response);
+                JSONObject responseObject = new JSONObject(response);
 
-                JSONObject appList = jsonResponse.getJSONObject("applist");
-                JSONArray apps = appList.getJSONArray("apps");
+                JSONObject responseGamesObject = responseObject.getJSONObject("response");
+                JSONArray gamesArray = responseGamesObject.getJSONArray("games");
 
-                for (int i = 0; i < apps.length(); i++) {
-                    JSONObject app = apps.getJSONObject(i);
-                    long appId = app.getLong("appid");
-                    String appName = app.getString("name");
+                for (int i = 0; i < gamesArray.length(); i++) {
+                    JSONObject game = gamesArray.getJSONObject(i);
+                    long appId = game.getLong("appid");
+
+                    userService.addUserGame(steamId, appId);
                 }
+
             } catch (JSONException ex) {
                 System.out.println("Invalid JSON response: " + ex.getMessage());
+
             }
         });
     }
+
+
+
+
+
 
     private String truncateDescription(String description, int maxLength) {
         if (description.length() <= maxLength) {
