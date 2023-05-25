@@ -158,7 +158,6 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
-
     @Override
     public Boolean addFriend(Long userId, String receiverUsername) {
         FriendRequest friendRequest = new FriendRequest();
@@ -362,7 +361,7 @@ public class UserServiceImpl implements UserService {
         UserGame userGame = new UserGame();
         userGame.setUser(user);
         userGame.setGame(game);
-        userGame.setPlayTime(0);
+        userGame.setPlayTime(0L);
 
         userGameRepository.save(userGame);
 
@@ -622,5 +621,4 @@ public class UserServiceImpl implements UserService {
 
         return notifications;
     }
-
 }

@@ -17,6 +17,5 @@ public interface GameRepository extends JpaRepository<Game, Long> {
 
     @Query("SELECT g FROM Game g JOIN g.genres genre JOIN g.categories category WHERE genre.name = :genreName AND category.name = :categoryName")
     List<Game> findByGenreNameAndCategoryName(String genreName, String categoryName);
-
-    Optional<Game> findByAppid(long appId);
+    Optional<Game> findByAppid(Long appId);
 }

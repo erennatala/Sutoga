@@ -1,9 +1,6 @@
 package com.sutoga.backend.controller;
 
-import com.sutoga.backend.entity.Category;
-import com.sutoga.backend.entity.Game;
-import com.sutoga.backend.entity.Genre;
-import com.sutoga.backend.entity.User;
+import com.sutoga.backend.entity.*;
 import com.sutoga.backend.repository.CategoryRepository;
 import com.sutoga.backend.repository.GameRepository;
 import com.sutoga.backend.repository.GenreRepository;
@@ -30,10 +27,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 @Transactional
@@ -42,8 +36,8 @@ public class SteamAPIService {
     private final GenreRepository genreRepository;
     private final CategoryRepository categoryRepository;
     private final WebClient steamSpyWebClient;
-    private final WebClient steamWebClient;
-
+    private final WebClient steamWebClientApi;
+    private final WebClient steamWebClientStore;
     private final UserRepository userRepository;
     private final UserServiceImpl userService;
 
@@ -69,7 +63,13 @@ public class SteamAPIService {
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
-        this.steamWebClient = WebClient.builder()
+        this.steamWebClientApi = WebClient.builder()
+                .baseUrl("http://api.steampowered.com")
+                .clientConnector(connector)
+                .exchangeStrategies(strategies)
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .build();
+        this.steamWebClientStore = WebClient.builder()
                 .baseUrl("http://store.steampowered.com")
                 .clientConnector(connector)
                 .exchangeStrategies(strategies)
@@ -83,66 +83,28 @@ public class SteamAPIService {
     public Game getGameById(Long id) {
         return gameRepository.findById(id).orElse(null);
     }
-    /*
-    public void fetchUserOwnedGames(Long steamId) {
-        String steamApiUrl = "/IPlayerService/GetOwnedGames/v0001/?key=" + "4D3BE17D82F44DE7727A8287A7F0F869" + "&steamid=" + steamId + "&format=json";
-        Mono<String> responseMono = steamWebClient.get()
-                .uri(steamApiUrl)
-                .headers(headers -> headers.set(HttpHeaders.USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"))
-                .exchange()
-                .flatMap(clientResponse -> {
-                    if (clientResponse.statusCode().is3xxRedirection()) {
-                        String redirectedUrl = clientResponse.headers().header(HttpHeaders.LOCATION).get(0);
-                        return steamWebClient.get()
-                                .uri(redirectedUrl)
-                                .headers(headers -> headers.set(HttpHeaders.USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"))
-                                .retrieve()
-                                .bodyToMono(String.class);
-                    } else {
-                        return clientResponse.bodyToMono(String.class);
-                    }
-                });
 
-        responseMono.subscribe(response -> {
-            try {
-                JSONObject responseObject = new JSONObject(response);
-
-                JSONObject responseGamesObject = responseObject.getJSONObject("response");
-                JSONArray gamesArray = responseGamesObject.getJSONArray("games");
-
-                for (int i = 0; i < gamesArray.length(); i++) {
-                    JSONObject game = gamesArray.getJSONObject(i);
-                    long appId = game.getLong("appid");
-
-                    userService.addUserGame(steamId, appId);
-                }
-
-            } catch (JSONException ex) {
-                System.out.println("Invalid JSON response: " + ex.getMessage());
-
-            }
-        });
-    }*/
-    public List<Long> fetchUserOwnedGames(Long userId) {
+    public Boolean fetchUserOwnedGames(Long userId) {
         List<Long> ownedGames = new ArrayList<>();
-        User user = userRepository.findBySteamId(userId);
+        HashMap<Long, Long> game_and_playtime = new HashMap<Long, Long>();
+        User user = userRepository.findById(userId).orElse(null);
 
         if (user == null) {
             // Handle the case where the user is not found
-            return ownedGames;
+            return false;
         }
 
-        Long steamId = user.getSteamId(); // Assuming the method to retrieve the Steam ID from the User object is getSteamId()
+        Long steamId = user.getSteamId();
         System.out.println(userId);
         String steamApiUrl = "/IPlayerService/GetOwnedGames/v0001/?key=" + "4D3BE17D82F44DE7727A8287A7F0F869" + "&steamid=" + steamId + "&format=json";
-        Mono<String> responseMono = steamWebClient.get()
+        Mono<String> responseMono = steamWebClientApi.get()
                 .uri(steamApiUrl)
                 .headers(headers -> headers.set(HttpHeaders.USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"))
                 .exchange()
                 .flatMap(clientResponse -> {
                     if (clientResponse.statusCode().is3xxRedirection()) {
                         String redirectedUrl = clientResponse.headers().header(HttpHeaders.LOCATION).get(0);
-                        return steamWebClient.get()
+                        return steamWebClientApi.get()
                                 .uri(redirectedUrl)
                                 .headers(headers -> headers.set(HttpHeaders.USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"))
                                 .retrieve()
@@ -152,9 +114,14 @@ public class SteamAPIService {
                     }
                 });
 
-        responseMono.subscribe(response -> {
+        Optional<String> responseOptional = responseMono.blockOptional();
+        if (responseOptional.isPresent()) {
+            String response = responseOptional.get();
+
             try {
                 JSONObject responseObject = new JSONObject(response);
+
+                System.out.println(responseObject);
 
                 JSONObject responseGamesObject = responseObject.getJSONObject("response");
                 JSONArray gamesArray = responseGamesObject.getJSONArray("games");
@@ -162,23 +129,36 @@ public class SteamAPIService {
                 for (int i = 0; i < gamesArray.length(); i++) {
                     JSONObject game = gamesArray.getJSONObject(i);
                     long appId = game.getLong("appid");
+                    long playtime = game.getLong("playtime_forever");
+
+                    game_and_playtime.put(appId, playtime);
 
                     ownedGames.add(appId);
                 }
 
+                for (Long appId : game_and_playtime.keySet()) {
+                    getGameDetails(appId);
+                }
+
+                for (Long appId : game_and_playtime.keySet()) {
+                    Game dbGame = gameRepository.findByAppid(appId).orElse(null);
+
+                    System.out.println(dbGame);
+
+                    UserGame userGame = new UserGame(null, user, dbGame, game_and_playtime.get(appId));
+                    user.getUserGames().add(userGame);
+                }
+                userRepository.save(user);
+
             } catch (JSONException ex) {
                 System.out.println("Invalid JSON response: " + ex.getMessage());
             }
-        });
+        } else {
+            System.out.println("Response is null or empty");
+        }
 
-        return ownedGames;
+        return true;
     }
-
-
-
-
-
-
 
     private String truncateDescription(String description, int maxLength) {
         if (description.length() <= maxLength) {
@@ -225,14 +205,19 @@ public class SteamAPIService {
     public void getGameDetails(long appId) {
         String steamApiUrl = "/api/appdetails?appids=" + appId;
         Duration delayDuration = Duration.ofSeconds(5);
+        Game game = new Game();
 
-        Mono<String> responseMono = steamWebClient.get()
+        if (gameRepository.findByAppid(appId).isPresent()) {
+            return;
+        }
+
+        Mono<String> responseMono = steamWebClientStore.get()
                 .uri(steamApiUrl)
                 .exchange()
                 .flatMap(clientResponse -> {
                     if (clientResponse.statusCode().is3xxRedirection()) {
                         String redirectedUrl = clientResponse.headers().header(HttpHeaders.LOCATION).get(0);
-                        return steamWebClient.get()
+                        return steamWebClientStore.get()
                                 .uri(redirectedUrl)
                                 .retrieve()
                                 .bodyToMono(String.class);
@@ -250,16 +235,17 @@ public class SteamAPIService {
         responseMono.subscribe(response -> {
             try {
                 JSONObject jsonResponse = new JSONObject(response);
+
+                System.out.println(jsonResponse);
+
                 JSONObject gameData = jsonResponse.getJSONObject(String.valueOf(appId));
 
                 if (gameData.getBoolean("success")) {
                     JSONObject gameInfo = gameData.getJSONObject("data");
-
-                    Game game = new Game();
                     game.setAppid(appId);
                     game.setTitle(gameInfo.getString("name"));
                     game.setDescription(gameInfo.getString("short_description"));
-
+                    game.setMediaUrl(gameInfo.getString("header_image"));
 
                     JSONObject releaseDateObject = gameInfo.optJSONObject("release_date");
                     if (releaseDateObject != null && !releaseDateObject.isNull("date")) {
@@ -306,7 +292,6 @@ public class SteamAPIService {
                             } else {
                                 genre = new Genre();
                                 genre.setName(genreName);
-                                genre = genreRepository.saveAndFlush(genre); // Burada saveAndFlush() kullanılıyor
                             }
                             genres.add(genre);
                         }
@@ -325,7 +310,6 @@ public class SteamAPIService {
                             } else {
                                 category = new Category();
                                 category.setName(categoryName);
-                                category = categoryRepository.saveAndFlush(category);
                             }
                             categories.add(category);
                         }
