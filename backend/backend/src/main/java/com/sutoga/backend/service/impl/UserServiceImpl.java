@@ -636,9 +636,23 @@ public class UserServiceImpl implements UserService {
 
     public List<Notification> getNotification(Long userId) {
         User user = userRepository.findById(userId).orElse(null);
-        List<Notification> notifications = notificationService.getNotifications(user);
-        notifications.sort(Comparator.comparing(Notification::getCreatedAt).reversed());
-
+        List<Notification> notifications = notificationRepository.findAllByReceiver(user);
+        notifications = notifications.stream()
+                .filter(notification -> !notification.getSenderUsername().equals(user.getUsername()))
+                .limit(10)
+                .sorted(Comparator.comparing(Notification::getCreatedAt).reversed())
+                .collect(Collectors.toList());
         return notifications;
+    }
+
+    @Override
+    public Boolean checkSteamId(Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+
+        if (user == null || user.getSteamId() == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }
