@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -201,11 +202,13 @@ public class UserServiceImpl implements UserService {
         });
         friendIds.add(userId);
 
-        List<FriendRequest> existingFriendRequests = friendRequestRepository.findBySenderAndReceiverIn(user, friends);
+        List<FriendRequest> existingSentFriendRequests = friendRequestRepository.findAllBySender(user);
+        List<FriendRequest> existingReceivedFriendRequests = friendRequestRepository.findAllByReceiver(user);
 
-        List<Long> excludedUserIds = existingFriendRequests.stream()
-                .map(friendRequest -> friendRequest.getReceiver().getId())
-                .collect(Collectors.toList());
+        List<Long> excludedUserIds = Stream.concat(
+                existingSentFriendRequests.stream().map(friendRequest -> friendRequest.getReceiver().getId()),
+                existingReceivedFriendRequests.stream().map(friendRequest -> friendRequest.getSender().getId())
+        ).distinct().collect(Collectors.toList());
 
         excludedUserIds.addAll(friendIds);
 
@@ -232,11 +235,14 @@ public class UserServiceImpl implements UserService {
         List<Long> friendIds = friends.stream().map(User::getId).collect(Collectors.toList());
         friendIds.add(userId);
 
-        List<FriendRequest> existingFriendRequests = friendRequestRepository.findBySenderAndReceiverIn(user, friends); //TODO BURDA HATA OLABİLİR
+        List<FriendRequest> existingSentFriendRequests = friendRequestRepository.findAllBySender(user);
+        List<FriendRequest> existingReceivedFriendRequests = friendRequestRepository.findAllByReceiver(user);
 
-        List<Long> excludedUserIds = existingFriendRequests.stream()
-                .map(friendRequest -> friendRequest.getReceiver().getId())
-                .collect(Collectors.toList());
+        List<Long> excludedUserIds = Stream.concat(
+                existingSentFriendRequests.stream().map(friendRequest -> friendRequest.getReceiver().getId()),
+                existingReceivedFriendRequests.stream().map(friendRequest -> friendRequest.getSender().getId())
+        ).distinct().collect(Collectors.toList());
+
         excludedUserIds.addAll(friendIds);
 
         User recommendation = userRepository.findRandomUserExcludingIds(excludedUserIds);
@@ -655,4 +661,39 @@ public class UserServiceImpl implements UserService {
             return true;
         }
     }
+
+    @Override
+    public Boolean removeFriendRequest(Long userId, String username) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResultNotFoundException("User not found"));
+        User otherUser = userRepository.findByUsername(username);
+
+        FriendRequest friendRequest = friendRequestRepository.findBySenderAndReceiver(user, otherUser);
+        if (friendRequest != null) {
+            friendRequestRepository.delete(friendRequest);
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public Boolean areFriendsByUsername(Long userId, String username2) {
+        User user1 = userRepository.findById(userId).orElse(null);
+        User user2 = userRepository.findByUsername(username2);
+
+        if (user1 == null || user2 == null) {
+            throw new ResultNotFoundException("User not found");
+        }
+
+        return areFriends(user1.getId(), user2.getId());
+    }
+
+    @Override
+    public FriendRequestResponse checkFriendRequestByUsername(Long userId, String username) {
+        User user1 = userRepository.findById(userId).orElse(null);
+        User user2 = userRepository.findByUsername(username);
+
+        return checkFriendRequest(user1.getId(), user2.getId());
+    }
+
 }

@@ -234,4 +234,27 @@ public class UserController {
         }
     }
 
+    @DeleteMapping("/{userId}/removeRequest/{friendId}")
+    public ResponseEntity<?> removeFriendRequest(@PathVariable Long userId, @PathVariable String username) {
+        Boolean isRemoved = userService.removeFriendRequest(userId, username);
+        if (Boolean.TRUE.equals(isRemoved)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/areFriendsByUsername")
+    public ResponseEntity<Boolean> areFriends(@RequestParam("userId1") Long userId1, @RequestParam("username") String username) {
+        boolean areFriends = userService.areFriendsByUsername(userId1, username);
+        return ResponseEntity.ok(areFriends);
+    }
+
+    @PostMapping("/checkFriendRequestByUsername")
+    public ResponseEntity<FriendRequestResponse> checkFriendRequest(@RequestParam("userId") Long userId,
+                                                                    @RequestParam("username") String username) {
+        FriendRequestResponse friendRequestResponse = userService.checkFriendRequestByUsername(userId, username);
+        return ResponseEntity.ok(friendRequestResponse);
+    }
+
 }

@@ -47,4 +47,7 @@ public interface UserService {
     Boolean checkEmail(String email);
     List<Notification> getNotification(Long userId);
     Boolean checkSteamId(Long userId);
+    Boolean removeFriendRequest(Long userId, String username);
+    Boolean areFriendsByUsername(Long userId, String username2);
+    FriendRequestResponse checkFriendRequestByUsername(Long userId, String username);
 }
