@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -201,11 +202,13 @@ public class UserServiceImpl implements UserService {
         });
         friendIds.add(userId);
 
-        List<FriendRequest> existingFriendRequests = friendRequestRepository.findBySenderAndReceiverIn(user, friends);
+        List<FriendRequest> existingSentFriendRequests = friendRequestRepository.findAllBySender(user);
+        List<FriendRequest> existingReceivedFriendRequests = friendRequestRepository.findAllByReceiver(user);
 
-        List<Long> excludedUserIds = existingFriendRequests.stream()
-                .map(friendRequest -> friendRequest.getReceiver().getId())
-                .collect(Collectors.toList());
+        List<Long> excludedUserIds = Stream.concat(
+                existingSentFriendRequests.stream().map(friendRequest -> friendRequest.getReceiver().getId()),
+                existingReceivedFriendRequests.stream().map(friendRequest -> friendRequest.getSender().getId())
+        ).distinct().collect(Collectors.toList());
 
         excludedUserIds.addAll(friendIds);
 
@@ -232,11 +235,14 @@ public class UserServiceImpl implements UserService {
         List<Long> friendIds = friends.stream().map(User::getId).collect(Collectors.toList());
         friendIds.add(userId);
 
-        List<FriendRequest> existingFriendRequests = friendRequestRepository.findBySenderAndReceiverIn(user, friends); //TODO BURDA HATA OLABİLİR
+        List<FriendRequest> existingSentFriendRequests = friendRequestRepository.findAllBySender(user);
+        List<FriendRequest> existingReceivedFriendRequests = friendRequestRepository.findAllByReceiver(user);
 
-        List<Long> excludedUserIds = existingFriendRequests.stream()
-                .map(friendRequest -> friendRequest.getReceiver().getId())
-                .collect(Collectors.toList());
+        List<Long> excludedUserIds = Stream.concat(
+                existingSentFriendRequests.stream().map(friendRequest -> friendRequest.getReceiver().getId()),
+                existingReceivedFriendRequests.stream().map(friendRequest -> friendRequest.getSender().getId())
+        ).distinct().collect(Collectors.toList());
+
         excludedUserIds.addAll(friendIds);
 
         User recommendation = userRepository.findRandomUserExcludingIds(excludedUserIds);
