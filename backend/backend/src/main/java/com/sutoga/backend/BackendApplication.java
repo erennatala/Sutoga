@@ -16,14 +16,14 @@ public class BackendApplication implements CommandLineRunner {
 		SpringApplication.run(BackendApplication.class, args);
 
 		// Create an instance of RecommendationApiClient
-		RecommendationApiClient recommendationApiClient = new RecommendationApiClient("http://6.tcp.eu.ngrok.io:11084");
-
-		// Make API request
-		String userId = "123456";
-		String recommendations = recommendationApiClient.getRecommendations(userId);
-
-		// Process the recommendations as needed
-		System.out.println("Recommendations: " + recommendations);
+//		RecommendationApiClient recommendationApiClient = new RecommendationApiClient("http://6.tcp.eu.ngrok.io:11084");
+//
+//		// Make API request
+//		String userId = "123456";
+//		String recommendations = recommendationApiClient.getRecommendations(userId);
+//
+//		// Process the recommendations as needed
+//		System.out.println("Recommendations: " + recommendations);
 	}
 
 	@Override

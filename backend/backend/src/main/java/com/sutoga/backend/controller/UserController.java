@@ -46,7 +46,7 @@ public class UserController {
                                               @RequestParam("firstName") String firstName,
                                               @RequestParam("lastName") String lastName,
                                               @RequestParam("phoneNumber") String phoneNumber,
-                                              @RequestParam("birthDate") String birthDate,
+                                              @RequestParam("birthDate") LocalDate birthDate,
                                               @RequestParam(value = "media", required = false) MultipartFile media) {
         UpdateRequest updateRequest = new UpdateRequest();
         updateRequest.setEmail(email);
@@ -219,6 +219,15 @@ public class UserController {
     public ResponseEntity<?> removeFriend(@PathVariable Long userId, @PathVariable Long friendId) {
         Boolean isRemoved = userService.removeFriend(userId, friendId);
         if (Boolean.TRUE.equals(isRemoved)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/checkSteamId/{userId}")
+    public ResponseEntity<?> checkSteamId(@PathVariable Long userId) {
+        if (Boolean.TRUE.equals(userService.checkSteamId(userId))) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
