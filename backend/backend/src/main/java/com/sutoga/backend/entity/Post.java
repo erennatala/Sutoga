@@ -1,8 +1,11 @@
 package com.sutoga.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -23,7 +26,24 @@ public class Post {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany
-    private List<Comment> comments;
+    @OneToMany(mappedBy = "post")
+    @JsonIgnore
+    private List<Comment> comments= new ArrayList<>();;
 
+    @OneToMany(mappedBy = "post")
+    @JsonIgnore
+    private List<Like> likes= new ArrayList<>();;
+
+    @Column(name = "media_url")
+    private String mediaUrl;
+
+    private LocalDateTime postDate;
+
+    public int getLikeCount() {
+        return likes.size();
+    }
+
+    public int getCommentCount() {
+        return comments.size();
+    }
 }

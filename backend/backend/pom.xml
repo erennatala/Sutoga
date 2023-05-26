@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.0.0</version>
+		<version>3.0.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.sutoga</groupId>
@@ -35,9 +35,15 @@
 		</dependency>
 
 		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt</artifactId>
-			<version>0.9.1</version>
+			<groupId>io.minio</groupId>
+			<artifactId>minio</artifactId>
+			<version>8.3.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk</artifactId>
+			<version>1.12.152</version>
 		</dependency>
 
 		<dependency>
@@ -76,8 +82,57 @@
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>com.corundumstudio.socketio</groupId>
+			<artifactId>netty-socketio</artifactId>
+			<version>1.7.18</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+			<version>2.14.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.13</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20210307</version>
+		</dependency>
+
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+             <artifactId>jjwt-api</artifactId>
+            <version>0.11.5</version>
+        </dependency>
+         <dependency>
+			 <groupId>io.jsonwebtoken</groupId>
+       		 <artifactId>jjwt-impl</artifactId>
+        		<version>0.11.5</version>
+            </dependency>
+         <dependency>
+        		<groupId>io.jsonwebtoken</groupId>
+        		<artifactId>jjwt-jackson</artifactId>
+        		<version>0.11.5</version>
+            </dependency>
 
 	</dependencies>
 
@@ -86,17 +141,35 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>${project.parent.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
 				<configuration>
-					<excludes>
-						<exclude>
+					<source>17</source>
+					<target>17</target>
+					<annotationProcessorPaths>
+						<path>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
-						</exclude>
-					</excludes>
+							<version>1.18.22</version>
+						</path>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>1.5.3.Final</version>
+						</path>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok-mapstruct-binding</artifactId>
+							<version>0.2.0</version>
+						</path>
+					</annotationProcessorPaths>
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>sutoga</finalName>
 	</build>
 
 </project>

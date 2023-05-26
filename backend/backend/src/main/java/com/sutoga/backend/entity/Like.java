@@ -1,11 +1,18 @@
 package com.sutoga.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
-@Table(name = "like")
+@Table(
+        name = "like",
+        uniqueConstraints=
+        @UniqueConstraint(columnNames={"post_id", "user_id"})
+)
 @Getter
 @Setter
 public class Like {
@@ -17,9 +24,14 @@ public class Like {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
+    @JsonIgnore
     private Post post;
+
+    private LocalDateTime likeDate;
+
 }
