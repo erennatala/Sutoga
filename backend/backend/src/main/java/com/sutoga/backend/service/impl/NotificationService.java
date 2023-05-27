@@ -3,6 +3,7 @@ package com.sutoga.backend.service.impl;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sutoga.backend.entity.FriendRequest;
 import com.sutoga.backend.entity.Notification;
 import com.sutoga.backend.entity.User;
 import com.sutoga.backend.repository.NotificationRepository;
@@ -46,5 +47,13 @@ public class NotificationService {
             System.out.println("gönderilemedi " + e);
         }
     }
+
+    public void deleteNotificationByFriendRequestId(FriendRequest friendRequestId) {
+        Notification notification = notificationRepository.findByFriendRequestActivity(friendRequestId);
+        if (notification != null) {
+            notificationRepository.delete(notification);
+        }
+    }
+
 
 }

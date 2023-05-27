@@ -89,4 +89,34 @@ public class GameServiceImpl implements GameService {
         return gameResponse;
     }
 
+    @Override
+    public Integer getUserGameCount(Long userId) {
+        User user = userService.getOneUserById(userId);
+        if (user == null) {
+            return 0;
+        }
+
+        List<UserGame> userGames = user.getUserGames();
+        if (userGames == null || userGames.isEmpty()) {
+            return 0;
+        }
+
+        return userGames.size();
+    }
+
+    @Override
+    public Integer getUserGameCountByUsername(String username) {
+        User user = userService.getOneUserByUserName(username);
+        if (user == null) {
+            return 0;
+        }
+
+        List<UserGame> userGames = user.getUserGames();
+        if (userGames == null || userGames.isEmpty()) {
+            return 0;
+        }
+
+        return userGames.size();
+    }
+
 }
