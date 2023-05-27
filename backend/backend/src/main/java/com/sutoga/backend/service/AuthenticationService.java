@@ -12,7 +12,7 @@ public interface AuthenticationService {
     AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest);
 
     void saveUserToken(User user, String jwtToken);
-
+    Boolean checkIfSteamIdExists(Long steamId);
     void revokeAllUserTokens(User user);
     AuthenticationResponse handleSteamLogin(Long steamId);
 }

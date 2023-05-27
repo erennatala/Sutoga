@@ -705,4 +705,23 @@ public class UserServiceImpl implements UserService {
         return removeFriend(userId, user.getId());
     }
 
+    @Override
+    public Boolean checkIfSteamIdExists(Long steamId) {
+        User user = userRepository.findBySteamId(steamId);
+        return user != null;
+    }
+
+    @Override
+    public Boolean connectSteamForGames(Long userId, Long steamId) {
+        User user = userRepository.findById(userId).orElseThrow(null);
+
+        if (user == null || checkIfSteamIdExists(steamId)) {
+            return false;
+        } else {
+            user.setSteamId(steamId);
+            userRepository.save(user);
+            return true;
+        }
+    }
+
 }

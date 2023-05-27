@@ -6,6 +6,7 @@ import com.sutoga.backend.entity.dto.UserResponse;
 import com.sutoga.backend.entity.response.*;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
 import com.sutoga.backend.service.UserService;
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -266,5 +267,11 @@ public class UserController {
         FriendRequestResponse friendRequestResponse = userService.checkFriendRequestByUsername(userId, username);
         return ResponseEntity.ok(friendRequestResponse);
     }
+
+    @PostMapping("/connectSteamForGames")
+    public ResponseEntity<Boolean> connectSteamForGames(@RequestParam("userId") Long userId, @RequestParam("steamId") Long steamId) {
+        return ResponseEntity.ok(userService.connectSteamForGames(userId, steamId));
+    }
+
 
 }

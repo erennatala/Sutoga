@@ -1,5 +1,6 @@
 package com.sutoga.backend.service.impl;
 
+import com.sutoga.backend.controller.SteamAPIService;
 import com.sutoga.backend.entity.Game;
 import com.sutoga.backend.entity.Like;
 import com.sutoga.backend.entity.User;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,6 +28,7 @@ public class GameServiceImpl implements GameService {
 
     private final GameRepository gameRepository;
     private final UserService userService;
+    private final SteamAPIService steamAPIService;
 
 //    @Override
 //    public List<Game> getAllGamesByParameter(Optional<String> genreName, Optional<String> categoryName) {
@@ -117,6 +120,11 @@ public class GameServiceImpl implements GameService {
         }
 
         return userGames.size();
+    }
+
+    @Override
+    public void fetchUserGames(Long userId) {
+        steamAPIService.fetchUserOwnedGames(userId);
     }
 
 }
