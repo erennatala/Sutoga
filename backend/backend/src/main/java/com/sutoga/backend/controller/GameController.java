@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/games")
@@ -70,4 +69,11 @@ public class GameController {
         Integer gameCount = gameService.getUserGameCountByUsername(username);
         return new ResponseEntity<>(gameCount, HttpStatus.OK);
     }
+
+    @PostMapping("/startFetchUserGames/{userId}")
+    public ResponseEntity<?> startFetchUserGames(@PathVariable Long userId) {
+        gameService.fetchUserGames(userId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

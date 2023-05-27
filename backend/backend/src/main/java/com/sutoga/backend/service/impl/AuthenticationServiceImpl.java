@@ -27,7 +27,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-
     private final AuthenticationManager authenticationManager;
     private final TokenRepository tokenRepository;
 
@@ -126,5 +125,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .userId(user.getId())
                 .username(user.getUsername())
                 .build();
+    }
+
+    @Override
+    public Boolean checkIfSteamIdExists(Long steamId) {
+        User user = userRepository.findBySteamId(steamId);
+        if (user != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

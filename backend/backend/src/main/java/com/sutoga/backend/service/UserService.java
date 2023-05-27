@@ -51,4 +51,6 @@ public interface UserService {
     Boolean areFriendsByUsername(Long userId, String username2);
     FriendRequestResponse checkFriendRequestByUsername(Long userId, String username);
     Boolean removeFriendByUsername(Long userId, String friendUsername);
+    Boolean checkIfSteamIdExists(Long steamId);
+    Boolean connectSteamForGames(Long userId, Long steamId);
 }
