@@ -16,6 +16,7 @@ import java.util.concurrent.Future;
 public interface GameService {
     void deleteGame(Long gameId);
     Page<GameResponse> getUserGames(Long userId, Pageable pageable);
+    List<GameResponse> getUserGames(Long userId);
     Integer getUserGameCount(Long userId);
     Integer getUserGameCountByUsername(String username);
     @Async

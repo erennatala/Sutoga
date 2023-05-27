@@ -84,6 +84,23 @@ public class GameServiceImpl implements GameService {
         return page;
     }
 
+    @Override
+    public List<GameResponse> getUserGames(Long userId) {
+        User user = userService.getOneUserById(userId);
+        if (user == null) {
+            return Collections.emptyList();
+        }
+
+        List<UserGame> userGames = user.getUserGames();
+        if (userGames == null || userGames.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return userGames.stream()
+                .map(this::mapToGameResponse)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
 
     private GameResponse mapToGameResponse(UserGame userGame) {
         if (userGame.getGame() == null) {
