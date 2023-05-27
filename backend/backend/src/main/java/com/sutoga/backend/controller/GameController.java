@@ -56,11 +56,17 @@ public class GameController {
 //        }
 //    }
 
+//    @GetMapping("/getUserGames/{userId}")
+//    public ResponseEntity<Page<GameResponse>> getUserGames(@PathVariable Long userId,
+//                                                           @RequestParam(defaultValue = "0") int pageNumber,
+//                                                           @RequestParam(defaultValue = "500") int pageSize) {
+//        Page<GameResponse> gameResponses = gameService.getUserGames(userId, PageRequest.of(pageNumber, pageSize));
+//        return new ResponseEntity<>(gameResponses, HttpStatus.OK);
+//    }
+
     @GetMapping("/getUserGames/{userId}")
-    public ResponseEntity<Page<GameResponse>> getUserGames(@PathVariable Long userId,
-                                                           @RequestParam(defaultValue = "0") int pageNumber,
-                                                           @RequestParam(defaultValue = "20") int pageSize) {
-        Page<GameResponse> gameResponses = gameService.getUserGames(userId, PageRequest.of(pageNumber, pageSize));
+    public ResponseEntity<List<GameResponse>> getUserGames(@PathVariable Long userId) {
+        List<GameResponse> gameResponses = gameService.getUserGames(userId);
         return new ResponseEntity<>(gameResponses, HttpStatus.OK);
     }
 
