@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface GameService {
     void deleteGame(Long gameId);
     List<GameResponse> getUserGames(Long userId);
+    Integer getUserGameCount(Long userId);
+    Integer getUserGameCountByUsername(String username);
 }

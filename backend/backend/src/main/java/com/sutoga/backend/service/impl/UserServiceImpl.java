@@ -664,17 +664,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean removeFriendRequest(Long userId, String username) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new ResultNotFoundException("User not found"));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResultNotFoundException("User not found"));
         User otherUser = userRepository.findByUsername(username);
 
         FriendRequest friendRequest = friendRequestRepository.findBySenderAndReceiver(user, otherUser);
         if (friendRequest != null) {
+            notificationService.deleteNotificationByFriendRequestId(friendRequest);
             friendRequestRepository.delete(friendRequest);
             return true;
         }
 
         return false;
     }
+
 
     @Override
     public Boolean areFriendsByUsername(Long userId, String username2) {
@@ -694,6 +697,12 @@ public class UserServiceImpl implements UserService {
         User user2 = userRepository.findByUsername(username);
 
         return checkFriendRequest(user1.getId(), user2.getId());
+    }
+
+    @Override
+    public Boolean removeFriendByUsername(Long userId, String friendUsername) {
+        User user = userRepository.findByUsername(friendUsername);
+        return removeFriend(userId, user.getId());
     }
 
 }

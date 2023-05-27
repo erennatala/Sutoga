@@ -59,4 +59,15 @@ public class GameController {
         return new ResponseEntity<>(gameResponses, HttpStatus.OK);
     }
 
+    @GetMapping("/getUserGameCount/{userId}")
+    public ResponseEntity<Integer> getUserGameCountByUserId(@PathVariable Long userId) {
+        Integer gameCount = gameService.getUserGameCount(userId);
+        return new ResponseEntity<>(gameCount, HttpStatus.OK);
+    }
+
+    @GetMapping("/getUserGameCountByUsername/{username}")
+    public ResponseEntity<Integer> getUserGameCountByUsername(@PathVariable String username) {
+        Integer gameCount = gameService.getUserGameCountByUsername(username);
+        return new ResponseEntity<>(gameCount, HttpStatus.OK);
+    }
 }

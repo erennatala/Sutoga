@@ -50,4 +50,5 @@ public interface UserService {
     Boolean removeFriendRequest(Long userId, String username);
     Boolean areFriendsByUsername(Long userId, String username2);
     FriendRequestResponse checkFriendRequestByUsername(Long userId, String username);
+    Boolean removeFriendByUsername(Long userId, String friendUsername);
 }
