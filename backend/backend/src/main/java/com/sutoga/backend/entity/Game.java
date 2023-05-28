@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -28,13 +29,15 @@ public class Game {
 
     private String publisher;
 
+    private String mediaUrl;
+
     @ManyToMany
     @JoinTable(
             name = "game_category",
             joinColumns = @JoinColumn(name = "game_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
-    private List<Category> categories;
+    private List<Category> categories = new ArrayList<>();;
 
     @ManyToMany
     @JoinTable(
@@ -42,5 +45,5 @@ public class Game {
             joinColumns = @JoinColumn(name = "game_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id")
     )
-    private List<Genre> genres;
+    private List<Genre> genres = new ArrayList<>();;
 }

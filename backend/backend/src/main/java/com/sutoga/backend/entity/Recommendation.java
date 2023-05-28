@@ -9,7 +9,8 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserGame {
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = "game_id")})
+public class Recommendation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
@@ -21,7 +22,4 @@ public class UserGame {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "game_id")
     private Game game;
-
-    private Long playTime;
-
 }

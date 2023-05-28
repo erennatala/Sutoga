@@ -6,6 +6,7 @@ import com.sutoga.backend.entity.dto.UserResponse;
 import com.sutoga.backend.entity.response.*;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
 import com.sutoga.backend.service.UserService;
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -214,5 +215,63 @@ public class UserController {
     public ResponseEntity<List<Notification> > getUserNotifications(@PathVariable Long userId) {
         return ResponseEntity.ok(userService.getNotification(userId));
     }
+
+    @DeleteMapping("/{userId}/remove/{friendId}")
+    public ResponseEntity<?> removeFriend(@PathVariable Long userId, @PathVariable Long friendId) {
+        Boolean isRemoved = userService.removeFriend(userId, friendId);
+        if (Boolean.TRUE.equals(isRemoved)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/{userId}/removeByUsername/{friendUsername}")
+    public ResponseEntity<?> removeFriendByUsername(@PathVariable Long userId, @PathVariable String friendUsername) {
+        Boolean isRemoved = userService.removeFriendByUsername(userId, friendUsername);
+        if (Boolean.TRUE.equals(isRemoved)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/checkSteamId/{userId}")
+    public ResponseEntity<?> checkSteamId(@PathVariable Long userId) {
+        if (Boolean.TRUE.equals(userService.checkSteamId(userId))) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/{userId}/removeRequest/{username}")
+    public ResponseEntity<?> removeFriendRequest(@PathVariable Long userId, @PathVariable String username) {
+        Boolean isRemoved = userService.removeFriendRequest(userId, username);
+        if (Boolean.TRUE.equals(isRemoved)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/areFriendsByUsername")
+    public ResponseEntity<Boolean> areFriends(@RequestParam("userId1") Long userId1, @RequestParam("username") String username) {
+        boolean areFriends = userService.areFriendsByUsername(userId1, username);
+        return ResponseEntity.ok(areFriends);
+    }
+
+    @PostMapping("/checkFriendRequestByUsername")
+    public ResponseEntity<FriendRequestResponse> checkFriendRequest(@RequestParam("userId") Long userId,
+                                                                    @RequestParam("username") String username) {
+        FriendRequestResponse friendRequestResponse = userService.checkFriendRequestByUsername(userId, username);
+        return ResponseEntity.ok(friendRequestResponse);
+    }
+
+    @PostMapping("/connectSteamForGames")
+    public ResponseEntity<Boolean> connectSteamForGames(@RequestParam("userId") Long userId, @RequestParam("steamId") Long steamId) {
+        return ResponseEntity.ok(userService.connectSteamForGames(userId, steamId));
+    }
+
 
 }

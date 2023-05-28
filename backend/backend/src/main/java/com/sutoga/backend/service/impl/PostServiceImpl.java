@@ -1,5 +1,6 @@
 package com.sutoga.backend.service.impl;
 
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.sutoga.backend.entity.Like;
 import com.sutoga.backend.entity.User;
 import com.sutoga.backend.entity.UserFriend;
@@ -28,6 +29,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import io.minio.MinioClient;
 import io.minio.GetObjectArgs;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -45,7 +47,7 @@ public class PostServiceImpl implements PostService {
     private final LikeService likeService;
 
     private final PostMapper postMapper;
-
+    private final AmazonS3 amazonS3;
     private final MinioClient minioClient;
 
     @Value("${aws.s3.bucket-name}")
@@ -55,12 +57,13 @@ public class PostServiceImpl implements PostService {
     private String cloudFrontDomainName;
 
     @Autowired
-    public PostServiceImpl(PostRepository postRepository, UserRepository userRepository, @Lazy LikeService likeService, PostMapper postMapper, MinioClient minioClient) {
+    public PostServiceImpl(PostRepository postRepository, UserRepository userRepository, @Lazy LikeService likeService, PostMapper postMapper, MinioClient minioClient, AmazonS3 amazonS3) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
         this.likeService = likeService;
         this.postMapper = postMapper;
         this.minioClient = minioClient;
+        this.amazonS3 = amazonS3;
     }
 
 //    @Autowired
@@ -239,6 +242,7 @@ public class PostServiceImpl implements PostService {
     public Post handleMediaUpload(Long postId, MultipartFile file) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new NotFoundException("Post not found"));
         String mediaUrl = uploadMediaToMinioAndGenerateUrl(file);
+        //String mediaUrl = uploadMediaToS3(file);
 
         post.setMediaUrl(mediaUrl);
 
@@ -266,10 +270,10 @@ public class PostServiceImpl implements PostService {
         }
     }
 
-    private String generateUniqueMediaName(String originalFilename) {
-        String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
-        return UUID.randomUUID().toString() + extension;
-    }
+//    private String generateUniqueMediaName(String originalFilename) {
+//        String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+//        return UUID.randomUUID().toString() + extension;
+//    }
 
     public InputStream getMediaAsStream(String objectName) {
         try {
@@ -329,5 +333,29 @@ public class PostServiceImpl implements PostService {
         return new PageImpl<>(postResponses, userLikedPosts.getPageable(), userLikedPosts.getTotalElements());
     }
 
+    public String uploadMediaToS3(MultipartFile file) {
+        String objectKey = generateUniqueMediaName(file.getOriginalFilename());
+
+        try (InputStream inputStream = file.getInputStream()) {
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentType(file.getContentType());
+
+            amazonS3.putObject(new PutObjectRequest(s3BucketName, objectKey, inputStream, metadata));
+
+            return getObjectUrl(objectKey);
+        } catch (IOException e) {
+            throw new RuntimeException("Error uploading media to S3", e);
+        }
+    }
+
+    private String generateUniqueMediaName(String originalFilename) {
+        String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        String uniqueName = UUID.randomUUID().toString();
+        return "media/" + uniqueName + extension;
+    }
+
+    private String getObjectUrl(String objectKey) {
+        return "https://" + cloudFrontDomainName + "/" + objectKey;
+    }
 
 }

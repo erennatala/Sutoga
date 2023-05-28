@@ -1,19 +1,13 @@
 package com.sutoga.backend.service.impl;
 
 import com.amazonaws.services.cognitoidp.model.InvalidPasswordException;
-import com.sutoga.backend.entity.FriendRequest;
-import com.sutoga.backend.entity.Notification;
-import com.sutoga.backend.entity.User;
-import com.sutoga.backend.entity.UserFriend;
+import com.sutoga.backend.entity.*;
 import com.sutoga.backend.entity.dto.UserResponse;
 import com.sutoga.backend.entity.mapper.UserMapper;
 import com.sutoga.backend.entity.request.UpdateRequest;
 import com.sutoga.backend.entity.response.*;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
-import com.sutoga.backend.repository.FriendRequestRepository;
-import com.sutoga.backend.repository.NotificationRepository;
-import com.sutoga.backend.repository.PostRepository;
-import com.sutoga.backend.repository.UserRepository;
+import com.sutoga.backend.repository.*;
 import com.sutoga.backend.service.AuthenticationService;
 import com.sutoga.backend.service.UserService;
 import io.minio.*;
@@ -32,6 +26,7 @@ import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -46,6 +41,10 @@ public class UserServiceImpl implements UserService {
     private final PostRepository postRepository;
     private final NotificationService notificationService;
     private final NotificationRepository notificationRepository;
+
+    private final GameRepository gameRepository;
+
+    private final UserGameRepository userGameRepository;
 
     @Value("${aws.s3.bucket-name}")
     private String s3BucketName;
@@ -157,7 +156,6 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
-
     @Override
     public Boolean addFriend(Long userId, String receiverUsername) {
         FriendRequest friendRequest = new FriendRequest();
@@ -204,11 +202,13 @@ public class UserServiceImpl implements UserService {
         });
         friendIds.add(userId);
 
-        List<FriendRequest> existingFriendRequests = friendRequestRepository.findBySenderAndReceiverIn(user, friends);
+        List<FriendRequest> existingSentFriendRequests = friendRequestRepository.findAllBySender(user);
+        List<FriendRequest> existingReceivedFriendRequests = friendRequestRepository.findAllByReceiver(user);
 
-        List<Long> excludedUserIds = existingFriendRequests.stream()
-                .map(friendRequest -> friendRequest.getReceiver().getId())
-                .collect(Collectors.toList());
+        List<Long> excludedUserIds = Stream.concat(
+                existingSentFriendRequests.stream().map(friendRequest -> friendRequest.getReceiver().getId()),
+                existingReceivedFriendRequests.stream().map(friendRequest -> friendRequest.getSender().getId())
+        ).distinct().collect(Collectors.toList());
 
         excludedUserIds.addAll(friendIds);
 
@@ -235,11 +235,14 @@ public class UserServiceImpl implements UserService {
         List<Long> friendIds = friends.stream().map(User::getId).collect(Collectors.toList());
         friendIds.add(userId);
 
-        List<FriendRequest> existingFriendRequests = friendRequestRepository.findBySenderAndReceiverIn(user, friends); //TODO BURDA HATA OLABİLİR
+        List<FriendRequest> existingSentFriendRequests = friendRequestRepository.findAllBySender(user);
+        List<FriendRequest> existingReceivedFriendRequests = friendRequestRepository.findAllByReceiver(user);
 
-        List<Long> excludedUserIds = existingFriendRequests.stream()
-                .map(friendRequest -> friendRequest.getReceiver().getId())
-                .collect(Collectors.toList());
+        List<Long> excludedUserIds = Stream.concat(
+                existingSentFriendRequests.stream().map(friendRequest -> friendRequest.getReceiver().getId()),
+                existingReceivedFriendRequests.stream().map(friendRequest -> friendRequest.getSender().getId())
+        ).distinct().collect(Collectors.toList());
+
         excludedUserIds.addAll(friendIds);
 
         User recommendation = userRepository.findRandomUserExcludingIds(excludedUserIds);
@@ -366,6 +369,31 @@ public class UserServiceImpl implements UserService {
 
         return false;
     }
+    public Boolean addUserGame(Long userId, Long appId) {
+        User user = userRepository.findBySteamId(userId);
+        Optional<Game> optionalGame = gameRepository.findByAppid(appId);
+
+        if (user == null || !optionalGame.isPresent()) {
+            return false;  // User or Game does not exist
+        }
+
+        Game game = optionalGame.get();  // Retrieve the game from Optional
+
+        UserGame existingUserGame = userGameRepository.findByUserAndGame(user, game);
+        if (existingUserGame != null) {
+            return false;  // UserGame relationship already exists
+        }
+
+        UserGame userGame = new UserGame();
+        userGame.setUser(user);
+        userGame.setGame(game);
+        userGame.setPlayTime(0L);
+
+        userGameRepository.save(userGame);
+
+        return true;
+    }
+
 
     public User handleProfilePictureUpload(Long userId, MultipartFile file) {
         User user = userRepository.findById(userId).orElseThrow(null);
@@ -614,10 +642,86 @@ public class UserServiceImpl implements UserService {
 
     public List<Notification> getNotification(Long userId) {
         User user = userRepository.findById(userId).orElse(null);
-        List<Notification> notifications = notificationService.getNotifications(user);
-        notifications.sort(Comparator.comparing(Notification::getCreatedAt).reversed());
-
+        List<Notification> notifications = notificationRepository.findAllByReceiver(user);
+        notifications = notifications.stream()
+                .filter(notification -> !notification.getSenderUsername().equals(user.getUsername()))
+                .limit(10)
+                .sorted(Comparator.comparing(Notification::getCreatedAt).reversed())
+                .collect(Collectors.toList());
         return notifications;
+    }
+
+    @Override
+    public Boolean checkSteamId(Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+
+        if (user == null || user.getSteamId() == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public Boolean removeFriendRequest(Long userId, String username) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResultNotFoundException("User not found"));
+        User otherUser = userRepository.findByUsername(username);
+
+        FriendRequest friendRequest = friendRequestRepository.findBySenderAndReceiver(user, otherUser);
+        if (friendRequest != null) {
+            notificationService.deleteNotificationByFriendRequestId(friendRequest);
+            friendRequestRepository.delete(friendRequest);
+            return true;
+        }
+
+        return false;
+    }
+
+
+    @Override
+    public Boolean areFriendsByUsername(Long userId, String username2) {
+        User user1 = userRepository.findById(userId).orElse(null);
+        User user2 = userRepository.findByUsername(username2);
+
+        if (user1 == null || user2 == null) {
+            throw new ResultNotFoundException("User not found");
+        }
+
+        return areFriends(user1.getId(), user2.getId());
+    }
+
+    @Override
+    public FriendRequestResponse checkFriendRequestByUsername(Long userId, String username) {
+        User user1 = userRepository.findById(userId).orElse(null);
+        User user2 = userRepository.findByUsername(username);
+
+        return checkFriendRequest(user1.getId(), user2.getId());
+    }
+
+    @Override
+    public Boolean removeFriendByUsername(Long userId, String friendUsername) {
+        User user = userRepository.findByUsername(friendUsername);
+        return removeFriend(userId, user.getId());
+    }
+
+    @Override
+    public Boolean checkIfSteamIdExists(Long steamId) {
+        User user = userRepository.findBySteamId(steamId);
+        return user != null;
+    }
+
+    @Override
+    public Boolean connectSteamForGames(Long userId, Long steamId) {
+        User user = userRepository.findById(userId).orElseThrow(null);
+
+        if (user == null || checkIfSteamIdExists(steamId)) {
+            return false;
+        } else {
+            user.setSteamId(steamId);
+            userRepository.save(user);
+            return true;
+        }
     }
 
 }

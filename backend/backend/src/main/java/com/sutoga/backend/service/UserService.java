@@ -1,9 +1,7 @@
 package com.sutoga.backend.service;
 
-import com.sutoga.backend.entity.FriendRequest;
 import com.sutoga.backend.entity.Notification;
 import com.sutoga.backend.entity.User;
-import com.sutoga.backend.entity.dto.AuthenticationResponse;
 import com.sutoga.backend.entity.dto.UserResponse;
 import com.sutoga.backend.entity.request.UpdateRequest;
 import com.sutoga.backend.entity.response.*;
@@ -48,4 +46,11 @@ public interface UserService {
     Boolean checkUsername(String username);
     Boolean checkEmail(String email);
     List<Notification> getNotification(Long userId);
+    Boolean checkSteamId(Long userId);
+    Boolean removeFriendRequest(Long userId, String username);
+    Boolean areFriendsByUsername(Long userId, String username2);
+    FriendRequestResponse checkFriendRequestByUsername(Long userId, String username);
+    Boolean removeFriendByUsername(Long userId, String friendUsername);
+    Boolean checkIfSteamIdExists(Long steamId);
+    Boolean connectSteamForGames(Long userId, Long steamId);
 }

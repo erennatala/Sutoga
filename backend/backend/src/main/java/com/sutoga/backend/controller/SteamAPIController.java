@@ -2,10 +2,7 @@ package com.sutoga.backend.controller;
 
 import com.sutoga.backend.entity.Game;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,6 +26,11 @@ public class SteamAPIController {
     public ResponseEntity<List<Game>> getAllGames() {
         List<Game> games = steamAPIService.getAllGames();
         return ResponseEntity.ok(games);
+    }
+
+    @PostMapping("/fetchUserGames/{userId}")
+    public ResponseEntity<Boolean> fetchUserGames(@PathVariable Long userId) {
+        return ResponseEntity.ok(steamAPIService.fetchUserOwnedGames(userId));
     }
 
     // ...other endpoints

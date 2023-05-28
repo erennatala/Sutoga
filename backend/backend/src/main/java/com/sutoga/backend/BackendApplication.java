@@ -1,6 +1,7 @@
 package com.sutoga.backend;
 
 import com.corundumstudio.socketio.SocketIOServer;
+import com.sutoga.backend.controller.RecommendationApiClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
