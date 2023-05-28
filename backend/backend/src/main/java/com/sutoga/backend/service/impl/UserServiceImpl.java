@@ -327,7 +327,7 @@ public class UserServiceImpl implements UserService {
 
             userResponse = ChatFriendResponse.builder().id(friend.getId()).secondUser(friend.getUsername()).build();
 
-
+            userResponse.setProfilePhotoUrl(friend.getProfilePhotoUrl());
             friendsResponse.add(userResponse);
         });
 

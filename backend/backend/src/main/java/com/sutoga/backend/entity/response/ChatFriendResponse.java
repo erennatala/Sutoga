@@ -14,4 +14,6 @@ public class ChatFriendResponse {
     Long id;
 
     String secondUser;
+    String profilePhotoUrl;
+
 }
