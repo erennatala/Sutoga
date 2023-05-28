@@ -96,6 +96,7 @@ public class PostServiceImpl implements PostService {
 
         postResponse.setLikeCount(0);
         postResponse.setCommentCount(0);
+        postResponse.setPhotoUrl(user.get().getProfilePhotoUrl());
 
         return postResponse;
     }
