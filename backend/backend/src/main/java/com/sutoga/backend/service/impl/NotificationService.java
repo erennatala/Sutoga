@@ -39,7 +39,7 @@ public class NotificationService {
 
         try {
             String jsonNotification = objectMapper.writeValueAsString(notification);
-            server.getBroadcastOperations().sendEvent("notification", jsonNotification);
+            server.getBroadcastOperations().sendEvent("notification"+notification.getReceiver().getId(), jsonNotification);
         } catch (JsonProcessingException e) {
             System.out.println("gönderilemedi " + e);
         }
@@ -52,7 +52,7 @@ public class NotificationService {
 
             try {
                 String jsonNotification = objectMapper.writeValueAsString(notification);
-                server.getBroadcastOperations().sendEvent("cancelNotification", jsonNotification);
+                server.getBroadcastOperations().sendEvent("cancelNotification"+notification.getReceiver().getId(), jsonNotification);
             } catch (JsonProcessingException e) {
                 System.out.println("Bildirim geri çekilemedi " + e);
             }
@@ -64,7 +64,7 @@ public class NotificationService {
         if (notification != null) {
             try {
                 String jsonNotification = objectMapper.writeValueAsString(notification);
-                server.getBroadcastOperations().sendEvent("cancelNotification", jsonNotification);
+                server.getBroadcastOperations().sendEvent("cancelNotification"+notification.getReceiver().getId(), jsonNotification);
             } catch (JsonProcessingException e) {
                 System.out.println("Bildirim geri çekilemedi " + e);
             }
@@ -76,7 +76,7 @@ public class NotificationService {
         if (notification != null) {
             try {
                 String jsonNotification = objectMapper.writeValueAsString(notification);
-                server.getBroadcastOperations().sendEvent("cancelNotification", jsonNotification);
+                server.getBroadcastOperations().sendEvent("cancelNotification"+notification.getReceiver().getId(), jsonNotification);
             } catch (JsonProcessingException e) {
                 System.out.println("Bildirim geri çekilemedi " + e);
             }

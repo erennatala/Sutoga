@@ -526,7 +526,7 @@ public class UserServiceImpl implements UserService {
 
             friendRequestRepository.delete(friendRequest);
             if (notification != null) {
-                notificationRepository.delete(notification);
+                notificationService.deleteNotificationByFriendRequestId(friendRequest);
             }
 
             UserFriend userFriend1 = new UserFriend(null, sender, receiver);
@@ -557,7 +557,7 @@ public class UserServiceImpl implements UserService {
 
             friendRequestRepository.delete(friendRequest);
             if (notification != null) {
-                notificationRepository.delete(notification);
+                notificationService.deleteNotificationByFriendRequestId(friendRequest);
             }
             return true;
         }
