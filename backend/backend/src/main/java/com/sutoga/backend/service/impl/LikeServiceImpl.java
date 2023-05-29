@@ -117,6 +117,7 @@ public class LikeServiceImpl implements LikeService {
             likeRepository.delete(like);
             if (notification != null) {
                 notificationRepository.delete(notification);
+                notificationService.deleteNotificationByLike(like);
             }
         } else {
             throw new IllegalArgumentException("Like not found for provided postId and userId");
