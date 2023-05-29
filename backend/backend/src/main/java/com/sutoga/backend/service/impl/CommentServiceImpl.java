@@ -85,6 +85,7 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.deleteById(id);
         if (notification != null) {
             notificationRepository.delete(notification);
+            notificationService.deleteNotificationByComment(comment);
         }
     }
 
