@@ -10,6 +10,7 @@ import com.sutoga.backend.entity.response.LikeResponse;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
 import com.sutoga.backend.repository.LikeRepository;
 import com.sutoga.backend.repository.NotificationRepository;
+import com.sutoga.backend.repository.PostRepository;
 import com.sutoga.backend.service.LikeService;
 import com.sutoga.backend.service.PostService;
 import com.sutoga.backend.service.UserService;
@@ -34,14 +35,16 @@ public class LikeServiceImpl implements LikeService {
     @Lazy
     private final PostService postServiceImpl;
     private final NotificationRepository notificationRepository;
+    private final PostRepository postRepository;
 
     @Autowired
-    public LikeServiceImpl(LikeRepository likeRepository, UserService userService, @Lazy PostService postService, NotificationService notificationService, NotificationRepository notificationRepository) {
+    public LikeServiceImpl(PostRepository postRepository, LikeRepository likeRepository, UserService userService, @Lazy PostService postService, NotificationService notificationService, NotificationRepository notificationRepository) {
         this.likeRepository = likeRepository;
         this.userServiceImpl = userService;
         this.postServiceImpl = postService;
         this.notificationService = notificationService;
         this.notificationRepository = notificationRepository;
+        this.postRepository = postRepository;
     }
     @Override
     public Like createLike(CreateLikeRequest createLikeRequest) {
@@ -101,9 +104,13 @@ public class LikeServiceImpl implements LikeService {
 
     @Override
     public void deleteLikesByPostId(Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("Invalid postId"));
+        post.getLikes().clear();
+        postRepository.save(post);
         List<Like> likes = likeRepository.findByPostId(postId);
         likeRepository.deleteAll(likes);
     }
+
 
     @Override
     public void deleteLikeByPostIdAndUserId(Long postId, Long userId) {
