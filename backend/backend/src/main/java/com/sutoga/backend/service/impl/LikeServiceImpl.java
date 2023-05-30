@@ -104,12 +104,13 @@ public class LikeServiceImpl implements LikeService {
 
     @Override
     public void deleteLikesByPostId(Long postId) {
-        Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("Invalid postId"));
-        post.getLikes().clear();
-        postRepository.save(post);
         List<Like> likes = likeRepository.findByPostId(postId);
+        for(Like like: likes) {
+            notificationService.deleteNotificationByLike(like);
+        }
         likeRepository.deleteAll(likes);
     }
+
 
 
     @Override
