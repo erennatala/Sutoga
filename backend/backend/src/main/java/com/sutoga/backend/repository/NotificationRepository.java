@@ -11,4 +11,6 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
     Notification findByCommentActivity(Comment comment);
     List<Notification> findAllByReceiver(User user);
     List<Notification> findAllByLikeActivity(Like like);
+    List<Notification> findAllByCommentActivity(Comment comment);
+
 }
