@@ -363,6 +363,7 @@ public class UserServiceImpl implements UserService {
 
         if (userFriend.isPresent()) {
             user.getUserFriends().remove(userFriend.get());
+            friend.getUserFriends().remove(userFriend.get());
             userRepository.save(user);
             return true;
         }
@@ -704,6 +705,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean removeFriendByUsername(Long userId, String friendUsername) {
         User user = userRepository.findByUsername(friendUsername);
+
         return removeFriend(userId, user.getId());
     }
 
