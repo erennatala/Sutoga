@@ -106,6 +106,8 @@ public class LikeServiceImpl implements LikeService {
     public void deleteLikesByPostId(Long postId) {
         List<Like> likes = likeRepository.findByPostId(postId);
         for(Like like: likes) {
+            List<Notification> notifications = notificationRepository.findAllByLikeActivity(like);
+            notificationRepository.deleteAll(notifications);
             notificationService.deleteNotificationByLike(like);
         }
         likeRepository.deleteAll(likes);
