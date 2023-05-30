@@ -48,8 +48,6 @@ public class NotificationService {
     public void deleteNotificationByFriendRequestId(FriendRequest friendRequestId) {
         Notification notification = notificationRepository.findByFriendRequestActivity(friendRequestId);
         if (notification != null) {
-            notificationRepository.delete(notification);
-
             try {
                 String jsonNotification = objectMapper.writeValueAsString(notification);
                 server.getBroadcastOperations().sendEvent("cancelNotification"+notification.getReceiver().getId(), jsonNotification);
