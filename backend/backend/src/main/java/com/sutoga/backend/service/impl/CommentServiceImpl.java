@@ -94,9 +94,21 @@ public class CommentServiceImpl implements CommentService {
         }
     }
 
+
     @Override
     public Integer getCommentCountByPostId(Long postId) {
         return commentRepository.getCommentCountByPostId(postId);
     }
+
+    @Override
+    public void deleteCommentsByPostId(Long postId) {
+        List<Comment> comments = commentRepository.findByPostId(postId);
+        for (Comment comment : comments) {
+            List<Notification> notifications = notificationRepository.findAllByCommentActivity(comment);
+            notificationRepository.deleteAll(notifications);
+        }
+        commentRepository.deleteAll(comments);
+    }
+
 }
 

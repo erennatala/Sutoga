@@ -113,8 +113,6 @@ public class LikeServiceImpl implements LikeService {
         likeRepository.deleteAll(likes);
     }
 
-
-
     @Override
     public void deleteLikeByPostIdAndUserId(Long postId, Long userId) {
         Like like = likeRepository.findByPostIdAndUserId(postId, userId);
