@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import com.sutoga.backend.entity.Post;
 import com.sutoga.backend.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.webjars.NotFoundException;
 import com.amazonaws.services.s3.AmazonS3;
@@ -293,6 +294,7 @@ public class PostServiceImpl implements PostService {
         return postRepository.findById(postId).orElse(null);
     }
 
+    @Transactional
     @Override
     public void deletePost(Long postId) {
         likeService.deleteLikesByPostId(postId);
