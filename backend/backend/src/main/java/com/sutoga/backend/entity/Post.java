@@ -26,13 +26,13 @@ public class Post {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Comment> comments= new ArrayList<>();;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<Like> likes= new ArrayList<>();;
+    private List<Like> likes= new ArrayList<>();
 
     @Column(name = "media_url")
     private String mediaUrl;
