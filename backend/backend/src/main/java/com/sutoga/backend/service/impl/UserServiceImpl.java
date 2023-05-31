@@ -681,7 +681,6 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
-
     @Override
     public Boolean areFriendsByUsername(Long userId, String username2) {
         User user1 = userRepository.findById(userId).orElse(null);

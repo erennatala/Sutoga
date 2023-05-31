@@ -164,7 +164,8 @@ public class GameServiceImpl implements GameService {
     public List<RecommendationResponse> getRecommendationByUserId(Long userId) {
         User user = userService.getOneUserById(userId);
 
-        recommendationRepository.deleteByUser(user);
+        List<Recommendation> old_recommendations = recommendationRepository.findByUserId(userId);
+        recommendationRepository.deleteAll(old_recommendations);
 
         RecommendationApiClient recommendationApiClient = new RecommendationApiClient("http://7.tcp.eu.ngrok.io:18210");
         String user_id = userId.toString();
