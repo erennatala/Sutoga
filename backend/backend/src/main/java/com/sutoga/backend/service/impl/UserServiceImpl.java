@@ -330,7 +330,7 @@ public class UserServiceImpl implements UserService {
 
             userResponse = ChatFriendResponse.builder().id(friend.getId()).secondUser(friend.getUsername()).build();
 
-
+            userResponse.setProfilePhotoUrl(friend.getProfilePhotoUrl());
             friendsResponse.add(userResponse);
         });
 
@@ -363,6 +363,7 @@ public class UserServiceImpl implements UserService {
 
         if (userFriend.isPresent()) {
             user.getUserFriends().remove(userFriend.get());
+            friend.getUserFriends().remove(userFriend.get());
             userRepository.save(user);
             return true;
         }
@@ -527,6 +528,7 @@ public class UserServiceImpl implements UserService {
             friendRequestRepository.delete(friendRequest);
             if (notification != null) {
                 notificationRepository.delete(notification);
+                notificationService.deleteNotificationByFriendRequestId(friendRequest);
             }
 
             UserFriend userFriend1 = new UserFriend(null, sender, receiver);
@@ -558,6 +560,7 @@ public class UserServiceImpl implements UserService {
             friendRequestRepository.delete(friendRequest);
             if (notification != null) {
                 notificationRepository.delete(notification);
+                notificationService.deleteNotificationByFriendRequestId(friendRequest);
             }
             return true;
         }
@@ -664,11 +667,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean removeFriendRequest(Long userId, String username) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new ResultNotFoundException("User not found"));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResultNotFoundException("User not found"));
         User otherUser = userRepository.findByUsername(username);
 
         FriendRequest friendRequest = friendRequestRepository.findBySenderAndReceiver(user, otherUser);
         if (friendRequest != null) {
+            notificationService.deleteNotificationByFriendRequestId(friendRequest);
             friendRequestRepository.delete(friendRequest);
             return true;
         }
@@ -694,6 +699,32 @@ public class UserServiceImpl implements UserService {
         User user2 = userRepository.findByUsername(username);
 
         return checkFriendRequest(user1.getId(), user2.getId());
+    }
+
+    @Override
+    public Boolean removeFriendByUsername(Long userId, String friendUsername) {
+        User user = userRepository.findByUsername(friendUsername);
+
+        return removeFriend(userId, user.getId());
+    }
+
+    @Override
+    public Boolean checkIfSteamIdExists(Long steamId) {
+        User user = userRepository.findBySteamId(steamId);
+        return user != null;
+    }
+
+    @Override
+    public Boolean connectSteamForGames(Long userId, Long steamId) {
+        User user = userRepository.findById(userId).orElseThrow(null);
+
+        if (user == null || checkIfSteamIdExists(steamId)) {
+            return false;
+        } else {
+            user.setSteamId(steamId);
+            userRepository.save(user);
+            return true;
+        }
     }
 
 }

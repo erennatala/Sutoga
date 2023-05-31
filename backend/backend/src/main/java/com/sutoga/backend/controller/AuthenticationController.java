@@ -4,6 +4,7 @@ import com.sutoga.backend.entity.dto.AuthenticationResponse;
 import com.sutoga.backend.entity.request.AuthenticationRequest;
 import com.sutoga.backend.entity.request.RegisterRequest;
 import com.sutoga.backend.service.AuthenticationService;
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,11 @@ public class AuthenticationController
     public ResponseEntity<AuthenticationResponse> steamLogin(@PathVariable Long steamId) {
         AuthenticationResponse user = authenticationService.handleSteamLogin(steamId);
         return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/checkIfSteamIdExists/{steamId}")
+    public ResponseEntity<Boolean> checkIfSteamIdExists(@PathParam("steamId") Long steamId) {
+        return ResponseEntity.ok(authenticationService.checkIfSteamIdExists(steamId));
     }
 
 }

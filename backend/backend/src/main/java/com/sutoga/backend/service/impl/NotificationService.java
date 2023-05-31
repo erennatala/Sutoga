@@ -3,8 +3,7 @@ package com.sutoga.backend.service.impl;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sutoga.backend.entity.Notification;
-import com.sutoga.backend.entity.User;
+import com.sutoga.backend.entity.*;
 import com.sutoga.backend.repository.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,14 +36,48 @@ public class NotificationService {
     public void createAndSendNotification(Notification notification) {
         notification.setCreatedAt(LocalDateTime.now());
         notificationRepository.save(notification);
-        System.out.println("Sending notification: " + notification);
 
         try {
             String jsonNotification = objectMapper.writeValueAsString(notification);
-            server.getBroadcastOperations().sendEvent("notification", jsonNotification);
+            server.getBroadcastOperations().sendEvent("notification"+notification.getReceiver().getId(), jsonNotification);
         } catch (JsonProcessingException e) {
             System.out.println("gönderilemedi " + e);
         }
     }
 
+    public void deleteNotificationByFriendRequestId(FriendRequest friendRequestId) {
+        Notification notification = notificationRepository.findByFriendRequestActivity(friendRequestId);
+        if (notification != null) {
+            try {
+                String jsonNotification = objectMapper.writeValueAsString(notification);
+                server.getBroadcastOperations().sendEvent("cancelNotification"+notification.getReceiver().getId(), jsonNotification);
+            } catch (JsonProcessingException e) {
+                System.out.println("Bildirim geri çekilemedi " + e);
+            }
+        }
+    }
+
+    public void deleteNotificationByLike(Like like) {
+        Notification notification = notificationRepository.findByLikeActivity(like);
+        if (notification != null) {
+            try {
+                String jsonNotification = objectMapper.writeValueAsString(notification);
+                server.getBroadcastOperations().sendEvent("cancelNotification"+notification.getReceiver().getId(), jsonNotification);
+            } catch (JsonProcessingException e) {
+                System.out.println("Bildirim geri çekilemedi " + e);
+            }
+        }
+    }
+
+    public void deleteNotificationByComment(Comment comment) {
+        Notification notification = notificationRepository.findByCommentActivity(comment);
+        if (notification != null) {
+            try {
+                String jsonNotification = objectMapper.writeValueAsString(notification);
+                server.getBroadcastOperations().sendEvent("cancelNotification"+notification.getReceiver().getId(), jsonNotification);
+            } catch (JsonProcessingException e) {
+                System.out.println("Bildirim geri çekilemedi " + e);
+            }
+        }
+    }
 }

@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -77,20 +78,37 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void deleteComment(Long id) {
         Comment comment = commentRepository.findById(id).orElse(null);
-        Notification notification = notificationRepository.findByCommentActivity(comment);
-        if(notification != null) {
-            notification.setCommentActivity(null);
-            notificationRepository.save(notification);
-        }
-        commentRepository.deleteById(id);
-        if (notification != null) {
-            notificationRepository.delete(notification);
+
+        if (comment != null) {
+            List<Notification> notifications = notificationRepository.findAllByCommentActivity(comment);
+            if (notifications != null) {
+                notifications.forEach(notification -> {
+                    notification.setCommentActivity(null);
+                    notificationRepository.save(notification);
+                    notificationRepository.delete(notification);
+                });
+            }
+            commentRepository.deleteById(id);
+        } else {
+            throw new ResultNotFoundException("Invalid comment id");
         }
     }
+
 
     @Override
     public Integer getCommentCountByPostId(Long postId) {
         return commentRepository.getCommentCountByPostId(postId);
     }
+
+    @Override
+    public void deleteCommentsByPostId(Long postId) {
+        List<Comment> comments = commentRepository.findByPostId(postId);
+        for (Comment comment : comments) {
+            List<Notification> notifications = notificationRepository.findAllByCommentActivity(comment);
+            notificationRepository.deleteAll(notifications);
+        }
+        commentRepository.deleteAll(comments);
+    }
+
 }
 

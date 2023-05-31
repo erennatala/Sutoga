@@ -9,6 +9,7 @@ import com.sutoga.backend.entity.request.CreatePostRequest;
 import com.sutoga.backend.entity.response.PostResponse;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
 import com.sutoga.backend.repository.UserRepository;
+import com.sutoga.backend.service.CommentService;
 import com.sutoga.backend.service.LikeService;
 import com.sutoga.backend.service.PostService;
 import io.minio.PutObjectArgs;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 import com.sutoga.backend.entity.Post;
 import com.sutoga.backend.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.webjars.NotFoundException;
 import com.amazonaws.services.s3.AmazonS3;
@@ -45,7 +47,8 @@ public class PostServiceImpl implements PostService {
     private final UserRepository userRepository;
     @Lazy
     private final LikeService likeService;
-
+    @Lazy
+    private final CommentService commentService;
     private final PostMapper postMapper;
     private final AmazonS3 amazonS3;
     private final MinioClient minioClient;
@@ -57,13 +60,14 @@ public class PostServiceImpl implements PostService {
     private String cloudFrontDomainName;
 
     @Autowired
-    public PostServiceImpl(PostRepository postRepository, UserRepository userRepository, @Lazy LikeService likeService, PostMapper postMapper, MinioClient minioClient, AmazonS3 amazonS3) {
+    public PostServiceImpl(@Lazy CommentService commentService, PostRepository postRepository, UserRepository userRepository, @Lazy LikeService likeService, PostMapper postMapper, MinioClient minioClient, AmazonS3 amazonS3) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
         this.likeService = likeService;
         this.postMapper = postMapper;
         this.minioClient = minioClient;
         this.amazonS3 = amazonS3;
+        this.commentService = commentService;
     }
 
 //    @Autowired
@@ -96,6 +100,7 @@ public class PostServiceImpl implements PostService {
 
         postResponse.setLikeCount(0);
         postResponse.setCommentCount(0);
+        postResponse.setPhotoUrl(user.get().getProfilePhotoUrl());
 
         return postResponse;
     }
@@ -292,9 +297,11 @@ public class PostServiceImpl implements PostService {
         return postRepository.findById(postId).orElse(null);
     }
 
+    @Transactional
     @Override
     public void deletePost(Long postId) {
         likeService.deleteLikesByPostId(postId);
+        commentService.deleteCommentsByPostId(postId);
         postRepository.deleteById(postId);
     }
 

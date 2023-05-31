@@ -10,6 +10,7 @@ import com.sutoga.backend.entity.response.LikeResponse;
 import com.sutoga.backend.exceptions.ResultNotFoundException;
 import com.sutoga.backend.repository.LikeRepository;
 import com.sutoga.backend.repository.NotificationRepository;
+import com.sutoga.backend.repository.PostRepository;
 import com.sutoga.backend.service.LikeService;
 import com.sutoga.backend.service.PostService;
 import com.sutoga.backend.service.UserService;
@@ -34,14 +35,16 @@ public class LikeServiceImpl implements LikeService {
     @Lazy
     private final PostService postServiceImpl;
     private final NotificationRepository notificationRepository;
+    private final PostRepository postRepository;
 
     @Autowired
-    public LikeServiceImpl(LikeRepository likeRepository, UserService userService, @Lazy PostService postService, NotificationService notificationService, NotificationRepository notificationRepository) {
+    public LikeServiceImpl(PostRepository postRepository, LikeRepository likeRepository, UserService userService, @Lazy PostService postService, NotificationService notificationService, NotificationRepository notificationRepository) {
         this.likeRepository = likeRepository;
         this.userServiceImpl = userService;
         this.postServiceImpl = postService;
         this.notificationService = notificationService;
         this.notificationRepository = notificationRepository;
+        this.postRepository = postRepository;
     }
     @Override
     public Like createLike(CreateLikeRequest createLikeRequest) {
@@ -102,6 +105,11 @@ public class LikeServiceImpl implements LikeService {
     @Override
     public void deleteLikesByPostId(Long postId) {
         List<Like> likes = likeRepository.findByPostId(postId);
+        for(Like like: likes) {
+            List<Notification> notifications = notificationRepository.findAllByLikeActivity(like);
+            notificationRepository.deleteAll(notifications);
+            notificationService.deleteNotificationByLike(like);
+        }
         likeRepository.deleteAll(likes);
     }
 
@@ -117,6 +125,7 @@ public class LikeServiceImpl implements LikeService {
             likeRepository.delete(like);
             if (notification != null) {
                 notificationRepository.delete(notification);
+                notificationService.deleteNotificationByLike(like);
             }
         } else {
             throw new IllegalArgumentException("Like not found for provided postId and userId");
