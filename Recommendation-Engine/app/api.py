@@ -55,27 +55,33 @@ def recommend():
     #recommendations = hybrid_recommendations(user_id, user_game_ids)
     recommendations = hybrid_recommendations(user_games)
     # Format recommendations into response format
+    print(recommendations)
     response = {
-        'recommendations': recommendations
+        'recommendations': [
+            {
+                'appid': int(rec['appid']),
+                'similarity_score': rec.get('similarity_score'),
+                'estimated_rating': rec.get('estimated_rating')
+            } for rec in recommendations
+        ]
     }
+
     print(response)
     # Return recommendations as JSON response
-    return jsonify(response)
+    return response
+
 """
 @app.route('/recommend', methods=['POST'])
 def recommend():
     user_games = request.get_json()
     recommendations = hybrid_recommendations(user_games)
+    if recommendations:
+        recommended_games = [{'appid': int(rec['appid']), 'similarity_score': rec.get('similarity_score')} for rec in recommendations]
 
-    # Convert int64 values to regular integers
-    for rec in recommendations['recommendations']:
-        if 'similarity_score' in rec:
-            rec['similarity_score'] = float(rec['similarity_score'])
-        if 'estimated_rating' in rec:
-            rec['estimated_rating'] = float(rec['estimated_rating'])
-
-    return jsonify(recommendations)
+        response = {'recommendations': recommended_games}
+    else:
+        response = {'recommendations': []}
+    return jsonify(response)
 """
-
 if __name__ == '__main__':
     app.run()

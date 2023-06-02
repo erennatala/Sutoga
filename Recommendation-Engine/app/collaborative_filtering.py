@@ -119,7 +119,7 @@ def collaborative_filtering_recommendations(user_games, n=10):
 
     # Use the SVD algorithm
     algo = SVD()
-
+    cross_validate(algo, data, measures=['RMSE', 'MAE'], cv=5, verbose=True)
     # Train the algorithm on the dataset
     trainset = data.build_full_trainset()
     algo.fit(trainset)

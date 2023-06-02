@@ -1,0 +1,140 @@
+[
+  {
+    'appid': 105600,
+    'similarity_score': 0.756309821241009
+  },
+  {
+    'appid': 230410,
+    'similarity_score': 0.7550280547335734
+  },
+  {
+    'appid': 646570,
+    'similarity_score': 0.7289961782364712
+  },
+  {
+    'appid': 550,
+    'similarity_score': 0.7268308146772671
+  },
+  {
+    'appid': 304930,
+    'similarity_score': 0.7244681657445745
+  },
+  {
+    'appid': 322330,
+    'similarity_score': 0.7066812013185756
+  },
+  {
+    'appid': 1029550,
+    'estimated_rating': 1.0
+  },
+  {
+    'appid': 1721470,
+    'estimated_rating': 0.632808926149491
+  },
+  {
+    'appid': 314160,
+    'estimated_rating': 0.5235554292060297
+  },
+  {
+    'appid': 745920,
+    'estimated_rating': 0.40999466578981525
+  },
+  {
+    'appid': 257510,
+    'estimated_rating': 0.3084549634075311
+  },
+  {
+    'appid': 252490,
+    'estimated_rating': 0.29412358411395106
+  },
+  {
+    'appid': 212500,
+    'estimated_rating': 0.21400163070547282
+  },
+  {
+    'appid': 10190,
+    'estimated_rating': 0.14369062767056612
+  },
+  {
+    'appid': 471710,
+    'estimated_rating': 0.08896571813096645
+  }
+]
+{
+  'recommendations': [
+    {
+      'appid': 105600,
+      'similarity_score': 0.756309821241009,
+      'estimated_rating': None
+    },
+    {
+      'appid': 230410,
+      'similarity_score': 0.7550280547335734,
+      'estimated_rating': None
+    },
+    {
+      'appid': 646570,
+      'similarity_score': 0.7289961782364712,
+      'estimated_rating': None
+    },
+    {
+      'appid': 550,
+      'similarity_score': 0.7268308146772671,
+      'estimated_rating': None
+    },
+    {
+      'appid': 304930,
+      'similarity_score': 0.7244681657445745,
+      'estimated_rating': None
+    },
+    {
+      'appid': 322330,
+      'similarity_score': 0.7066812013185756,
+      'estimated_rating': None
+    },
+    {
+      'appid': 1029550,
+      'similarity_score': None,
+      'estimated_rating': 1.0
+    },
+    {
+      'appid': 1721470,
+      'similarity_score': None,
+      'estimated_rating': 0.632808926149491
+    },
+    {
+      'appid': 314160,
+      'similarity_score': None,
+      'estimated_rating': 0.5235554292060297
+    },
+    {
+      'appid': 745920,
+      'similarity_score': None,
+      'estimated_rating': 0.40999466578981525
+    },
+    {
+      'appid': 257510,
+      'similarity_score': None,
+      'estimated_rating': 0.3084549634075311
+    },
+    {
+      'appid': 252490,
+      'similarity_score': None,
+      'estimated_rating': 0.29412358411395106
+    },
+    {
+      'appid': 212500,
+      'similarity_score': None,
+      'estimated_rating': 0.21400163070547282
+    },
+    {
+      'appid': 10190,
+      'similarity_score': None,
+      'estimated_rating': 0.14369062767056612
+    },
+    {
+      'appid': 471710,
+      'similarity_score': None,
+      'estimated_rating': 0.08896571813096645
+    }
+  ]

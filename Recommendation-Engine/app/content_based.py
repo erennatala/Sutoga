@@ -153,7 +153,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 def content_based_recommendations(user_games):
     # Read the encoded game dataset from the CSV file
     encoded_game_dataset = pd.read_csv('encoded_game_dataset.csv')
-
     # Select only the games in the user's library from the encoded game dataset
     user_games_encoding = encoded_game_dataset[encoded_game_dataset['app_id'].isin(user_games.keys())]
 
@@ -187,3 +186,47 @@ def content_based_recommendations(user_games):
     recommended_games_list.sort(key=lambda x: x['similarity_score'], reverse=True)
 
     return recommended_games_list
+
+
+
+"""
+from sklearn.neighbors import NearestNeighbors
+
+def content_based_recommendations(user_games, k):
+    # Read the encoded game dataset from the CSV file
+    encoded_game_dataset = pd.read_csv('encoded_game_dataset.csv')
+
+    # Select only the games in the user's library from the encoded game dataset
+    user_games_encoding = encoded_game_dataset[encoded_game_dataset['app_id'].isin(user_games.keys())]
+
+    # Compute the weighted average encoding for the user's games based on play time
+    user_preferences = np.average(
+        user_games_encoding.drop('app_id', axis=1),
+        axis=0,
+        weights=[user_games.get(app_id, 0) for app_id in user_games_encoding['app_id']]
+    )
+
+    # Filter out the user's games from all the games
+    all_games = encoded_game_dataset[~encoded_game_dataset['app_id'].isin(user_games.keys())]
+
+    # Compute k-Nearest Neighbors
+    knn = NearestNeighbors(metric='cosine', algorithm='brute', n_neighbors=k, n_jobs=-1)
+    knn.fit(all_games.drop('app_id', axis=1))
+    distances, indices = knn.kneighbors(user_preferences.reshape(1, -1))
+
+    # Get the indices of the k most similar games
+    similar_games_indices = indices[0]
+
+    # Retrieve the app_ids and similarity scores (1 - cosine distance) of the similar games
+    similar_games_app_ids = all_games.iloc[similar_games_indices]['app_id']
+    similar_games_scores = 1 - distances[0]
+
+    # Create a list of recommended games with similarity scores
+    recommended_games_list = [{'appid': int(app_id), 'similarity_score': float(score)} for app_id, score in
+                              zip(similar_games_app_ids, similar_games_scores)]
+
+    # Sort the recommended games by similarity score
+    recommended_games_list.sort(key=lambda x: x['similarity_score'], reverse=True)
+
+    return recommended_games_list
+"""
