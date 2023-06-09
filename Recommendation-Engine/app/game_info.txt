@@ -1,0 +1,1000 @@
+1.		Counter-Strike: Global Offensive	1,039,174	1,477,893	1,818,773	+
+2.		Dota 2	508,661	662,910	1,295,114	+
+3.		Destiny 2	186,909	193,495	316,750	+
+4.		Source SDK Base 2007	183,600	186,259	213,168	+
+5.		Apex Legends	141,888	499,366	624,473	+
+6.		Rust	123,535	127,287	245,243	+
+7.		PUBG: BATTLEGROUNDS	116,226	378,567	3,257,248	+
+8.		Team Fortress 2	94,300	94,779	167,951	+
+9.		Grand Theft Auto V	90,876	133,810	364,548	+
+10.		War Thunder	77,468	80,667	113,250	+
+11.		Call of Duty®: Modern Warfare® II | Warzone™ 2.0	73,828	76,201	491,670	+
+12.		EA SPORTS™ FIFA 23	68,779	78,713	110,878	+
+13.		Football Manager 2023	60,736	63,269	83,715	+
+14.		Unturned	60,328	64,256	112,703	+
+15.		Warframe	51,756	65,952	189,837	+
+16.		Lost Ark	50,294	54,576	1,325,305	+
+17.		DayZ	49,174	51,219	63,046	+
+18.		ARK: Survival Evolved	48,680	53,825	248,405	+
+19.		Tom Clancy's Rainbow Six Siege	47,883	55,239	201,053	+
+20.		V Rising	46,179	46,993	150,645	+
+21.		Sid Meier's Civilization VI	42,431	57,058	162,657	+
+22.		Dead by Daylight	42,234	44,441	105,093	+
+23.		Wallpaper Engine	41,985	106,744	147,019	+
+24.		Hearts of Iron IV	40,016	46,217	70,997	+
+25.		Rocket League	40,015	40,015	147,632	+
+26.		FINAL FANTASY XIV Online	36,745	37,667	95,150	+
+27.		Euro Truck Simulator 2	35,911	39,818	61,081	+
+28.		Terraria	33,632	39,045	489,886	+
+29.		Path of Exile	32,776	33,869	211,637	+
+30.		The Sims™ 4	32,400	33,974	96,328	+
+31.		Garry's Mod	31,820	34,537	73,863	+
+32.		MIR4	31,606	33,533	97,173	+
+33.		Total War: WARHAMMER III	30,254	30,666	166,754	+
+34.		Stardew Valley	29,506	33,544	94,879	+
+35.		NBA 2K23	29,098	55,539	56,257	+
+36.		Project Zomboid	27,930	28,179	65,505	+
+37.		The Elder Scrolls V: Skyrim Special Edition	26,712	26,987	69,906	+
+38.		Hunt: Showdown	26,437	26,998	38,802	+
+39.		ELDEN RING	26,423	29,204	953,426	+
+40.		Crusader Kings III	26,269	26,606	98,872	+
+41.		Farming Simulator 22	25,086	28,061	105,636	+
+42.		Valheim	24,751	24,932	502,387	+
+43.		Spacewar	24,389	29,871	78,193	+
+44.		VRChat	22,912	25,763	46,814	+
+45.		tModLoader	22,410	25,671	38,058	+
+46.		Age of Empires II: Definitive Edition	21,772	21,821	38,725	+
+47.		Europa Universalis IV	20,526	21,008	48,165	+
+48.		Red Dead Redemption 2	20,144	29,036	70,914	+
+49.		RimWorld	20,141	20,921	60,789	+
+50.		Stellaris	19,147	21,974	68,602	+
+51.		Brawlhalla	19,140	19,140	34,816	+
+52.		Cities: Skylines	19,078	27,894	60,386	+
+53.		7 Days to Die	19,075	23,285	70,664	+
+54.		The Outlast Trials	18,586	25,492	36,689	+
+55.		Left 4 Dead 2	18,579	34,351	162,399	+
+56.		New World	18,550	18,968	913,634	+
+57.		Farlight 84	18,493	21,166	21,166	+
+58.		Black Desert	18,424	18,817	60,395	+
+59.		Cookie Clicker	18,209	18,542	67,867	+
+60.		Sid Meier's Civilization V	18,073	18,340	91,363	+
+61.		Soundpad	17,999	18,372	21,920	+
+62.		The Elder Scrolls Online	17,383	18,217	49,234	+
+63.		Don't Starve Together	17,190	61,035	115,925	+
+64.		Phasmophobia	16,871	17,084	112,717	+
+65.		Arma 3	16,837	17,785	56,679	+
+66.		Mount & Blade II: Bannerlord	16,779	20,873	248,216	+
+67.		Yu-Gi-Oh! Master Duel	16,407	32,097	262,689	+
+68.		Hell Let Loose	16,169	16,325	18,280	+
+69.		The Binding of Isaac: Rebirth	15,778	17,415	70,701	+
+70.		PAYDAY 2	15,727	22,560	247,709	+
+71.		Fallout 4	15,645	15,930	472,962	+
+72.		Squad	15,577	18,259	26,104	+
+73.		Deep Rock Galactic	15,179	15,385	46,687	+
+74.		SMITE	14,879	15,229	31,169	+
+75.		Hogwarts Legacy	14,362	15,026	879,308	+
+76.		Factorio	14,101	14,260	34,700	+
+77.		Sea of Thieves	14,021	14,512	66,906	+
+78.		Bloons TD 6	13,948	14,406	53,943	+
+79.		Geometry Dash	13,833	14,152	16,400	+
+80.		BeamNG.drive	13,228	14,078	20,691	+
+81.		Summoners War: Chronicles	13,096	15,352	38,641	+
+82.		Satisfactory	12,931	13,190	34,238	+
+83.		Albion Online	12,856	22,379	26,148	+
+84.		Conan Exiles	12,798	12,957	53,402	+
+85.		Assetto Corsa	12,738	13,298	17,513	+
+86.		SCUM	12,394	22,218	68,322	+
+87.		Football Manager 2022	12,218	12,561	88,767	+
+88.		NARAKA: BLADEPOINT	12,078	117,421	187,468	+
+89.		Cyberpunk 2077	11,972	13,333	1,054,388	+
+90.		World of Tanks Blitz	11,338	15,833	56,669	+
+91.		The Witcher 3: Wild Hunt	11,223	14,939	103,329	+
+92.		Counter-Strike	10,925	12,274	319,586	+
+93.		FIFA 22	10,829	11,714	108,295	+
+94.		Sons Of The Forest	10,798	11,166	414,257	+
+95.		Age of Wonders 4	10,790	10,867	42,877	+
+96.		Mortal Kombat 11	10,514	16,332	35,147	+
+97.		Forza Horizon 5	10,467	15,892	81,096	+
+98.		Far Cry 6	10,337	12,654	20,080	+
+99.		Battlefield™ 2042	10,153	15,991	105,397	+
+100.		Paladins	10,111	10,189	60,743	+
+101.		Stumble Guys	10,000	13,227	43,705	+
+102.		Tom Clancy's The Division 2	9,601	10,630	14,858	+
+103.		Legends of Idleon MMO	9,507	9,656	9,656	+
+104.		STAR WARS Jedi: Survivor™	9,258	9,258	67,855	+
+105.		Starship Troopers: Extermination	9,141	10,300	16,372	+
+106.		Raft	9,117	10,377	101,096	+
+107.		Metro: Last Light Complete Edition	8,881	14,500	37,815	+
+108.		People Playground	8,818	9,301	15,026	+
+109.		STAR WARS™: The Old Republic™	8,751	8,956	34,210	+
+110.		Crossout	8,639	9,170	12,170	+
+111.		Divinity: Original Sin 2	8,493	8,953	93,701	+
+112.		Age of Empires IV: Anniversary Edition	8,278	11,131	73,928	+
+113.		eFootball™ 2023	8,270	9,726	14,360	+
+114.		Call of Duty: Black Ops III	8,236	8,236	63,681	+
+115.		Darkest Dungeon® II	8,209	9,736	23,800	+
+116.		MONSTER HUNTER RISE	7,889	23,835	231,360	+
+117.		American Truck Simulator	7,669	7,735	19,153	+
+118.		Victoria 3	7,572	9,593	70,100	+
+119.		Monster Hunter: World	7,548	27,116	334,684	+
+120.		Space Engineers	7,425	7,483	23,888	+
+121.		Wartales	7,292	7,506	35,879	+
+122.		Goose Goose Duck	7,092	45,710	702,845	+
+123.		Risk of Rain 2	6,889	6,997	71,548	+
+124.		Omega Strikers	6,803	7,050	19,257	+
+125.		Among Us	6,738	6,966	447,476	+
+126.		Microsoft Flight Simulator	6,691	7,109	61,829	+
+127.		Oxygen Not Included	6,583	10,161	27,486	+
+128.		No Man's Sky	6,495	6,495	212,613	+
+129.		MARVEL SNAP	6,410	7,357	11,670	+
+130.		SCP: Secret Laboratory	6,383	7,499	11,323	+
+131.		Warhammer 40,000: Gladius - Relics of War	6,373	6,794	6,794	+
+132.		Total War: ROME II - Emperor Edition	6,365	6,402	118,240	+
+133.		Fallout 76	6,350	7,094	32,982	+
+134.		Slay the Spire	6,159	10,902	33,086	+
+135.		Blender	5,971	7,486	8,364	+
+136.		Grounded	5,842	5,996	32,012	+
+137.		Tabletop Simulator	5,681	5,907	37,198	+
+138.		Last Epoch	5,575	5,715	40,591	+
+139.		EVE Online	5,571	5,792	10,627	+
+140.		F1® 22	5,479	6,124	25,172	+
+141.		World of Warships	5,466	11,942	411,338	+
+142.		Solasta: Crown of the Magister	5,345	5,348	8,291	+
+143.		Fallout: New Vegas	5,317	5,317	51,038	+
+144.		Borderlands 3	5,281	6,870	93,820	+
+145.		Crab Game	5,219	5,401	56,106	+
+146.		Warhammer: Vermintide 2	5,200	5,746	104,323	+
+147.		Warhammer 40,000: Darktide	5,147	5,151	108,395	+
+148.		Resident Evil 4	5,112	7,800	168,191	+
+149.		Idle Champions of the Forgotten Realms	5,052	5,187	18,578	+
+150.		Ready or Not	4,991	5,189	19,621	+
+151.		Forza Horizon 4	4,968	10,780	40,399	+
+152.		OBS Studio	4,954	9,602	10,191	+
+153.		Russian Fishing 4	4,942	13,493	14,424	+
+154.		Horizon Zero Dawn	4,935	5,062	56,557	+
+155.		Elite Dangerous	4,911	5,100	28,923	+
+156.		Warhammer 40,000: Boltgun	4,882	5,044	7,561	+
+157.		SnowRunner	4,809	5,125	8,259	+
+158.		Pathfinder: Wrath of the Righteous - Enhanced Edition	4,756	4,854	46,724	+
+159.		Mass Effect™ Legendary Edition	4,733	4,797	59,817	+
+160.		Vampire Survivors	4,719	5,365	77,061	+
+161.		Battlefield 1 ™	4,685	12,955	53,714	+
+162.		Crosshair X	4,660	4,736	6,229	+
+163.		The Forest	4,630	4,945	76,226	+
+164.		Assetto Corsa Competizione	4,601	5,063	9,416	+
+165.		Yu-Gi-Oh! Duel Links	4,597	5,382	21,520	+
+166.		Core Keeper	4,506	7,087	34,508	+
+167.		Total War: WARHAMMER II	4,505	4,574	84,920	+
+168.		Timberborn	4,487	4,554	12,354	+
+169.		Guild Wars 2	4,446	4,537	8,324	+
+170.		Company of Heroes 2	4,443	5,714	164,688	+
+171.		Dying Light 2	4,377	4,937	274,983	+
+172.		Dying Light	4,374	6,520	45,876	+
+173.		Shop Titans	4,353	5,246	7,990	+
+174.		Football Manager 2021	4,340	4,478	93,865	+
+175.		Age of Empires II (2013)	4,288	4,433	27,927	+
+176.		X4: Foundations	4,274	4,472	15,198	+
+177.		The Isle	4,143	4,360	11,973	+
+178.		GUILTY GEAR -STRIVE-	4,137	6,155	31,156	+
+179.		Melvor Idle	4,128	5,060	11,867	+
+180.		RuneScape	4,120	4,129	12,569	+
+181.		theHunter: Call of the Wild™	4,100	5,435	23,612	+
+182.		Aim Lab	4,052	4,924	10,381	+
+183.		YoloMouse	4,033	5,441	5,964	+
+184.		Hollow Knight	4,022	5,901	20,324	+
+185.		Kenshi	4,008	4,980	10,971	+
+186.		Darkest Dungeon®	4,007	5,996	19,357	+
+187.		TEKKEN 7	3,985	6,911	18,966	+
+188.		XCOM 2	3,957	4,055	133,022	+
+189.		For Honor	3,955	4,069	225,831	+
+190.		Farming Simulator 19	3,895	4,563	59,466	+
+191.		Borderlands 2	3,885	3,980	124,678	+
+192.		Fall Guys	3,877	3,897	172,213	+
+193.		VTube Studio	3,869	10,246	10,685	+
+194.		Planet Zoo	3,863	4,191	38,630	+
+195.		DOOM Eternal	3,848	3,966	104,891	+
+196.		Days Gone	3,836	4,065	27,450	+
+197.		Counter-Strike: Source	3,831	4,371	100,056	+
+198.		Mechabellum	3,825	3,825	4,932	+
+199.		Total War: MEDIEVAL II - Definitive Edition	3,821	3,984	8,453	+
+200.		Undecember	3,784	6,133	46,103	+
+201.		DARK SOULS™ III	3,779	4,911	129,975	+
+202.		Battlefield™ V	3,772	19,890	89,814	+
+203.		Town of Salem 2	3,750	3,755	3,755	+
+204.		Hades	3,748	4,405	37,749	+
+205.		Brotato	3,703	9,182	30,409	+
+206.		Barotrauma	3,687	3,921	19,655	+
+207.		Halls of Torment	3,667	3,691	3,691	+
+208.		Halo: The Master Chief Collection	3,650	4,324	161,024	+
+209.		Northgard	3,592	3,729	20,235	+
+210.		MORDHAU	3,585	3,639	60,204	+
+211.		鬼谷八荒 Tale of Immortal	3,578	18,791	184,171	+
+212.		NGU IDLE	3,575	3,626	8,032	+
+213.		Titanfall® 2	3,574	13,194	27,631	+
+214.		CarX Drift Racing Online	3,565	3,762	5,369	+
+215.		World of Tanks	3,461	4,028	6,128	+
+216.		Shakes and Fidget	3,409	4,023	9,495	+
+217.		Fishing Planet	3,403	3,799	6,709	+
+218.		Age of Empires III: Definitive Edition	3,390	3,810	20,146	+
+219.		Subnautica	3,377	3,675	51,156	+
+220.		Football Manager 2020	3,332	3,423	189,464	+
+221.		Aseprite	3,295	3,427	3,928	+
+222.		Transport Fever 2	3,293	3,770	24,308	+
+223.		Middle-earth™: Shadow of War™	3,223	4,853	68,183	+
+224.		The Cycle: Frontier	3,166	3,353	40,854	+
+225.		Chivalry 2	3,128	3,165	16,959	+
+226.		Halo Infinite	3,124	4,299	272,586	+
+227.		Wayfinder Beta	3,116	5,654	8,141	+
+228.		House Flipper	3,104	3,290	13,032	+
+229.		Anno 1800	3,086	3,254	25,302	+
+230.		Mount & Blade: Warband	3,078	4,941	33,054	+
+231.		Pizza Tower	3,028	3,028	4,529	+
+232.		Crusader Kings II	3,016	3,041	141,439	+
+233.		The Elder Scrolls V: Skyrim	3,005	3,074	287,411	+
+234.		MapleStory	3,001	3,945	7,298	+
+235.		Need for Speed™ Unbound	2,974	3,383	14,063	+
+236.		Total War: EMPIRE - Definitive Edition	2,928	2,963	27,559	+
+237.		Marvel’s Spider-Man Remastered	2,909	2,920	66,436	+
+238.		Total War: THREE KINGDOMS	2,893	8,465	192,298	+
+239.		Assassin's Creed Odyssey	2,877	4,153	62,069	+
+240.		Red Dead Online	2,871	2,871	19,921	+
+241.		VEILED EXPERTS	2,869	5,761	9,296	+
+242.		STALCRAFT	2,848	3,952	9,097	+
+243.		Persona 5 Royal	2,820	6,460	35,474	+
+244.		RISK: Global Domination	2,818	2,818	11,716	+
+245.		Magic: The Gathering Arena	2,815	2,939	3,320	+
+246.		Sekiro™: Shadows Die Twice	2,774	7,369	125,315	+
+247.		Demonologist	2,771	2,771	8,806	+
+248.		Teardown	2,757	2,966	8,339	+
+249.		STAR WARS™ Empire at War: Gold Pack	2,732	2,774	5,716	+
+250.		Dread Hunger	2,710	8,393	107,982	+
+251.		Clicker Heroes	2,669	2,752	65,882	+
+252.		Caliber	2,651	3,158	5,436	+
+253.		STAR WARS Jedi: Fallen Order™	2,622	2,676	46,550	+
+254.		eFootball PES 2021 SEASON UPDATE	2,618	3,220	20,674	+
+255.		Kingdom Come: Deliverance	2,608	2,761	96,069	+
+256.		Stormworks: Build and Rescue	2,590	2,726	6,820	+
+257.		PlanetSide 2	2,581	2,801	29,676	+
+258.		Dyson Sphere Program	2,581	4,155	59,815	+
+259.		Portal 2	2,580	2,637	98,460	+
+260.		雀魂麻将(MahjongSoul)	2,575	22,203	35,277	+
+261.		Muck	2,560	2,677	16,715	+
+262.		Metro Exodus	2,553	3,845	15,375	+
+263.		Grim Dawn	2,536	3,620	61,458	+
+264.		Stranded: Alien Dawn	2,528	2,892	8,792	+
+265.		Farmer Against Potatoes Idle	2,521	2,827	8,951	+
+266.		Total War: ATTILA	2,509	2,565	26,346	+
+267.		MX Bikes	2,501	2,536	2,661	+
+268.		Company of Heroes 3	2,492	2,517	36,646	+
+269.		DRAGON BALL FighterZ	2,484	2,524	44,303	+
+270.		Total War: SHOGUN 2	2,468	2,598	54,115	+
+271.		Leaf Blower Revolution - Idle Game	2,467	2,468	8,125	+
+272.		Combat Master	2,461	2,689	7,141	+
+273.		AdVenture Capitalist	2,454	2,553	22,998	+
+274.		Torchlight: Infinite	2,446	3,925	21,030	+
+275.		NBA 2K22	2,435	7,098	46,661	+
+276.		Insurgency: Sandstorm	2,409	2,516	14,606	+
+277.		Cell to Singularity - Evolution Never Ends	2,404	2,743	7,340	+
+278.		OVR Advanced Settings	2,402	2,797	4,878	+
+279.		Baldur's Gate 3	2,398	2,398	73,980	+
+280.		METAL GEAR SOLID V: THE PHANTOM PAIN	2,392	2,428	91,195	+
+281.		Killing Floor 2	2,385	2,625	69,987	+
+282.		Far Cry 5	2,368	2,511	92,445	+
+283.		Dead Cells	2,361	4,209	14,910	+
+284.		State of Decay 2	2,336	3,399	22,728	+
+285.		PowerWash Simulator	2,334	2,399	10,512	+
+286.		Grand Theft Auto IV: The Complete Edition	2,333	2,392	11,696	+
+287.		Rec Room	2,318	2,322	7,154	+
+288.		Empyrion - Galactic Survival	2,308	2,335	8,829	+
+289.		PlateUp!	2,288	2,288	12,460	+
+290.		Lords Mobile	2,279	2,606	6,224	+
+291.		Realm of the Mad God Exalt	2,269	2,288	10,051	+
+292.		Kerbal Space Program	2,249	2,315	19,149	+
+293.		Gunfire Reborn	2,248	4,788	35,263	+
+294.		Sun Haven	2,241	2,836	12,706	+
+295.		Railway Empire 2	2,220	2,338	2,338	+
+296.		STAR WARS™ Battlefront™ II	2,200	2,247	10,489	+
+297.		ShareX	2,199	2,547	3,533	+
+298.		Farthest Frontier	2,194	2,443	24,910	+
+299.		Lost Light	2,176	2,962	4,775	+
+300.		Spore	2,156	2,349	5,630	+
+301.		ヘブンバーンズレッド	2,151	4,994	20,201	+
+302.		Foxhole	2,141	2,207	11,791	+
+303.		Phantasy Star Online 2 New Genesis	2,136	2,596	59,558	+
+304.		Age of Mythology: Extended Edition	2,132	2,240	11,074	+
+305.		ULTRAKILL	2,127	2,196	16,354	+
+306.		F1® Manager 2022	2,127	2,191	25,575	+
+307.		Medieval Dynasty	2,120	2,250	18,738	+
+308.		The Sims™ 3	2,116	2,165	10,505	+
+309.		Scrap Mechanic	2,116	2,457	46,643	+
+310.		BATTLETECH	2,112	2,130	35,767	+
+311.		Soundpad Demo	2,099	2,332	7,956	+
+312.		Dragon's Dogma: Dark Arisen	2,093	2,093	27,368	+
+313.		Tap Ninja	2,065	2,394	3,387	+
+314.		It Takes Two	2,054	8,709	32,685	+
+315.		Limbus Company	2,052	7,015	30,225	+
+316.		For The King	2,036	3,660	9,625	+
+317.		Cult of the Lamb	2,027	2,053	61,780	+
+318.		God of War	2,021	2,061	73,529	+
+319.		HITMAN 3	2,018	2,240	9,043	+
+320.		Dragon Age™ Inquisition	1,994	2,029	4,121	+
+321.		Pummel Party	1,993	3,381	20,957	+
+322.		Kingdoms Reborn	1,958	2,163	3,990	+
+323.		Planet Coaster	1,954	2,023	21,971	+
+324.		GrandChase	1,949	2,849	79,883	+
+325.		The Last of Us™ Part I	1,943	1,989	36,496	+
+326.		Jurassic World Evolution 2	1,921	2,148	20,784	+
+327.		Plants vs. Zombies: Game of the Year	1,912	5,642	16,225	+
+328.		Star Trek Online	1,910	2,032	7,910	+
+329.		Governor of Poker 3	1,907	2,579	2,720	+
+330.		Hue	1,877	2,968	2,968	+
+331.		Totally Accurate Battle Simulator	1,877	2,219	13,674	+
+332.		Noita	1,865	1,967	5,239	+
+333.		Need for Speed™ Heat	1,861	2,490	86,196	+
+334.		Transformice	1,856	1,985	5,636	+
+335.		BLEACH Brave Souls - 3D Action	1,841	2,460	8,003	+
+336.		Antimatter Dimensions	1,824	1,903	6,962	+
+337.		DEAD OR ALIVE Xtreme Venus Vacation	1,818	7,085	11,284	+
+338.		They Are Billions	1,805	3,505	22,395	+
+339.		Business Tour - Online Multiplayer Board Game	1,804	1,804	7,707	+
+340.		Battlefield 4™	1,796	1,906	12,425	+
+341.		Car Mechanic Simulator 2021	1,789	1,839	22,561	+
+342.		Tower of Fantasy	1,789	2,158	7,210	+
+343.		ASTRONEER	1,783	2,005	17,986	+
+344.		Golf With Your Friends	1,773	1,773	20,750	+
+345.		Human: Fall Flat	1,753	4,622	127,517	+
+346.		Men of War: Assault Squad 2	1,737	1,923	9,750	+
+347.		DRAGON BALL XENOVERSE 2	1,735	1,735	19,416	+
+348.		War Robots	1,731	2,035	2,342	+
+349.		Sid Meier's Civilization IV: Beyond the Sword	1,727	1,740	2,636	+
+350.		Age of History II	1,724	2,125	2,901	+
+351.		Marvel's Midnight Suns	1,704	1,716	15,500	+
+352.		DARK SOULS™: REMASTERED	1,703	1,750	24,501	+
+353.		Above Snakes	1,701	2,340	2,340	+
+354.		Gems of War	1,697	1,957	3,007	+
+355.		Starbound	1,696	1,700	88,709	+
+356.		Icarus	1,695	1,733	52,501	+
+357.		Mortal Online 2	1,693	1,693	9,657	+
+358.		Pro Soccer Online	1,692	1,922	4,703	+
+359.		Cuphead	1,690	1,837	19,026	+
+360.		Conqueror's Blade	1,678	1,726	15,008	+
+361.		Metro Exodus Enhanced Edition	1,676	2,342	3,521	+
+362.		Space Station 14 Playtest	1,676	2,198	2,339	+
+363.		WWE 2K23	1,674	1,689	6,535	+
+364.		Heroes of Might & Magic III - HD Edition	1,673	1,754	4,656	+
+365.		Dota Underlords	1,661	2,362	202,334	+
+366.		Project Playtime	1,648	1,778	21,105	+
+367.		Escape the Backrooms	1,642	1,685	3,301	+
+368.		Trackmania	1,633	1,807	2,935	+
+369.		DiRT Rally 2.0	1,595	1,745	3,533	+
+370.		Uncharted Waters Origin	1,591	3,179	4,880	+
+371.		Assassin's Creed Valhalla	1,588	1,683	15,679	+
+372.		Disney Dreamlight Valley	1,571	1,688	14,314	+
+373.		Golf It!	1,570	1,578	2,877	+
+374.		Battle Brothers	1,565	1,653	8,060	+
+375.		The Long Dark	1,561	1,809	14,433	+
+376.		Company of Heroes	1,543	1,583	5,906	+
+377.		Supreme Commander: Forged Alliance	1,533	1,588	2,113	+
+378.		Crab Champions	1,519	2,016	8,564	+
+379.		A Way Out	1,514	2,259	2,702	+
+380.		Tom Clancy's Ghost Recon® Wildlands	1,512	1,699	45,704	+
+381.		小黑盒加速器	1,509	6,998	11,085	+
+382.		Coral Island	1,506	1,576	7,487	+
+383.		Against the Storm	1,501	1,926	8,425	+
+384.		Sid Meier's Civilization III: Complete	1,493	1,493	4,600	+
+385.		PGA TOUR 2K23	1,466	2,151	3,538	+
+386.		DCS World Steam Edition	1,461	1,514	3,328	+
+387.		Frostpunk	1,453	1,823	29,361	+
+388.		Inkbound	1,451	1,572	2,414	+
+389.		Command & Conquer™ Remastered Collection	1,451	1,556	42,587	+
+390.		Football Manager 2019	1,450	1,501	75,982	+
+391.		Plants vs. Zombies™ Garden Warfare 2: Deluxe Edition	1,450	1,588	4,888	+
+392.		Dragon Age: Origins - Ultimate Edition	1,448	1,514	8,364	+
+393.		Total War: NAPOLEON - Definitive Edition	1,440	1,545	9,935	+
+394.		Incremental Epic Hero 2	1,440	1,542	3,100	+
+395.		Fallout Shelter	1,429	1,642	42,656	+
+396.		Sniper Elite 5	1,429	1,625	14,870	+
+397.		Metro 2033 Redux	1,417	1,775	5,139	+
+398.		Shadowverse	1,416	4,095	24,167	+
+399.		Trove	1,415	1,536	58,949	+
+400.		Pro Cycling Manager 2022	1,407	1,480	3,263	+
+401.		Super Auto Pets	1,406	1,466	10,760	+
+402.		Call to Arms - Gates of Hell: Ostfront	1,404	1,565	3,550	+
+403.		Granado Espada	1,397	2,012	4,505	+
+404.		March of Empires	1,396	1,567	2,061	+
+405.		Occupy Mars: The Game	1,395	1,486	3,319	+
+406.		WorldBox - God Simulator	1,390	1,511	11,034	+
+407.		Assassin's Creed Origins	1,379	2,368	41,551	+
+408.		Workers & Resources: Soviet Republic	1,378	1,576	3,891	+
+409.		Pathfinder: Kingmaker	1,374	1,391	22,643	+
+410.		依盖之书 book of yog	1,369	1,908	4,192	+
+411.		Madden NFL 23	1,363	1,743	6,169	+
+412.		Across the Obelisk	1,362	1,362	14,037	+
+413.		Brick Rigs	1,352	1,463	2,460	+
+414.		The Elder Scrolls IV: Oblivion	1,349	1,376	6,390	+
+415.		Dwarf Fortress	1,337	1,341	28,340	+
+416.		Resident Evil 2	1,335	1,907	74,227	+
+417.		HUMANKIND™	1,334	1,334	55,284	+
+418.		Stream Avatars	1,333	1,392	2,158	+
+419.		Marvel's Spider-Man: Miles Morales	1,331	1,346	13,539	+
+420.		DEVOUR	1,327	1,769	7,969	+
+421.		Old School RuneScape	1,327	1,372	6,151	+
+422.		DARK SOULS™ II: Scholar of the First Sin	1,321	1,355	12,106	+
+423.		Car For Sale Simulator 2023	1,302	1,433	1,625	+
+424.		Mass Effect™: Andromeda	1,297	1,303	3,591	+
+425.		My Singing Monsters	1,297	1,513	3,939	+
+426.		Prison Architect	1,294	1,351	16,211	+
+427.		Firestone: Online Idle RPG	1,294	1,495	2,814	+
+428.		Green Hell	1,287	1,422	20,003	+
+429.		Injustice™ 2	1,266	1,342	1,873	+
+430.		Undisputed	1,265	1,275	7,433	+
+431.		Train Simulator	1,260	1,406	3,821	+
+432.		Trailmakers	1,259	1,395	4,116	+
+433.		Tiny Tina's Wonderlands	1,256	1,328	15,021	+
+434.		Stay Out	1,249	1,636	2,400	+
+435.		Warhammer 40,000: Dawn of War - Soulstorm	1,246	1,246	3,283	+
+436.		Rain World	1,240	1,279	4,808	+
+437.		Celeste	1,238	1,415	4,177	+
+438.		Subnautica: Below Zero	1,236	1,302	42,115	+
+439.		DREDGE	1,233	1,252	12,686	+
+440.		Graveyard Keeper	1,232	1,235	16,993	+
+441.		Neverwinter	1,229	1,314	14,866	+
+442.		Bloons TD Battles 2	1,229	1,344	17,137	+
+443.		Don't Starve	1,228	3,824	16,796	+
+444.		Catan Universe	1,228	1,230	7,376	+
+445.		Overcooked! 2	1,228	6,852	12,108	+
+446.		Increlution	1,221	1,232	2,132	+
+447.		Your Chronicle	1,213	1,380	3,148	+
+448.		Warface	1,210	1,467	13,867	+
+449.		MechWarrior 5: Mercenaries	1,207	1,237	6,476	+
+450.		Batman™: Arkham Knight	1,202	1,265	27,406	+
+451.		Enter the Gungeon	1,200	1,275	15,792	+
+452.		Rogue Company	1,200	1,220	12,189	+
+453.		Stronghold Crusader HD	1,193	1,288	2,612	+
+454.		Legion TD 2	1,192	1,270	5,753	+
+455.		Source Filmmaker	1,188	1,205	3,975	+
+456.		Dinkum	1,188	1,506	13,412	+
+457.		Mr.Mine	1,184	1,260	5,093	+
+458.		FTL: Faster Than Light	1,180	1,234	19,301	+
+459.		Street Fighter V	1,180	2,200	14,783	+
+460.		ShellShock Live	1,180	1,186	7,455	+
+461.		Deceit	1,178	1,317	16,923	+
+462.		ATLAS	1,174	1,207	58,939	+
+463.		The Lord of the Rings Online™	1,171	1,182	3,965	+
+464.		Disco Elysium	1,168	1,208	8,081	+
+465.		Beasts of Bermuda	1,167	1,255	3,523	+
+466.		Back 4 Blood	1,163	1,686	65,987	+
+467.		SAO Utils 2: Progressive	1,155	3,606	6,966	+
+468.		KovaaK's	1,154	1,651	2,846	+
+469.		Wargame: Red Dragon	1,150	1,367	4,779	+
+470.		Neverwinter Nights: Enhanced Edition	1,143	1,143	2,410	+
+471.		My Summer Car	1,141	1,334	5,509	+
+472.		火炬之光：无限	1,141	6,898	10,025	+
+473.		Blade & Sorcery	1,131	1,131	4,892	+
+474.		Will To Live Online	1,128	1,561	3,108	+
+475.		Miasma Chronicles	1,123	1,202	1,216	+
+476.		Idling to Rule the Gods	1,116	1,186	2,783	+
+477.		Gorilla Tag	1,116	1,278	1,679	+
+478.		LEGO® Star Wars™: The Skywalker Saga	1,115	1,167	82,517	+
+479.		Mortal Kombat X	1,110	1,110	15,743	+
+480.		Paragon: The Overprime	1,109	1,117	32,524	+
+481.		Black Mesa	1,108	1,245	7,158	+
+482.		Ghost Recon Breakpoint	1,104	1,151	9,145	+
+483.		Ravenfield	1,100	1,475	3,939	+
+484.		Generation Zero®	1,100	1,134	11,416	+
+485.		Marauders	1,097	1,352	14,332	+
+486.		Call of Duty®: Black Ops Cold War	1,094	1,242	3,329	+
+487.		Trimps	1,092	1,149	3,865	+
+488.		Cossacks 3	1,090	1,204	5,797	+
+489.		Idle Slayer	1,088	1,157	1,492	+
+490.		Gloomhaven	1,084	1,341	6,983	+
+491.		Knight Online	1,069	1,091	24,594	+
+492.		Project Winter	1,069	1,844	38,794	+
+493.		Inscryption	1,069	1,257	17,072	+
+494.		Crush Crush	1,066	1,535	4,512	+
+495.		Out of the Park Baseball 24	1,065	1,210	1,357	+
+496.		Z1 Battle Royale	1,062	1,241	151,239	+
+497.		Vampire: The Masquerade - Bloodhunt	1,059	1,082	29,475	+
+498.		Eco	1,056	1,104	6,964	+
+499.		Eternal Return	1,054	5,734	52,853	+
+500.		The Texas Chain Saw Massacre Technical Test	1,052	1,064	1,064	+
+501.		Street Fighter™ 6 Demo	1,048	1,565	9,549	+
+502.		Just Cause 3	1,044	1,799	23,459	+
+503.		My Time at Sandrock	1,043	1,318	21,778	+
+504.		Total War: ROME REMASTERED	1,042	1,063	18,526	+
+505.		Rome: Total War	1,039	1,050	4,413	+
+506.		EVGA Precision X1	1,037	1,073	4,248	+
+507.		War Selection	1,036	1,213	2,026	+
+508.		Titan Quest Anniversary Edition	1,032	1,186	19,497	+
+509.		Ultimate Admiral: Dreadnoughts	1,032	1,066	2,081	+
+510.		ROMANCE OF THE THREE KINGDOMS XIV	1,015	3,736	16,482	+
+511.		Shadows of Doubt	1,013	1,019	3,562	+
+512.		OMSI 2	1,008	1,209	2,228	+
+513.		DDraceNetwork	993	2,152	3,054	+
+514.		Minion Masters	991	1,227	10,329	+
+515.		Victoria II	979	989	3,419	+
+516.		Dead Island Definitive Edition	979	1,053	4,155	+
+517.		Devil May Cry 5	970	2,279	88,894	+
+518.		EVERSPACE™ 2	962	989	9,760	+
+519.		Wreckfest	960	996	3,865	+
+520.		Iron Harvest	954	1,161	8,164	+
+521.		CounterSide	953	1,412	5,199	+
+522.		Surviving Mars	952	959	23,744	+
+523.		MyDockFinder	950	2,959	3,869	+
+524.		Deadside	949	1,003	9,581	+
+525.		Football Manager 2018	946	967	71,575	+
+526.		Nioh 2 – The Complete Edition	937	2,435	41,325	+
+527.		Inside the Backrooms	935	2,745	15,033	+
+528.		Wall World	926	983	4,650	+
+529.		Going Medieval	923	940	14,676	+
+530.		Slime Rancher	921	1,003	7,214	+
+531.		The Crew 2	920	1,132	12,748	+
+532.		One-armed cook	920	1,007	2,408	+
+533.		Predecessor	917	1,046	7,339	+
+534.		Conflict of Nations: World War 3	905	944	1,403	+
+535.		DOOM	903	943	44,271	+
+536.		Command and Conquer: Red Alert 3	900	2,623	2,984	+
+537.		DEATH STRANDING DIRECTOR'S CUT	899	1,289	6,093	+
+538.		XSOverlay	898	1,025	1,446	+
+539.		Divinity: Original Sin Enhanced Edition	897	974	7,565	+
+540.		The Planet Crafter	897	947	14,253	+
+541.		Rise of Nations: Extended Edition	893	927	2,734	+
+542.		Wobbly Life	890	1,151	3,161	+
+543.		Rocksmith® 2014 Edition - Remastered	889	977	4,063	+
+544.		Foundation	889	942	4,088	+
+545.		rFactor 2	888	983	1,769	+
+546.		Warhammer 40,000: Inquisitor - Martyr	888	931	9,698	+
+547.		Train Sim World® 3	888	1,057	1,796	+
+548.		GTFO	887	1,303	18,813	+
+549.		HudSight - custom crosshair overlay	884	936	1,078	+
+550.		Resident Evil Village	882	1,187	106,631	+
+551.		XCOM: Enemy Unknown	878	885	70,568	+
+552.		Warhammer 40,000: Chaos Gate - Daemonhunters	878	910	12,455	+
+553.		World War Z	876	2,079	6,714	+
+554.		It Takes Two Friend's Pass	873	3,809	16,827	+
+555.		Captain of Industry	871	920	6,135	+
+556.		Galaxy Life	868	937	4,741	+
+557.		Microsoft Flight Simulator X: Steam Edition	860	885	6,051	+
+558.		Roots of Pacha	853	867	6,062	+
+559.		Half-Life 2	850	965	16,182	+
+560.		Avorion	848	848	4,533	+
+561.		Escape Simulator	848	848	6,616	+
+562.		Gang Beasts	844	854	3,062	+
+563.		Beat Saber	843	914	4,472	+
+564.		X-Plane 11	842	978	4,210	+
+565.		Our Life: Beginnings & Always	840	917	1,942	+
+566.		Craftopia	840	1,927	27,246	+
+567.		Sniper Elite 4	839	1,124	17,366	+
+568.		Outer Wilds	836	836	7,936	+
+569.		Voidtrain	836	841	7,824	+
+570.		ROUNDS	834	840	2,269	+
+571.		Persona 4 Golden	833	1,071	29,984	+
+572.		SAO Utils: Beta	826	2,561	3,747	+
+573.		Football Manager 2017	821	840	72,824	+
+574.		Mafia: Definitive Edition	816	864	36,679	+
+575.		Call of Duty: Black Ops II - Zombies	810	811	9,695	+
+576.		A Dance of Fire and Ice	810	2,949	9,330	+
+577.		OVR Toolkit	810	1,008	1,905	+
+578.		Warhammer 40,000: Speed Freeks Alpha test	810	843	843	+
+579.		Peglin	808	934	3,764	+
+580.		Stick Fight: The Game	807	840	5,147	+
+581.		Age of Empires: Definitive Edition	807	841	2,708	+
+582.		WARNO	806	868	2,113	+
+583.		Middle-earth™: Shadow of Mordor™	802	865	48,668	+
+584.		Hydroneer	802	802	8,996	+
+585.		GROUND BRANCH	800	827	1,674	+
+586.		Deceive Inc.	798	855	8,632	+
+587.		Shatterline	797	819	21,760	+
+588.		Yakuza 0	796	847	8,985	+
+589.		MechWarrior Online	795	860	4,155	+
+590.		Realm Grinder	795	839	6,265	+
+591.		Volcano Princess	793	4,295	31,057	+
+592.		Tropico 6	792	815	15,294	+
+593.		Dead Frontier 2	788	1,804	10,101	+
+594.		The Long Drive	788	881	3,151	+
+595.		Forager	785	899	13,438	+
+596.		Metro: Last Light Redux	780	934	2,819	+
+597.		Black Squad	780	960	15,939	+
+598.		Banished	778	780	24,636	+
+599.		Gothic II: Gold Classic	769	850	1,290	+
+600.		NieR:Automata™	767	1,118	23,908	+
+601.		EA SPORTS™ FIFA 21	766	868	44,388	+
+602.		Undertale	763	890	10,484	+
+603.		Slapshot: Rebound	763	852	1,544	+
+604.		Call of Duty®: Modern Warfare®	763	1,104	2,983	+
+605.		Crosshair V2	762	891	1,026	+
+606.		RaceRoom Racing Experience	761	847	2,630	+
+607.		Driver Booster for Steam	759	774	1,030	+
+608.		Idle Wizard	758	802	1,544	+
+609.		theHunter Classic	755	910	3,984	+
+610.		Blasphemous	755	837	3,247	+
+611.		Total War: WARHAMMER	754	782	113,019	+
+612.		Farm Together	752	1,184	6,998	+
+613.		ESEA	748	756	1,583	+
+614.		Imperator: Rome	748	769	41,945	+
+615.		Game of Thrones Winter is Coming	745	808	1,681	+
+616.		Ultimate Chicken Horse	742	1,193	2,744	+
+617.		Sid Meier's Civilization IV	739	761	2,314	+
+618.		Fetish Locator Week Three	737	978	1,011	+
+619.		F1 2021	736	825	25,575	+
+620.		Naval Action	732	789	5,222	+
+621.		Bitburner	732	735	5,935	+
+622.		Asphalt 9: Legends	727	896	999	+
+623.		Rising Storm 2: Vietnam	726	729	24,518	+
+624.		Ultimate Custom Night	724	765	11,320	+
+625.		Stoneshard	723	1,109	10,738	+
+626.		Mafia III: Definitive Edition	722	786	47,822	+
+627.		Winning Post 10	722	1,918	5,115	+
+628.		RPG Maker MV	721	856	2,486	+
+629.		Resident Evil 4 (2005)	719	780	5,343	+
+630.		Everlasting Summer	718	798	1,907	+
+631.		Half-Life	716	761	12,280	+
+632.		Detroit: Become Human	715	1,034	7,218	+
+633.		Spiritfarer®: Farewell Edition	707	1,314	5,603	+
+634.		Super Animal Royale	706	1,060	7,648	+
+635.		Ranch Simulator	706	731	3,412	+
+636.		乡村狂想曲	703	3,404	4,121	+
+637.		Age of Empires® III (2007)	702	711	9,490	+
+638.		MudRunner	702	873	8,667	+
+639.		The Perfect Tower II	702	717	2,725	+
+640.		Dead Space	700	743	30,925	+
+641.		Onmyoji	698	2,009	4,978	+
+642.		DRAGON BALL Z: KAKAROT	695	751	25,852	+
+643.		Cosmoteer: Starship Architect & Commander	693	693	13,794	+
+644.		Wallpaper Alive	690	732	1,156	+
+645.		Soulstone Survivors	689	868	18,854	+
+646.		Fallout: New Vegas PCR	686	816	3,777	+
+647.		Marvel's Guardians of the Galaxy	686	710	10,989	+
+648.		FINAL FANTASY VII REMAKE INTERGRADE	685	942	13,803	+
+649.		Idle Skilling	684	721	6,466	+
+650.		GWENT: The Witcher Card Game	681	1,069	7,504	+
+651.		Conqueror's Blade	679	5,042	19,178	+
+652.		IXION	678	692	17,189	+
+653.		SCP: Containment Breach Multiplayer	678	749	3,275	+
+654.		Forts	673	947	7,280	+
+655.		Yakuza: Like a Dragon	673	1,143	9,535	+
+656.		Call of Duty: Black Ops	672	684	63,343	+
+657.		Assassin's Creed IV Black Flag	671	733	16,049	+
+658.		Mad Max	670	703	33,356	+
+659.		Wasteland 3	670	679	24,555	+
+660.		Soulworker	670	1,197	10,332	+
+661.		Muse Dash	669	2,543	11,478	+
+662.		METAL GEAR RISING: REVENGEANCE	665	707	12,205	+
+663.		Dishonored 2	665	688	22,411	+
+664.		Propnight	665	687	6,919	+
+665.		Resident Evil 5	663	692	2,585	+
+666.		FINAL FANTASY X/X-2 HD Remaster	663	688	13,263	+
+667.		Skul: The Hero Slayer	663	2,418	18,970	+
+668.		Age of Wonders III	660	666	19,469	+
+669.		Steel Division 2	659	701	2,260	+
+670.		Wildfrost	659	668	5,797	+
+671.		Baldur's Gate: Enhanced Edition	655	668	3,756	+
+672.		Warlander	653	831	23,428	+
+673.		Gloria Victis	652	663	4,185	+
+674.		Sins of a Solar Empire: Rebellion	651	651	93,109	+
+675.		Library Of Ruina	651	2,390	8,015	+
+676.		STAR WARS™ Knights of the Old Republic™ II: The Sith Lords™	649	649	6,581	+
+677.		FINAL FANTASY XIV Online Free Trial	649	674	4,290	+
+678.		Totally Accurate Battlegrounds	648	712	29,438	+
+679.		Remnant: From the Ashes	642	662	48,289	+
+680.		Five Nights at Freddy's: Security Breach	642	740	11,264	+
+681.		OMORI	639	695	3,166	+
+682.		Splitgate	636	636	67,724	+
+683.		Aliens: Fireteam Elite	634	634	15,568	+
+684.		Stronghold Crusader 2	632	713	5,763	+
+685.		Farming Simulator 17	632	755	32,313	+
+686.		Panzer Corps 2	632	683	3,480	+
+687.		Idle Monster TD: Evolved	632	660	1,085	+
+688.		EverQuest Free-to-Play	631	763	984	+
+689.		NARUTO SHIPPUDEN: Ultimate Ninja STORM 4	628	1,553	7,185	+
+690.		Rise of the Tomb Raider	627	970	44,588	+
+691.		ENDLESS™ Space 2	627	676	53,435	+
+692.		Space Haven	626	653	5,687	+
+693.		DC Universe Online	625	647	17,701	+
+694.		Football Manager 2016	623	623	82,916	+
+695.		Borderlands GOTY Enhanced	622	622	26,446	+
+696.		《蜀山：初章》买断版	622	734	9,202	+
+697.		Big Ambitions	620	737	10,961	+
+698.		Monster Train	619	849	14,073	+
+699.		Far Cry 4	616	727	16,963	+
+700.		HonkaiImpact 3rd	616	706	2,275	+
+701.		Smalland: Survive the Wilds	614	652	12,741	+
+702.		SimCity 4 Deluxe	612	625	5,206	+
+703.		Necesse	608	665	3,894	+
+704.		Quake Champions	607	666	17,476	+
+705.		Kingdom Two Crowns	604	783	4,097	+
+706.		Valheim Dedicated Server	603	614	5,068	+
+707.		Dorfromantik	603	681	7,101	+
+708.		CODE VEIN	600	881	33,895	+
+709.		No One Survived	600	600	4,632	+
+710.		Atomic Heart	598	835	38,469	+
+711.		Fallout 3 - Game of the Year Edition	596	617	10,401	+
+712.		Idle Clans	595	623	783	+
+713.		The Last Spell	594	672	6,755	+
+714.		Coloring Pixels	592	648	1,535	+
+715.		Baldur's Gate II: Enhanced Edition	591	605	2,644	+
+716.		Construction Simulator	591	650	17,365	+
+717.		Rivals of Aether	590	627	2,922	+
+718.		FINAL FANTASY XV WINDOWS EDITION	589	718	29,498	+
+719.		Automobilista 2	589	636	1,306	+
+720.		Terraforming Mars	588	588	1,667	+
+721.		Command and Conquer 3: Tiberium Wars	584	639	1,131	+
+722.		Rogue Legacy 2	582	586	22,811	+
+723.		S.T.A.L.K.E.R.: Shadow of Chernobyl	581	649	2,308	+
+724.		Tales of Arise	581	881	60,274	+
+725.		Shadow of the Tomb Raider	581	710	38,268	+
+726.		Dungeons & Dragons Online®	580	580	2,854	+
+727.		Realm Royale Reforged	580	641	105,440	+
+728.		Resident Evil 7 Biohazard	572	927	20,449	+
+729.		Outward	572	576	11,296	+
+730.		FPS Chess	570	663	3,142	+
+731.		Stray	568	569	62,963	+
+732.		Borderlands: The Pre-Sequel	567	623	68,238	+
+733.		World War 3	566	695	11,792	+
+734.		Wingspan	566	599	1,470	+
+735.		Your Only Move Is HUSTLE	564	584	3,405	+
+736.		觅长生	563	2,938	26,379	+
+737.		Holdfast: Nations At War	560	897	3,419	+
+738.		Do Not Feed the Monkeys 2099	560	861	861	+
+739.		Broken Armor	559	658	2,839	+
+740.		Pillars of Eternity II: Deadfire	559	576	22,724	+
+741.		Axis & Allies 1942 Online	557	569	1,227	+
+742.		City Car Driving	553	746	2,399	+
+743.		FOREWARNED	553	572	2,173	+
+744.		Bloons TD Battles	552	567	2,634	+
+745.		Warhammer 40,000: Space Marine - Anniversary Edition	551	573	15,653	+
+746.		ACE COMBAT™ 7: SKIES UNKNOWN	551	899	13,758	+
+747.		Portal	550	610	20,672	+
+748.		The Witcher: Enhanced Edition	550	594	12,685	+
+749.		Rule the Waves 3	550	557	812	+
+750.		Grand Theft Auto: San Andreas	549	667	3,387	+
+751.		OCTOPATH TRAVELER II	549	1,002	17,008	+
+752.		Batman: Arkham City GOTY	548	590	6,871	+
+753.		SimRail - The Railway Simulator	548	608	1,914	+
+754.		Two Point Hospital	547	705	34,009	+
+755.		Ori and the Will of the Wisps	547	2,592	34,807	+
+756.		DEAD OR ALIVE Xtreme Venus Vacation [JP]	547	1,858	2,218	+
+757.		Resident Evil 6	546	977	11,879	+
+758.		Soccer Manager 2022	545	610	1,116	+
+759.		Wizard101	544	770	1,060	+
+760.		Bread & Fred	543	543	609	+
+761.		OpenTTD	542	566	3,254	+
+762.		The Chronicles Of Myrtana: Archolos	539	584	9,328	+
+763.		LastCloudiaTc	537	675	7,862	+
+764.		Call of Duty: World at War	535	543	4,825	+
+765.		Dungeon Defenders II	534	589	18,785	+
+766.		The Witcher 2: Assassins of Kings Enhanced Edition	530	580	12,884	+
+767.		Football Manager 2015	530	559	82,071	+
+768.		Zuma Deluxe	526	689	804	+
+769.		UBOAT	524	534	5,755	+
+770.		Command and Conquer 3: Kane's Wrath	521	578	681	+
+771.		The Descendant	521	732	18,862	+
+772.		HELLDIVERS™	521	823	6,744	+
+773.		Resident Evil 3	520	722	60,293	+
+774.		Wolcen: Lords of Mayhem	518	631	127,542	+
+775.		Mini Motorways	518	585	9,914	+
+776.		No More Room in Hell	517	815	10,922	+
+777.		Out of the Park Baseball 23	516	593	1,855	+
+778.		The Elder Scrolls III: Morrowind	514	538	1,396	+
+779.		Wildermyth	512	592	8,106	+
+780.		OUTRIDERS	511	527	125,143	+
+781.		Age of Wonders: Planetfall	511	532	10,462	+
+782.		F1 2020	511	606	24,010	+
+783.		Bless Unleashed	510	995	76,377	+
+784.		KARDS - The WWII Card Game	509	1,330	2,918	+
+785.		Terra Invicta	507	524	9,826	+
+786.		Ultimate General: Civil War	505	521	1,678	+
+787.		VRoid Studio	505	589	1,452	+
+788.		Euro Truck Simulator 2 Demo	503	628	1,035	+
+789.		Stacklands	503	705	5,186	+
+790.		Day of Defeat: Source	502	555	7,507	+
+791.		This War of Mine	501	1,044	9,503	+
+792.		Fear & Hunger	501	512	736	+
+793.		A Total War Saga: Thrones of Britannia	500	534	22,797	+
+794.		Temtem	500	529	39,572	+
+795.		Stranded Deep	499	555	6,036	+
+796.		Furry Love 2	498	498	2,452	+
+797.		Dishonored	497	505	19,938	+
+798.		Left 4 Dead	496	545	30,616	+
+799.		Tomb Raider	495	647	89,538	+
+800.		Mindustry	495	627	3,012	+
+801.		Action Taimanin	495	1,303	2,894	+
+802.		Insurgency	494	545	121,575	+
+803.		Sleeping Dogs: Definitive Edition	494	753	4,035	+
+804.		Borderless Gaming	494	536	1,182	+
+805.		Supremacy 1914	490	508	842	+
+806.		PICO PARK	490	935	16,802	+
+807.		STAR WARS™ Knights of the Old Republic™	489	492	5,642	+
+808.		TerraTech	489	568	5,726	+
+809.		Dawn of Man	489	509	23,864	+
+810.		Ghost Watchers	489	499	4,747	+
+811.		Pillars of Eternity	488	516	41,906	+
+812.		Motorsport Manager	488	492	6,251	+
+813.		My Time At Portia	488	876	13,299	+
+814.		RetroArch	488	503	793	+
+815.		GUNDAM EVOLUTION	488	1,007	56,911	+
+816.		3DMark	487	761	1,667	+
+817.		Call of Duty 4: Modern Warfare (2007)	486	543	1,796	+
+818.		UNCHARTED™: Legacy of Thieves Collection	484	536	10,851	+
+819.		Toram Online	483	959	2,989	+
+820.		Zula Türkiye	480	589	3,041	+
+821.		Idle Spiral	479	507	2,214	+
+822.		Banana Shooter	478	626	1,768	+
+823.		LAST CLOUDIA	477	562	1,214	+
+824.		Tape to Tape	476	588	1,669	+
+825.		War of Rights	473	639	1,327	+
+826.		TrackMania Nations Forever	471	471	1,466	+
+827.		Tower Unite	471	529	1,603	+
+828.		EA SPORTS™ PGA TOUR™	471	563	1,796	+
+829.		Automation - The Car Company Tycoon Game	470	504	1,235	+
+830.		Warhammer 40,000: Dawn of War - Dark Crusade	469	476	2,259	+
+831.		NARUTO TO BORUTO: SHINOBI STRIKER	469	496	6,310	+
+832.		修仙立志传	469	667	1,732	+
+833.		Counter-Strike: Condition Zero	468	511	32,748	+
+834.		Hentai Bad Girls	468	534	23,438	+
+835.		Car Mechanic Simulator 2018	466	511	8,474	+
+836.		Far Cry® 3	464	525	23,065	+
+837.		Doki Doki Literature Club	464	491	7,402	+
+838.		Assassin's Creed Unity	463	789	12,180	+
+839.		Cassette Beasts	463	552	2,764	+
+840.		Minecraft Dungeons	461	517	2,939	+
+841.		Amanda the Adventurer	461	473	1,418	+
+842.		Warhammer 40,000: Dawn of War II - Retribution	460	473	15,143	+
+843.		Castle Crashers	458	510	16,013	+
+844.		Town of Salem	456	680	3,787	+
+845.		Stronghold Kingdoms	455	504	8,616	+
+846.		Spelunky 2	455	463	9,702	+
+847.		RutonyChat	453	709	807	+
+848.		Potion Craft: Alchemist Simulator	453	453	10,161	+
+849.		Call of Duty: Modern Warfare 2 (2009)	452	511	22,614	+
+850.		Zula Global	451	451	1,088	+
+851.		EARTH DEFENSE FORCE 5	451	990	8,416	+
+852.		NOBUNAGA'S AMBITION: Awakening	451	1,417	11,783	+
+853.		Tribes of Midgard	449	612	30,930	+
+854.		RPG Maker MZ	449	568	923	+
+855.		Universe Sandbox	448	475	727	+
+856.		Arma Reforger	448	455	12,342	+
+857.		Dragon Age II	446	446	814	+
+858.		Hero Siege	443	531	5,015	+
+859.		Codename Gordon	440	522	4,272	+
+860.		Gothic 3	439	490	915	+
+861.		Railway Empire	439	491	5,446	+
+862.		Isonzo	439	497	4,196	+
+863.		Outlast	438	487	11,827	+
+864.		Jurassic World Evolution	438	478	60,296	+
+865.		Call of War	438	476	925	+
+866.		Pharaoh: A New Era	438	492	6,321	+
+867.		Way of the Hunter	437	451	9,880	+
+868.		Sven Co-op	436	455	6,572	+
+869.		Poppy Playtime	435	566	13,971	+
+870.		Eden Eternal	435	532	661	+
+871.		Football Manager 2014	434	468	79,105	+
+872.		BioShock Remastered	434	453	5,245	+
+873.		The Lord of the Rings: Gollum™	434	669	758	+
+874.		Crusaders of the Lost Idols	433	463	4,068	+
+875.		CONVERGENCE: A League of Legends Story™	433	542	1,126	+
+876.		Talisman: Digital Edition	432	438	3,590	+
+877.		Quake Live	432	461	6,154	+
+878.		HITMAN™ 2	432	562	361,001	+
+879.		Spyro™ Reignited Trilogy	432	447	4,198	+
+880.		Besiege	430	662	11,206	+
+881.		Getting Over It with Bennett Foddy	429	483	5,054	+
+882.		Project CARS 2	428	475	6,775	+
+883.		MONOPOLY Poker	428	487	522	+
+884.		Krunker	427	463	2,265	+
+885.		Action! - Gameplay Recording and Streaming	426	672	743	+
+886.		Ticket to Ride	424	428	2,164	+
+887.		Master of Orion	424	424	4,852	+
+888.		Friday the 13th: The Game	424	473	16,096	+
+889.		Day of Dragons	424	489	2,490	+
+890.		The Infected	424	487	1,941	+
+891.		Unravel Two	423	780	951	+
+892.		Loop Hero	423	423	51,156	+
+893.		Papers, Please	421	464	6,129	+
+894.		Operation: Harsh Doorstop	421	472	2,074	+
+895.		APB Reloaded	420	464	11,813	+
+896.		Empires of the Undergrowth	420	432	2,509	+
+897.		Roguebook	420	463	2,548	+
+898.		Pavlov VR	419	464	3,221	+
+899.		Mafia II: Definitive Edition	419	464	6,162	+
+900.		BioShock Infinite	415	446	65,332	+
+901.		Blood Bowl 2	414	428	6,511	+
+902.		Cry of Fear	411	439	3,075	+
+903.		Star Wars: Battlefront 2 (Classic, 2005)	409	450	4,789	+
+904.		Worms W.M.D	409	409	4,767	+
+905.		eFootball PES 2020	408	557	21,018	+
+906.		Nordic Ashes	408	691	2,978	+
+907.		Old Coin Pusher Friends 2	406	1,251	1,875	+
+908.		Bejeweled 3	405	422	1,415	+
+909.		Lobotomy Corporation	405	1,714	3,748	+
+910.		Hero's Land	405	1,465	2,638	+
+911.		Real Pool 3D - Poolians	404	1,673	2,772	+
+912.		The Ascent	402	413	14,013	+
+913.		Control Ultimate Edition	401	450	9,193	+
+914.		Digimon Story Cyber Sleuth: Complete Edition	401	487	2,404	+
+915.		Songs of Conquest	400	421	4,192	+
+916.		WILD HEARTS™	400	905	28,511	+
+917.		Clone Drone in the Danger Zone	399	443	1,944	+
+918.		Night of the Dead	399	702	4,434	+
+919.		Door Kickers 2	398	446	913	+
+920.		Being a DIK	397	430	5,709	+
+921.		Animaze	395	786	1,078	+
+922.		Backpack Hero	395	528	3,627	+
+923.		Football Manager 2023 Editor	395	457	1,265	+
+924.		Sid Meier's Civilization: Beyond Earth	394	412	86,892	+
+925.		KartRider: Drift	394	431	4,748	+
+926.		Blush Blush	393	503	2,581	+
+927.		Tom Clancy's The Division	392	530	114,228	+
+928.		Colony Survival	391	442	1,488	+
+929.		Tree of Savior (English Ver.)	391	491	53,554	+
+930.		Mon Bazou	391	425	1,979	+
+931.		King Arthur: Knight's Tale	388	388	5,376	+
+932.		Dead Space™ 3	388	394	1,105	+
+933.		Krita	387	412	483	+
+934.		Life is Feudal: Your Own	386	421	7,896	+
+935.		Call of Duty: Modern Warfare 3	385	418	46,327	+
+936.		VEGA Conflict	385	468	3,814	+
+937.		Prey	385	405	24,594	+
+938.		Half-Life: Alyx	385	406	42,858	+
+939.		A Total War Saga: TROY	385	404	4,704	+
+940.		Hardspace: Shipbreaker	385	385	7,731	+
+941.		Settlement Survival	385	528	5,613	+
+942.		Call of Duty: Modern Warfare 2 (2009) - Multiplayer	383	383	112,874	+
+943.		Hotline Miami 2: Wrong Number	383	443	18,950	+
+944.		Total Conflict: Resistance	382	435	665	+
+945.		Dead Space (2008)	380	388	2,305	+
+946.		Starship Troopers: Terran Command	380	413	8,163	+
+947.		Plague Inc: Evolved	379	399	17,889	+
+948.		POSTAL 2	378	441	4,636	+
+949.		Warhammer 40,000: Battlesector	377	384	2,598	+
+950.		Slime Rancher 2	377	433	21,524	+
+951.		The Escapists 2	376	478	11,202	+
+952.		POLYGON	376	377	1,247	+
+953.		Fisher Online	375	597	1,954	+
+954.		Sniper Ghost Warrior Contracts 2	375	479	7,055	+
+955.		Amazing Cultivation Simulator	374	1,196	18,349	+
+956.		Ironsight	373	455	4,669	+
+957.		Far Cry New Dawn	372	406	16,975	+
+958.		Redmatch 2	372	485	807	+
+959.		WAKFU	371	371	4,078	+
+960.		Session: Skate Sim	370	391	1,757	+
+961.		Warhammer 40,000: Mechanicus	369	369	2,748	+
+962.		Knights of Honor II: Sovereign	368	407	6,061	+
+963.		Demon Slayer -Kimetsu no Yaiba- The Hinokami Chronicles	368	419	7,995	+
+964.		DRAGON QUEST XI S: Echoes of an Elusive Age – Definitive Edition	367	699	4,813	+
+965.		Mirror's Edge™ Catalyst	366	456	1,446	+
+966.		Fly Corp	366	671	778	+
+967.		South Park The Fractured But Whole	365	365	21,609	+
+968.		NosTale	365	430	2,237	+
+969.		Trainz Railroad Simulator 2019	365	380	623	+
+970.		IL-2 Sturmovik: Battle of Stalingrad	364	365	1,061	+
+971.		Survival: Fountain of Youth	364	410	1,955	+
+972.		Five Nights at Freddy's	363	363	1,316	+
+973.		Battlefleet Gothic: Armada 2	360	376	8,960	+
+974.		Descenders	360	393	1,954	+
+975.		SMASH LEGENDS	359	527	1,526	+
+976.		Downfall - A Slay the Spire Fan Expansion	358	504	3,132	+
+977.		Ravenswatch	358	360	10,018	+
+978.		South Park™: The Stick of Truth™	357	377	34,811	+
+979.		DELTARUNE (Chapter 1 & 2 DEMO)	357	390	102,916	+
+980.		Marvel Puzzle Quest	356	507	3,002	+
+981.		Airport CEO	356	364	2,745	+
+982.		Call of Duty: Black Ops II - Multiplayer	355	394	71,228	+
+983.		Skater XL	353	353	5,741	+
+984.		The Walking Dead: The Telltale Definitive Series	353	368	1,492	+
+985.		Batman: Arkham Asylum GOTY Edition	351	360	6,739	+
+986.		Batman™: Arkham Origins	351	363	25,017	+
+987.		Star Boss	351	358	1,923	+
+988.		VALKYRIE CONNECT	351	493	1,438	+
+989.		Max Payne 3	350	362	9,594	+
+990.		Stationeers	350	361	1,485	+
+991.		VTOL VR	350	372	1,413	+
+992.		太吾绘卷 The Scroll Of Taiwu	349	1,790	72,533	+
+993.		RIDE 4	349	496	2,898	+
+994.		EverQuest II	348	348	1,611	+
+995.		Police Simulator: Patrol Officers	347	359	3,330	+
+996.		War Planet Online: Global Conquest	346	372	650	+
+997.		Soda Dungeon 2	345	357	13,385	+
+998.		Last Year	345	361	3,666	+
+999.		Bloons Monkey City	345	395	1,198	+
+1000.		Alien Swarm: Reactive Drop	344	760	9,335	+

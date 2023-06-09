@@ -13,7 +13,7 @@ running_time_seconds = 5 * 60
 delay_seconds = 0.1
 cache_time_seconds = 5 * 60  # Cache data every 5 minutes
 last_cache_time = time.time()
-cache_file = 'steam_app_data_cache.json'
+cache_file = 'steam_app_data_100_cache.json'
 try:
     with open(cache_file, 'r') as f:
         cached_data = json.load(f)
@@ -26,7 +26,7 @@ existing = len(cached_data)
 print(f'Existing games = {existing}')
 # Make requests and measure actual time
 start_time = time.time()
-for i, app in enumerate(app_list_data):
+for i, app in enumerate(app_list_data[:100]):
     app_id = app['appid']
 
     # Check if data is already cached
@@ -57,7 +57,7 @@ for i, app in enumerate(app_list_data):
             time.sleep(delay_seconds)
         else:
             print(f'Failed to retrieve data for app ID {app_id} - success state is false')
-            cached_data[str(app_id)] = app_data
+
 
     # Cache data periodically
     current_time = time.time()
@@ -66,9 +66,7 @@ for i, app in enumerate(app_list_data):
             json.dump(cached_data, f)
         last_cache_time = current_time
 
-    # Check if we have reached the total number of requests
-    if i >= 100:  # Make 1000 requests for this test run
-        break
+
 
 # Save remaining cached data
 with open(cache_file, 'w') as f:

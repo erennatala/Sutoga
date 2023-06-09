@@ -17,14 +17,15 @@ api_key = '4D3BE17D82F44DE7727A8287A7F0F869'
 all_game_data = {}
 i = 0
 for steam_id in steam_ids:
-    i += 1
-    if i == 30:
-        break
+    all_game_data[steam_id] = dict()
+
+
     try:
         # Retrieve list of owned games
         url = f'http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key={api_key}&steamid={steam_id}&format=json'
         response = requests.get(url)
         data = response.json()['response']
+       # print(data)
         # Extract game information
         game_count = data['game_count']
         games = data['games']
@@ -34,12 +35,14 @@ for steam_id in steam_ids:
             app_id = game['appid']
 
             playtime_forever = game['playtime_forever']
+
             if playtime_forever == 0:
                 continue
-            if app_id not in all_game_data:
+            all_game_data[steam_id][app_id] = {'id': app_id, 'playtime_forver': playtime_forever}
+            """if app_id not in all_game_       data:
                 all_game_data[app_id] = {'id': app_id, 'playtime_forever': playtime_forever}
             else:
-                all_game_data[app_id]['playtime_forever'] += playtime_forever
+                all_game_data[app_id]['playtime_forever'] += playtime_forever"""
 
         print(f'Successfully retrieved data for Steam ID {steam_id}')
 

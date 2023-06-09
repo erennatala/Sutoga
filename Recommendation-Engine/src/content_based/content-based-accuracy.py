@@ -38,7 +38,7 @@ user_db = pd.read_csv("steam.csv")
 percentage = 0.1
 
 # Create the training and testing datasets using the specified percentage
-logging.info('Creating traşn and test datasets...')
+logging.info('Creating train and test datasets...')
 train_data, test_data = create_datasets(user_db, test_size=0.2, random_state=None, percentage=percentage)
 
 # Save the training and testing datasets as CSV files
@@ -125,7 +125,7 @@ for user_id in unique_user_ids:
     sorted_dict = dict(sorted(rec_sim_dict.items(), key=lambda item: item[1], reverse=True)[:10])
 
     # Get the test games that the user has played
-    test_user_games = test_db[(test_db['user_id'] == user_id) & (test_db['play'] == 1)]['game_name'].tolist()
+    test_user_games = test_db[(test_db['user_id'] == user_id) ]['game_name'].tolist()
 
     # Calculate the accuracy for the current user
     user_accuracy = calculate_accuracy(recommendations, test_user_games)
@@ -177,7 +177,7 @@ def test_user(user_id, train_data, game_db, test_data):
     total_predicted = len(recommendations)
     total_actual = len(test_user_games)
 
-    logging.warning(f"User {user_id}: {correctly_predicted}/{total_predicted} (Actual: {total_actual})")
+    #logging.warning(f"User {user_id}: {correctly_predicted}/{total_predicted} (Actual: {total_actual})")
     return correctly_predicted, total_predicted, total_actual
 
 # Test the algorithm using the test_data and calculate the accuracy
