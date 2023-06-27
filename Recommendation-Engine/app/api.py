@@ -9,10 +9,10 @@ app = Flask(__name__)
 CORS(app)  # This will enable CORS for all routes
 
 # Add your MySQL connection details here
-mysql_host = "sutoga-db.cmz3amiuqkk8.eu-north-1.rds.amazonaws.com"
+mysql_host = "*********"
 mysql_user = "admin"
-mysql_password = "063eg9gh"
-mysql_database = "sutoga-app"
+mysql_password = "*******"
+mysql_database = "*******"
 
 def get_user_games(user_id):
     connection = mysql.connector.connect(
@@ -70,18 +70,6 @@ def recommend():
     # Return recommendations as JSON response
     return response
 
-"""
-@app.route('/recommend', methods=['POST'])
-def recommend():
-    user_games = request.get_json()
-    recommendations = hybrid_recommendations(user_games)
-    if recommendations:
-        recommended_games = [{'appid': int(rec['appid']), 'similarity_score': rec.get('similarity_score')} for rec in recommendations]
 
-        response = {'recommendations': recommended_games}
-    else:
-        response = {'recommendations': []}
-    return jsonify(response)
-"""
 if __name__ == '__main__':
     app.run()

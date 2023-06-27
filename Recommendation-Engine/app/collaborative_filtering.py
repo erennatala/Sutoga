@@ -4,99 +4,6 @@ from surprise import Reader
 from surprise.model_selection import cross_validate
 import pandas as pd
 import numpy as np
-"""
-# Load your dataset
-df = pd.read_csv(
-    '/Users/eren/PycharmProjects/Sutoga/Recommendation-Engine/src/collaborative_filtering/all_owned_games.csv')
-
-# Normalize play_time using Min-Max scaling
-df['playtime_forever'] = (df['playtime_forever'] - df['playtime_forever'].min()) / (
-            df['playtime_forever'].max() - df['playtime_forever'].min())
-
-# Define the format
-reader = Reader(rating_scale=(0, 1))
-
-# Load data from the DataFrame
-data = Dataset.load_from_df(df[['steam_id', 'app_id', 'playtime_forever']], reader)
-
-# Use the SVD algorithm
-algo = SVD()
-
-# Run 5-fold cross-validation and print results
-cross_validate(algo, data, measures=['RMSE', 'MAE'], cv=5, verbose=True)
-""""""
-def get_top_n_recommendations(user_id, n=10):
-    # Get a list of all game ids
-    all_game_ids = df['app_id'].unique()
-
-    # Get a list of games that the user has already played
-    played_game_ids = df.loc[df['steam_id'] == user_id, 'app_id']
-
-    # Remove the games that the user has already played from the list of all games
-    game_ids_to_pred = np.setdiff1d(all_game_ids, played_game_ids)
-
-    # Predict the ratings that the user would give to the games they haven't played yet
-    predictions = [algo.predict(user_id, game_id) for game_id in game_ids_to_pred]
-
-    # Sort the predictions by estimated rating
-    predictions.sort(key=lambda x: x.est, reverse=True)
-
-    # Get the top n predictions
-    top_n_preds = predictions[:n]
-
-    # Print the recommended games
-    for pred in top_n_preds:
-        print('Recommended game id: ', pred.iid, ', estimated rating: ', pred.est)
-        """
-"""def get_top_n_recommendations(user_id, n=10):
-    # Get a list of all game ids
-    all_game_ids = df['app_id'].unique()
-
-    # Get a list of games that the user has already played
-    played_game_ids = df.loc[df['steam_id'] == user_id, 'app_id']
-
-    # Remove the games that the user has already played from the list of all games
-    game_ids_to_pred = np.setdiff1d(all_game_ids, played_game_ids)
-
-    # Predict the ratings that the user would give to the games they haven't played yet
-    predictions = [algo.predict(user_id, game_id) for game_id in game_ids_to_pred]
-
-    # Sort the predictions by estimated rating
-    predictions.sort(key=lambda x: x.est, reverse=True)
-
-    # Get the top n predictions that the user doesn't already own
-    top_n_preds = [pred for pred in predictions if pred.iid not in played_game_ids][:n]
-
-    # Print the recommended games
-    for pred in top_n_preds:
-        print('Recommended game id: ', pred.iid, ', estimated rating: ', pred.est)"""
-
-# def get_top_n_recommendations(user_id, n=10):
-#     # Get a list of games that the user has already played
-#     played_games = df.loc[df['steam_id'] == user_id]
-#
-#     # Get a list of all game IDs
-#     all_game_ids = df['app_id'].unique()
-#
-#     # Remove the games that the user has already played from the list of all games
-#     game_ids_to_pred = np.setdiff1d(all_game_ids, played_games['app_id'])
-#
-#     # Predict the ratings that the user would give to the games they haven't played yet
-#     predictions = [algo.predict(user_id, game_id) for game_id in game_ids_to_pred]
-#
-#     # Sort the predictions by estimated rating
-#     predictions.sort(key=lambda x: x.est, reverse=True)
-#
-#     # Get the top n predictions
-#     top_n_preds = predictions[:n]
-#
-#     # Print the recommended games
-#     for pred in top_n_preds:
-#         print('Recommended game id:', pred.iid, ', estimated rating:', pred.est)
-
-import pandas as pd
-from surprise import Reader, Dataset, SVD
-from surprise.model_selection import cross_validate
 
 
 import pandas as pd
@@ -105,7 +12,7 @@ from surprise.model_selection import cross_validate
 
 def collaborative_filtering_recommendations(user_games, n=10):
     # Load your dataset
-    df = pd.read_csv('/Users/eren/PycharmProjects/Sutoga/Recommendation-Engine/src/collaborative_filtering/all_owned_games.csv')
+    df = pd.read_csv('all_owned_games.csv')
 
     # Normalize play_time using Min-Max scaling
     df['playtime_forever'] = (df['playtime_forever'] - df['playtime_forever'].min()) / (

@@ -3,7 +3,7 @@ import json
 import requests
 
 # Replace <YOUR_API_KEY> with your actual Steam API key
-api_key = '<4D3BE17D82F44DE7727A8287A7F0F869>'
+api_key = ''
 
 def getAppInfo(api_key,app_id):
     # Make a request to the GetAppDetails API method

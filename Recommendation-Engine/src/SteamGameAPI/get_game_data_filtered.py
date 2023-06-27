@@ -2,7 +2,7 @@ import requests
 import time
 import json
 
-api_key = '4D3BE17D82F44DE7727A8287A7F0F869'
+api_key = ''
 app_list_url = f'http://api.steampowered.com/ISteamApps/GetAppList/v2?key={api_key}'
 app_list_data = requests.get(app_list_url).json()['applist']['apps']
 
