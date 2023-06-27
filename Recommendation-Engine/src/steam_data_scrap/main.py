@@ -5,7 +5,7 @@ from textblob import TextBlob
 import re
 import bs4
 
-api_key = '4D3BE17D82F44DE7727A8287A7F0F869'
+api_key = ''
 
 with open('./data/top_100_games.json') as f:
     data = json.load(f)

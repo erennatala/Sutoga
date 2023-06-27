@@ -99,7 +99,7 @@ import re
 url = 'http://api.steampowered.com/ISteamApps/GetAppList/v0002/'
 
 # Replace 'YOUR_STEAM_API_KEY' with your actual Steam API key
-steam_api_key = '4D3BE17D82F44DE7727A8287A7F0F869'
+steam_api_key = ''
 # Set the parameters for the API request
 params = {
     'key': steam_api_key,

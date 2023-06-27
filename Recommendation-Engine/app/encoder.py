@@ -41,7 +41,7 @@ encoded_df.to_csv('encoded_game_dataset.csv', index=False)"""
 
 def encode_game_features():
     # Read the game dataset from a CSV file
-    game_dataset = pd.read_csv('/Users/eren/PycharmProjects/Sutoga/Recommendation-Engine/data/top_100_detailed.csv')
+    game_dataset = pd.read_csv('Recommendation-Engine/data/top_100_detailed.csv')
 
     # Process categories, genres, and publishers to extract the IDs
     categories_ids = game_dataset['categories'].apply(lambda x: [category['id'] for category in eval(x)])
@@ -65,33 +65,3 @@ def encode_game_features():
 
 encode_game_features()
 
-"""
-import json
-import pandas as pd
-from sklearn.preprocessing import MultiLabelBinarizer
-
-def encode_game_features():
-    # Read the game dataset from a JSON file
-    with open('filtered_games.json', 'r') as file:
-        game_dataset = json.load(file)
-
-    # Process tags and publisher to extract the IDs
-    tags_ids = [entry["tags"] for entry in game_dataset]
-    publishers_ids = [entry["publisher"] for entry in game_dataset]
-
-    # Perform one-hot encoding on tag IDs and publisher IDs
-    mlb = MultiLabelBinarizer()
-    tags_encoding = pd.DataFrame(mlb.fit_transform(tags_ids), columns=mlb.classes_, index=range(len(game_dataset)))
-    publisher_encoding = pd.DataFrame(mlb.fit_transform(publishers_ids), columns=mlb.classes_, index=range(len(game_dataset)))
-
-    # Concatenate the one-hot encoded features
-    encoded_features = pd.concat([tags_encoding, publisher_encoding], axis=1)
-
-    # Insert appid column to the encoded features DataFrame
-    encoded_features.insert(0, 'appid', [entry["appid"] for entry in game_dataset])
-    encoded_features[tags]
-    # Save the DataFrame
-    encoded_features.to_csv('encoded_game_dataset2.csv', index=False)
-
-encode_game_features()
-"""

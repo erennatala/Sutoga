@@ -5,7 +5,7 @@ import requests
 with open('game_data3.json') as f:
     reviews = json.load(f)
 
-api_key = '4D3BE17D82F44DE7727A8287A7F0F869'
+api_key = ''
 all_game_data = []
 
 for review in reviews:

@@ -11,7 +11,7 @@ for review in reviews:
         steam_ids.append(friend['steamid'])
 
 
-api_key = '4D3BE17D82F44DE7727A8287A7F0F869'
+api_key = ''
 
 
 all_game_data = {}

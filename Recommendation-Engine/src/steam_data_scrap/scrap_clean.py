@@ -4,19 +4,19 @@ import requests
 with open('game_data3.json') as f:
     reviews = json.load(f)
 
-api_key = '4D3BE17D82F44DE7727A8287A7F0F869'
+api_key = ''
 all_game_data = {}
 
 for review in reviews:
     friends = review['friends']
     steam_id = review['user_id']
-    steam_id = "76561198125614862"
+    steam_id = ""
     steam_ids = [steam_id] + [friend['steamid'] for friend in friends]
 
     for steam_id in steam_ids:
         try:
             # Retrieve list of owned games
-            steam_id2="76561199041954116"
+            steam_id2=""
             url = f'http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key={api_key}&steamid={steam_id2}&format=json'
             response = requests.get(url)
             data = response.json()['response']
